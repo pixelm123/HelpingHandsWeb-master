@@ -1,0 +1,87 @@
+#wrapper {
+    overflow-x: hidden;
+ }
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  margin-left: -15rem;
+  -webkit-transition: margin .25s ease-out;
+  -moz-transition: margin .25s ease-out;
+  -o-transition: margin .25s ease-out;
+  transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 155%;
+  font-family:'Times New Roman', Times, serif;
+  color: darkcyan;
+}
+
+#sidebar-wrapper .list-group {
+  width: 15rem;
+  font-family: 'Times New Roman', Times, serif;
+  color: teal;
+  font-size:100%;
+}
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+
+@media (min-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
+
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -15rem;
+  }
+}
+
+
+.t{
+  width:600px;
+  margin:auto;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+.t th{
+background-color:rgb(247, 87, 47);
+color: rgb(24, 20, 20);
+
+}
+.t th,.t td{
+padding: 12px 15px;
+color: black;
+
+}
+.t tr:nth-child(odd)
+{
+  background-color: rgb(250, 135, 135);;
+}
+.t tr:nth-child(even)
+{
+  background-color:rgb(250, 135, 135);
+}
+
+.tbl{
+margin-top: 15px;
+}
+input[type=text]{
+  border: none;
+  border-bottom: 2px solid darkgray;
+  width:50%;
+}
+input[type=password]{
+  border: none;
+  border-bottom: 2px solid darkgray;
+  width:50%;
+}
+

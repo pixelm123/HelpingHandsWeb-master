@@ -1,0 +1,263 @@
+﻿
+
+@using HelpingHandsWeb.Models.ViewModels.AdminViewModels
+@using HelpingHandsWeb.Models.ViewModels
+
+@model List<NurseViewModel>
+
+@{
+    var sortedModel = Model.OrderBy(n => n.Gender).ThenBy(n=> n.FirstName).ToList();
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Nurse Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/SiteAssets/css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg shadow-sm fixed-top">
+            <a class="navbar-brand" href="#">
+                <img src="~/images/logo2.webp" />
+                <span>Helping Hands</span>
+            </a>
+            <div class="navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            <i class="las la-question-circle"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown dropleft">
+                        <a class="nav-link notification-dropdown" href="#" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <span class="badge badge-pill badge-primary"
+                                  style="float:right;margin-bottom:-10px;"></span>
+                            <i class="las la-bell"></i>
+                        </a>
+                        <div class="dropdown-menu notification-dropdown-menu shadow-lg"
+                             aria-labelledby="notification-dropdown">
+                            <div class="dropdown-title">
+                                <a href="#">Notifications<span class="ml-2 notifications-count">(3)</span></a>
+                                <a class="float-right" href="#">Mark all as read</a>
+                            </div>
+                            <div class="dropdown-body">
+                                <ul class="list-unstyled">
+                                    <li class="media">
+                                        <a class="notification-card" href="#">
+                                            <img class="mr-3" src="~/SiteAssets/images/inbox.svg" alt="..." />
+                                            <div class="media-body">
+                                                <h6 class="mt-0 mb-1">Educational Resources Available</h6>
+                                                <p>Check out our new educational resources on wound care.</p>
+                                                <small class="text-muted">@DateTime.Now.ToString("dd.MM.yyyy, HH:mm")</small>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <a class="notification-card" href="#">
+                                            <img class="mr-3" src="~/SiteAssets/images/inbox.svg" alt="..." />
+                                            <div class="media-body">
+                                                <h6 class="mt-0 mb-1">New Wound Care Techniques</h6>
+                                                <p>Learn about the latest wound care techniques and best practices.</p>
+                                                <small class="text-muted">@DateTime.Now.ToString("dd.MM.yyyy, HH:mm")</small>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <a class="notification-card" href="#">
+                                            <img class="mr-3" src="~/SiteAssets/images/inbox.svg" alt="..." />
+                                            <div class="media-body">
+                                                <h6 class="mt-0 mb-1">Wound Care Webinar</h6>
+                                                <p>Join our upcoming wound care webinar for healthcare professionals.</p>
+                                                <small class="text-muted">@DateTime.Now.ToString("dd.MM.yyyy, HH:mm")</small>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="dropdown-footer text-center">
+                                <a href="Notifications.cshtml">View more</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link">
+                            <span class="vertical-divider"></span>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link profile-dropdown" href="#" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <img class="rounded-circle" src="~/SiteAssets/images/person.jpg" />
+                            <span class="d">@Context.Session.GetString("UserDisplayName")</span>
+                        </a>
+                        <div class="dropdown">
+                            <div class="dropdown-menu shadow-lg profile-dropdown-menu"
+                                 aria-labelledby="profile-dropdown">
+                                <a class="dropdown-item" href="#"><i class="las la-user mr-2"></i>profile</a>
+                                <a class="dropdown-item" href="#"><i class="las la-cog mr-2"></i>settings</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="sidebar">
+            <ul>
+                <a class="list-group-item" href="@Url.Action("AdminDashboard", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Dashboard">
+                    <i class="las la-shapes la-lw"></i><span>dashboard</span>
+                </a>
+                <a class="list-group-item" href="@Url.Action("Patients", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Patients">
+                    <i class="las la-user-injured la-lw"></i><span>patients</span>
+                </a>
+                <a class="list-group-item" href="@Url.Action("Nurses", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Nurses">
+                    <i class="las la-clinic-medical la-lw"></i><span>nurses</span>
+                </a>
+                <a class="list-group-item" href="@Url.Action("OfficeManagers", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Office Managers">
+                    <i class="las la-sms la-lw"></i><span>officemanagers</span>
+                </a>
+                <a class="list-group-item" href="@Url.Action("Suburbs", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Suburbs">
+                    <i class="las la-sms la-lw"></i><span>suburb</span>
+                </a>
+                <a class="list-group-item" href="@Url.Action("Settings", "Profile")" data-toggle="tooltip" data-placement="bottom" title="Settings">
+                    <i class="las la-cogs la-lw"></i><span>settings</span>
+                </a>
+                <a class="list-group-item" href="@Url.Action("Reports", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Reports">
+                    <i class="las la-sms la-lw"></i><span>reports</span>
+                </a>
+                <hr class="divider" />
+                <div class="aob-items">
+                    <div class="card">
+                        <div class="card-header">
+                            <img src="~/SiteAssets/images/wound-care-image.jfif" alt="Wound Care" />
+                        </div>
+                        <div class="card-body">
+                            <p><u><i class="las la-book"></i> Educational Resources</u></p>
+                            <p>Explore informative articles, videos, and brochures related to wound care to learn about the importance of proper wound care.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-dark-red-f-gr btn-sm" href="https://www.ccmhhealth.com/importance-of-wound-care/#:~:text=Wound%20care%20is%20an%20important,reduction%20of%20pain%20and%20discomfort."
+                               target="_blank">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+        </div>
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="section title-section">
+                    <h5 class="page-title"></h5>
+                </div>
+                <div class="section filters-section">
+                    <div class="dropdowns-wrapper">
+                        <!-- Dropdowns for filter and sort options (you can keep this) -->
+                    </div>
+                    <div class="switch-view-btns">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <!-- Buttons to switch between card and table view (you can keep this) -->
+                        </div>
+                    </div>
+                    <div class="buttons-wrapper ml-auto">
+                        <button class="btn btn-dark-red-f-gr">
+                            <i class="las la-plus-circle"></i>Add a new nurse
+                        </button>
+                    </div>
+                </div>
+                <div class="section patients-card-view">
+                    <div class="row">
+                        @foreach (var nurse in Model)
+                        {
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-img-top">
+                                            <img class="rounded-circle" src="../SiteAssets/images/people.svg" loading="lazy" />
+                                            <a class="view-more" href="NurseDetails.cshtml">View profile</a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="card-subsection-title">
+                                            <h5>@nurse.FirstName</h5>
+                                            <p class="text-muted">Firstname</p>
+                                        </div>
+                                        <div class="card-subsection-title">
+                                            <h5>@nurse.Surname</h5>
+                                            <p class="text-muted">Surname</p>
+                                        </div>
+                                        <div class="card-subsection-title">
+                                            <h5>@nurse.user.Email</h5>
+                                            <p class="text-muted">Email</p>
+                                        </div>
+                                        <div class="card-subsection-title">
+                                            <h5>@nurse.Gender</h5>
+                                            <p class="text-muted">Gender</p>
+                                        </div>
+                                        <div class="card-subsection-title">
+                                            <h5>@nurse.user.ContactNo</h5>
+                                            <p class="text-muted">Contact Number</p>
+                                        </div>
+                                        <div class="card-subsection-title">
+                                            <h5>@nurse.user.Status</h5>
+                                            <p class="text-muted">Status</p>
+                                        </div>
+                                        <div class="card-subsection-title">
+                                            <h5>@nurse.PreferredSuburb</h5>
+                                            <p class="text-muted">Preferred Suburb</p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer"></div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="section patients-table-view no-display">
+                    <table class="table table-hover table-responsive-lg">
+                        <thead>
+                            <tr>
+                                <th>Firstname</th>
+                                <th>Surname</th>
+                                <th>Email</th>
+                                <th>Gender</th>
+                                <th>Contact Number</th>
+                                <th>Preferred Suburb</th>
+                                <th>Status</th>
+                                <th> </th> <!-- Added "View Profile" column header -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var nurse in Model)
+                            {
+                                <tr>
+                                    <td>@nurse.FirstName</td>
+                                    <td>@nurse.Surname</td>
+                                    <td>@nurse.user.Email</td>
+                                    <td>@nurse.Gender</td>
+                                    <td>@nurse.user.ContactNo</td>
+                                    <td>@nurse.PreferredSuburb</td>
+                                    <td>@nurse.user.Status</td>
+                                    <td><a class="view-more btn btn-sm btn-dark-red-f" href="NurseDetails.cshtml">View profile</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="aob-items">
+                <div class="card">
+                    <p>&copy; @DateTime.Now.Year. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>

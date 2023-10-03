@@ -1,0 +1,166 @@
+#wrapper {
+    overflow-x: hidden;
+ }
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  margin-left: -15rem;
+  -webkit-transition: margin .25s ease-out;
+  -moz-transition: margin .25s ease-out;
+  -o-transition: margin .25s ease-out;
+  transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 155%;
+  font-family:'Times New Roman', Times, serif;
+  color: darkcyan;
+}
+
+#sidebar-wrapper .list-group {
+  width: 15rem;
+  font-family: 'Times New Roman', Times, serif;
+  color: teal;
+  font-size:100%;
+}
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+
+@media (min-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
+
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -15rem;
+  }
+}
+
+/*
+#Username
+{
+  border:none;
+  border-bottom:2px solid;
+  font-family: 'Times New Roman', Times, serif;
+
+}
+*/
+.inputForm{
+    font-size: 180%;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.screen
+{
+  width:150%;
+  height:200%;
+  background:lightblue;
+  color:black;
+  line-height:200%;
+  font-size:25px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.smallBox::before
+{
+  content:".";
+  width:15px;
+  height:15px;
+  float:left;
+  margin-right:10px;
+}
+.greenBox::before
+{
+  content:"";
+  background:Green;
+}
+.redBox::before
+{
+  content:"";
+  background:Red;
+}
+.emptyBox::before
+{
+  
+  box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+    background-color:#ccc;
+}
+
+.seats
+{
+  border:1px solid red;background:lightblue;
+} 
+
+
+
+.seatGap
+{
+  width:40px;
+}
+
+.seatVGap
+{
+  height:40px;
+}
+table{
+  text-align: center;
+}
+
+
+.table{
+  color:whitesmoke;
+  font-size: medium;
+  font-family: 'Times New Roman', Times, serif;
+  
+  
+}
+
+textarea
+{
+  border:none;
+  background:transparent;
+}
+
+
+
+input[type=checkbox] {
+    width:0px;
+    margin-right:18px;
+}
+
+input[type=checkbox]:before {
+    content: "";
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    vertical-align:middle;
+    text-align: center;
+    box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+    background-color:#ccc;
+}
+
+input[type=checkbox]:checked:before {
+    background-color:Green;
+    font-size: 15px;
+}
+input[type=text]{
+    border: none;
+    border-bottom: 2px solid black;
+    width:20%;
+}
+input[type=number]{
+    border: none;
+    border-bottom: 2px solid black;
+    width:20%;
+    
+}

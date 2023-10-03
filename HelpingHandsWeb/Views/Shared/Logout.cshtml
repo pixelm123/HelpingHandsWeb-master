@@ -1,0 +1,16 @@
+﻿a@{
+    ViewData["Title"] = "Logout";
+    Layout = "~/Views/Shared/_Layout.cshtml"; 
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Logout</h2>
+            <p>Are you sure you want to log out?</p>
+            <form asp-area="Identity" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="form-inline">
+                <button type="submit" class="btn btn-primary">Logout</button>
+            </form>
+        </div>
+    </div>
+</div>
