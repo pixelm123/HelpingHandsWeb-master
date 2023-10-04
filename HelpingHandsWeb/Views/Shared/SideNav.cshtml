@@ -1,0 +1,194 @@
+﻿<div class="dashboard-nav">
+    @if (ViewBag.UserType == "A")
+    {
+        <!-- Admin Dashboard -->
+        <header>
+            <a href="#!" class="menu-toggle"><i class="bi bi-list"></i></a>
+            <a href="#" class="brand-logo">
+                <span>Admin</span>
+            </a>
+        </header>
+
+        <nav class="dashboard-nav-list">
+            <!-- Admin Dashboard links -->
+            <a asp-action="Index" asp-controller="Admin" class="dashboard-nav-item">
+                <i class="bi bi-house"></i>
+                Home
+            </a>
+
+            <!-- Users -->
+            <div class='dashboard-nav-dropdown'>
+                <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle">
+                    <i class="bi bi-people"></i> Users
+                </a>
+                <div class='dashboard-nav-dropdown-menu'>
+                    <a asp-action="Users" asp-controller="Admin" class="dashboard-nav-dropdown-item">All</a>
+                    <a href="#" class="dashboard-nav-dropdown-item">Active</a>
+                    <a href="#" class="dashboard-nav-dropdown-item">In Active</a>
+                </div>
+            </div>
+
+            <!-- Manage Suburbs -->
+            <div class='dashboard-nav-dropdown'>
+                <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle">
+                    <i class="bi bi-building"></i> Manage Suburbs
+                </a>
+                <div class='dashboard-nav-dropdown-menu'>
+                    <a asp-action="Suburbs" asp-controller="Suburb" class="dashboard-nav-dropdown-item">Suburbs</a>
+                    <a asp-action="Cities" asp-controller="Suburb" class="dashboard-nav-dropdown-item">Cities</a>
+                </div>
+            </div>
+
+            <!-- Other links... -->
+
+            <!-- Logout button -->
+            <div class="nav-item-divider"></div>
+            <span class="mx-4">
+                <button type="submit" class="btn btn-danger w-75 btn-push-down" data-bs-toggle="modal" data-bs-target="#LogOutModal">
+                    <i class="bi bi-box-arrow-in-right"></i> Log Out
+                </button>
+            </span>
+        </nav>
+    }
+    else if (ViewBag.UserType == "O")
+    {
+        <!-- Office Manager Dashboard -->
+        <header>
+            <a href="#!" class="menu-toggle"><i class="bi bi-list"></i></a>
+            <a href="#" class="brand-logo">
+                <span>Office Manager</span>
+            </a>
+        </header>
+
+        <nav class="dashboard-nav-list">
+            <!-- Office Manager Dashboard links -->
+            <a asp-action="Index" asp-controller="OfficeManager" class="dashboard-nav-item">
+                <i class="bi bi-house"></i>
+                Home
+            </a>
+
+            <!-- GetSuburbs -->
+            <a asp-action="GetSuburbs" asp-controller="OfficeManager" class="dashboard-nav-item">
+                <i class="bi bi-building"></i> Suburb
+            </a>
+
+            <!-- Nurses -->
+            <div class='dashboard-nav-dropdown'>
+                <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle">
+                    <i class="bi bi-person-hearts"></i> Nurses
+                </a>
+                <div class='dashboard-nav-dropdown-menu'>
+                    <!-- Nurse links... -->
+                </div>
+            </div>
+
+            <!-- Visits -->
+            <div class='dashboard-nav-dropdown'>
+                <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle">
+                    <i class="bi bi-car-front"></i> Visits
+                </a>
+                <div class='dashboard-nav-dropdown-menu'>
+                    <!-- Visits links... -->
+                </div>
+            </div>
+
+            <!-- Other links... -->
+
+            <!-- Logout button -->
+            <div class="nav-item-divider"></div>
+            <span class="mx-4">
+                <button type="submit" class="btn btn-danger w-75 btn-push-down" data-bs-toggle="modal" data-bs-target="#LogOutModal">
+                    <i class="bi bi-box-arrow-in-right"></i> Log Out
+                </button>
+            </span>
+        </nav>
+    }
+    else if (ViewBag.UserType == "N")
+    {
+        <!-- Nurse Dashboard -->
+        <header>
+            <a href="#!" class="menu-toggle"><i class="bi bi-list"></i></a>
+            <a href="#" class="brand-logo">
+                <span>Nurse</span>
+            </a>
+        </header>
+
+        <nav class="dashboard-nav-list">
+            <!-- Nurse Dashboard links -->
+            <a href="#" class="dashboard-nav-item active">
+                <i class="bi bi-house"></i>
+                Home
+            </a>
+
+            <!-- Visits -->
+            <div class='dashboard-nav-dropdown'>
+                <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle">
+                    <i class="bi bi-calendar-heart"></i> Visits
+                </a>
+                <div class='dashboard-nav-dropdown-menu'>
+                    <!-- Visit links... -->
+                </div>
+            </div>
+
+            <!-- Other links... -->
+
+            <!-- Logout button -->
+            <div class="nav-item-divider"></div>
+            <span class="mx-4">
+                <button type="submit" class="btn btn-danger w-75 btn-push-down" data-bs-toggle="modal" data-bs-target="#LogOutModal">
+                    <i class="bi bi-box-arrow-in-right"></i> Log Out
+                </button>
+            </span>
+        </nav>
+    }
+    else if (ViewBag.UserType == "P")
+    {
+        <!-- Patient Dashboard -->
+        <header>
+            <a href="#!" class="menu-toggle"><i class="bi bi-list"></i></a>
+            <a href="#" class="brand-logo">
+                <span>Patient</span>
+            </a>
+        </header>
+
+        <nav class="dashboard-nav-list">
+            <!-- Patient Dashboard links -->
+            <a href="#" class="dashboard-nav-item">
+                <i class="bi bi-house"></i>
+                Home
+            </a>
+
+            <!-- Contracts -->
+            <div class='dashboard-nav-dropdown'>
+                <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle">
+                    <i class="bi bi-boxes"></i> Contracts
+                </a>
+                <div class='dashboard-nav-dropdown-menu'>
+                    <!-- Contract links... -->
+                </div>
+            </div>
+
+            <!-- Visits -->
+            <div class='dashboard-nav-dropdown'>
+                <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle">
+                    <i class="bi bi-bullseye"></i> Visits
+                </a>
+                <div class='dashboard-nav-dropdown-menu'>
+                    <!-- Visit links... -->
+                </div>
+            </div>
+
+            <!-- Other links... -->
+
+            <!-- Logout button -->
+            <div class="nav-item-divider"></div>
+            <span class="mx-4">
+                <button type="submit" class="btn btn-danger w-75 btn-push-down" data-bs-toggle="modal" data-bs-target="#LogOutModal">
+                    <i class="bi bi-box-arrow-in-right"></i> Log Out
+                </button>
+            </span>
+        </nav>
+    }
+</div>
+
+<!-- Modal and Ajax script... -->

@@ -19,11 +19,36 @@ namespace HelpingHandsWeb.Controllers
             return View(model);
         }
 
+        private string GetUserType(string userName)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("GetLoginUserType", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@UserName", userName);
+
+                    try
+                    {
+                        return (string)command.ExecuteScalar();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"An error occurred in GetUserType: {ex.Message}");
+                        return null;
+                    }
+                }
+            }
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel model)
         {
-           
+            try
+            {
                 string userType = GetUserType(model.UserName);
 
                 if (userType == null)
@@ -43,70 +68,60 @@ namespace HelpingHandsWeb.Controllers
                         command.Parameters.AddWithValue("@UserName", model.UserName);
                         command.Parameters.AddWithValue("@Password", model.Password);
 
-
-
                         int authenticationResult = (int)command.ExecuteScalar();
 
                         if (authenticationResult == 1)
                         {
                             HttpContext.Session.SetString("IsAuthenticated", "true");
 
-                            if (userType == "A")
-                            {
-                                Console.WriteLine("Redirecting to Admin Dashboard");
-                                return RedirectToAction("AdminDashboard", "Admin");
-
-                            }
-                            else if (userType == "O")
-                            {
-                                Console.WriteLine("Redirecting to Office Manager Dashboard");
-                                return RedirectToAction("OfficeManagerDashboard", "OfficeManager");
-                            }
-                            else if (userType == "N")
-                            {
-                                Console.WriteLine("Redirecting to Nurse Dashboard");
-                                return RedirectToAction("NurseDashboard", "Nurse");
-                            }
-                            else if (userType == "P")
-                            {
-                                return RedirectToAction("PatientDashboard", "Patient");
-                            }
-                            else
-                            {
-                                //ModelState.AddModelError(string.Empty, "Invalid user type.");
-                                //return View(model);
-
-                                return RedirectToAction("AdminDashboard", "Admin");
-                            }
-
+                            return RedirectToDashboard(userType);
                         }
                         else
                         {
                             Console.WriteLine("Invalid username or password.");
                             ModelState.AddModelError(string.Empty, "Invalid username or password.");
                             return View(model);
-
                         }
                     }
                 }
-            
-
-            //return View(model);
-        }
-
-        private string GetUserType(string userName)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            }
+            catch (Exception ex)
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("GetLoginUserType", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@UserName", userName);
-
-                    return (string)command.ExecuteScalar();
-                }
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                ModelState.AddModelError(string.Empty, "An error occurred during login.");
+                return View(model);
             }
         }
+
+        private IActionResult RedirectToDashboard(string userType)
+        {
+            switch (userType)
+            {
+                case "A":
+                    Console.WriteLine("Redirecting to Admin Dashboard");
+                    return RedirectToAction("AdminDashboard", "Admin");
+
+                case "O":
+                    Console.WriteLine("Redirecting to Office Manager Dashboard");
+                    return RedirectToAction("OfficeManagerDashboard", "OfficeManager");
+
+                case "N":
+                    Console.WriteLine("Redirecting to Nurse Dashboard");
+                    return RedirectToAction("NurseDashboard", "Nurse");
+
+                case "P":
+                    Console.WriteLine("Redirecting to Patient Dashboard");
+                    return RedirectToAction("PatientDashboard", "Patient");
+
+                default:
+                    
+                    Console.WriteLine($"Invalid user type: {userType}");
+
+                    return RedirectToAction("Error", "Home");
+            }
+        }
+
+
+       
     }
 }
