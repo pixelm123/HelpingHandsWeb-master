@@ -1,291 +1,588 @@
-﻿@using HelpingHandsWeb.Models.ViewModels
-@using HelpingHandsWeb.Models.ViewModels.AdminViewModels
+﻿@using HelpingHandsWeb.Models.ViewModels.AdminViewModels
 
 
 @model AdminIndexViewModel
 @{
     ViewData["Title"] = "AdminDashboard";
-  
+
+}
+@{
+    Layout = null; 
 }
 
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+
+<!-- index22:59-->
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
     <title>Admin</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/SiteAssets/css/vendors/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/SiteAssets/css/vendors/line-awesome.min.css" />
-    <link rel="stylesheet" href="~/SiteAssets/css/pages/layout.css" />
-    <link rel="icon" href="~/SiteAssets/images/covid-19.ico" />
-    <script src="~/SiteAssets/js/vendors/jquery.min.js"></script>
-    <script src="~/SiteAssets/js/vendors/bootstrap.bundle.min.js"></script>
-    <script src="~/SiteAssets/js/global.js"></script>
-    <link rel="stylesheet" href="~/SiteAssets/css/pages/dashboard.css" />
-    <link rel="stylesheet" href="~/SiteAssets/css/vendors/Chart.min.css" />
-    <script src="~/SiteAssets/js/vendors/Chart.bundle.min.js"></script>
-    <script src="~/SiteAssets/js/dashboard.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style2.css">
+    <!--[if lt IE 9]>
+        <script src="~/assets/js/html5shiv.min.js"></script>
+        <script src="~/assets/js/respond.min.js"></script>
+    <![endif]-->
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg shadow-sm fixed-top">
-            <a class="navbar-brand" href="#">
-                <img src="~/images/logo2.webp" />
-                <span>Helping Hands</span>
-            </a>
-            <div class="navbar-collapse">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link">
-                            <i class="las la-question-circle"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown dropleft">
-                        <a class="nav-link notification-dropdown" href="#" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <span class="badge badge-pill badge-primary"
-                                style="float:right;margin-bottom:-10px;"></span>
-                            <i class="las la-bell"></i>
-                        </a>
-                        <div class="dropdown-menu notification-dropdown-menu shadow-lg"
-                            aria-labelledby="notification-dropdown">
-                            <div class="dropdown-title">
-                                <a href="#">Notifications<span class="ml-2 notifications-count">(3)</span></a>
-                                <a class="float-right" href="#">Mark all as read</a>
-                            </div>
-                            <div class="dropdown-body">
-                                <ul class="list-unstyled">
-                                    <li class="media">
-                                        <a class="notification-card" href="#">
-                                            <img class="mr-3" src="~/SiteAssets/images/inbox.svg" alt="..." />
-                                            <div class="media-body">
-                                                <h6 class="mt-0 mb-1">Educational Resources Available</h6>
-                                                <p>Check out our new educational resources on wound care.</p>
-                                                <small class="text-muted">@DateTime.Now.ToString("dd.MM.yyyy, HH:mm")</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="media">
-                                        <a class="notification-card" href="#">
-                                            <img class="mr-3" src="~/SiteAssets/images/inbox.svg" alt="..." />
-                                            <div class="media-body">
-                                                <h6 class="mt-0 mb-1">New Wound Care Techniques</h6>
-                                                <p>Learn about the latest wound care techniques and best practices.</p>
-                                                <small class="text-muted">@DateTime.Now.ToString("dd.MM.yyyy, HH:mm")</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="media">
-                                        <a class="notification-card" href="#">
-                                            <img class="mr-3" src="~/SiteAssets/images/inbox.svg" alt="..." />
-                                            <div class="media-body">
-                                                <h6 class="mt-0 mb-1">Wound Care Webinar</h6>
-                                                <p>Join our upcoming wound care webinar for healthcare professionals.</p>
-                                                <small class="text-muted">@DateTime.Now.ToString("dd.MM.yyyy, HH:mm")</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="dropdown-footer text-center">
-                                <a href="Notifications.cshtml">View more</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link">
-                            <span class="vertical-divider"></span>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link profile-dropdown" href="#" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <img class="rounded-circle" src="~/SiteAssets/images/person.jpg" />
-                            <span class="d">@Model.UserDisplayName</span>
-                        </a>
-                        <div class="dropdown">
-                            <div class="dropdown-menu shadow-lg profile-dropdown-menu"
-                                aria-labelledby="profile-dropdown">
-                                <a class="dropdown-item" href="#"><i class="las la-user mr-2"></i>profile</a>
-                                <a class="dropdown-item" href="#"><i class="las la-cog mr-2"></i>settings</a>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left">
+                <a href="AdminDashboard.cshtml" class="logo">
+                    <img src="~/images/logo2.webp" width="35" height="35" alt=""> <span>Helping Hands>
+                </a>
             </div>
-        </nav>
-    </header>
-    <main>
-        <div class="sidebar">
-            <ul>
-                <a class="list-group-item" href="@Url.Action("AdminDashboard", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Dashboard">
-                    <i class="las la-shapes la-lw"></i><span>dashboard</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("Patients", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Patients">
-                    <i class="las la-user-injured la-lw"></i><span>patients</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("Nurses", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Nurses">
-                    <i class="las la-clinic-medical la-lw"></i><span>nurses</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("OfficeManagers", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Office Managers">
-                    <i class="las la-sms la-lw"></i><span>officemanagers</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("Suburbs", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Suburbs">
-                    <i class="las la-sms la-lw"></i><span>suburb</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("Settings", "Profile")" data-toggle="tooltip" data-placement="bottom" title="Settings">
-                    <i class="las la-cogs la-lw"></i><span>settings</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("Reports", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Reports">
-                    <i class="las la-sms la-lw"></i><span>reports</span>
-                </a>
-                <hr class="divider" />
-                <div class="aob-items">
+            <a id="toggle_btn" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
+            <a id="mobile_btn" class="mobile_btn float-left" href="#sidebar"><i class="fa fa-bars"></i></a>
+            <ul class="nav user-menu float-right">
+                <li class="nav-item dropdown d-none d-sm-block">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell-o"></i> <span class="badge badge-pill bg-danger float-right">3</span></a>
+                    <div class="dropdown-menu notifications">
+                        <div class="topnav-dropdown-header">
+                            <span>Notifications</span>
+                        </div>
+                        <div class="drop-scroll">
+                            <ul class="notification-list">
+                                <li class="notification-message">
+                                    <a href="activities.cshtml">
+                                        <div class="media">
+                                            <span class="avatar">
+                                                <img alt="John Doe" src="~/assets/img/user.jpg" class="img-fluid">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
+                                                <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities.cshtml">
+                                        <div class="media">
+                                            <span class="avatar">V</span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title">Appointment booking with payment gateway</span></p>
+                                                <p class="noti-time"><span class="notification-time">6 mins ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities.cshtml">
+                                        <div class="media">
+                                            <span class="avatar">L</span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title">Doctor available module</span></p>
+                                                <p class="noti-time"><span class="notification-time">8 mins ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities.cshtml">
+                                        <div class="media">
+                                            <span class="avatar">G</span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title">Patient and Doctor video conferencing</span></p>
+                                                <p class="noti-time"><span class="notification-time">12 mins ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities.cshtml">
+                                        <div class="media">
+                                            <span class="avatar">V</span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title">Private chat module</span></p>
+                                                <p class="noti-time"><span class="notification-time">2 days ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="topnav-dropdown-footer">
+                            <a href="activities.cshtml">View all Notifications</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item dropdown d-none d-sm-block">
+                    <a href="javascript:void(0);" id="open_msg_box" class="hasnotifications nav-link"><i class="fa fa-comment-o"></i> <span class="badge badge-pill bg-danger float-right">8</span></a>
+                </li>
+                <li class="nav-item dropdown has-arrow">
+                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                        <span class="user-img">
+                            <img class="rounded-circle" src="~/assets/img/user.jpg" width="24" alt="Admin">
+                            <span class="status online"></span>
+                        </span>
+                        <span>Admin</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="profile.cshtml">My Profile</a>
+                        <a class="dropdown-item" href="edit-profile.cshtml">Edit Profile</a>
+                        <a class="dropdown-item" href="settings.cshtml">Settings</a>
+                        <a class="dropdown-item" href="login.cshtml">Logout</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="dropdown mobile-user-menu float-right">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="profile.cshtml">My Profile</a>
+                    <a class="dropdown-item" href="edit-profile.cshtml">Edit Profile</a>
+                    <a class="dropdown-item" href="settings.cshtml">Settings</a>
+                    <a class="dropdown-item" href="login.cshtml">Logout</a>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">Main</li>
+                        <li class="active">
+                            <a href="AdminDashboard.cshtml"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                        </li>
+                        <li>
+                            <a href="nurses.cshtml"><i class="fa fa-user-md"></i> <span>Nurses</span></a>
+                        </li>
+                        <li>
+                            <a href="patients.cshtml"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
+                        </li>
+
+                        <li>
+                            <a href="conditions.cshtml"><i class="fa fa-hospital-o"></i> <span>Chronic Conditions</span></a>
+                        </li>
+						
+						 <li>
+                            <a href="officemanagers.cshtml"><i class="fa fa-hospital-o"></i> <span>Office Managers</span></a>
+                        </li>
+						
+						<li>
+                            <a href="chat.cshtml"><i class="fa fa-comments"></i> <span>Chat</span> <span class="badge badge-pill bg-primary float-right">5</span></a>
+                        </li>
+
+
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="blog.cshtml">Blog</a></li>
+                                <li><a href="blog-details.cshtml">Blog View</a></li>
+                                <li><a href="add-blog.cshtml">Add Blog</a></li>
+                                <li><a href="edit-blog.cshtml">Edit Blog</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li>
+                            <a href="settings.cshtml"><i class="fa fa-cog"></i> <span>Settings</span></a>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="page-wrapper">
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="dash-widget">
+                            <span class="dash-widget-bg1"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
+                            <div class="dash-widget-info text-right">
+                                <h3><a href="">{@Model.TotalPatients}</a></h3>
+                                <span class="widget-title1">Patients <i class="fa fa-check" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="dash-widget">
+                            <span class="dash-widget-bg1"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
+                            <div class="dash-widget-info text-right">
+                                <h3><a href="">{@Model.TotalNurses}</a></h3>
+                                <span class="widget-title1">Nurses <i class="fa fa-check" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="dash-widget">
+                            <span class="dash-widget-bg3"><i class="fa fa-user-md" aria-hidden="true"></i></span>
+                            <div class="dash-widget-info text-right">
+                                <h3><a href="">{@Model.TotalOfficeManagers}</a></h3>
+                                <span class="widget-title3"> Office Managers <i class="fa fa-check" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-8 col-xl-8">
                     <div class="card">
                         <div class="card-header">
-                            <img src="~/SiteAssets/images/wound-care-image.jfif" alt="Wound Care" />
+                            <h4 class="card-title d-inline-block">New Patients </h4> <a href="patients.cshtml" class="btn btn-primary float-right">View all</a>
+                        </div>
+                        <div class="card-block">
+                            <div class="table-responsive">
+                                <table class="table mb-0 new-patient-table">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <img width="28" height="28" class="rounded-circle" src="~/assets/img/user.jpg" alt="">
+                                                <h2>John Doe</h2>
+                                            </td>
+                                            <td>Johndoe21@gmail.com</td>
+                                            <td>+1-202-555-0125</td>
+                                            <td><button class="btn btn-primary btn-primary-one float-right">Fever</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img width="28" height="28" class="rounded-circle" src="~/assets/img/user.jpg" alt="">
+                                                <h2>Richard</h2>
+                                            </td>
+                                            <td>Richard123@yahoo.com</td>
+                                            <td>202-555-0127</td>
+                                            <td><button class="btn btn-primary btn-primary-two float-right">Cancer</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img width="28" height="28" class="rounded-circle" src="assets/img/user.jpg" alt="">
+                                                <h2>Villiam</h2>
+                                            </td>
+                                            <td>Richard123@yahoo.com</td>
+                                            <td>+1-202-555-0106</td>
+                                            <td><button class="btn btn-primary btn-primary-three float-right">Eye</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img width="28" height="28" class="rounded-circle" src="~/assets/img/user.jpg" alt="">
+                                                <h2>Martin</h2>
+                                            </td>
+                                            <td>Richard123@yahoo.com</td>
+                                            <td>776-2323 89562015</td>
+                                            <td><button class="btn btn-primary btn-primary-four float-right">Fever</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-4">
+                    <div class="card member-panel">
+                        <div class="card-header bg-white">
+                            <h4 class="card-title mb-0">Doctors</h4>
                         </div>
                         <div class="card-body">
-                            <p><u><i class="las la-book"></i> Educational Resources</u></p>
-                            <p>Explore informative articles, videos, and brochures related to wound care to learn about the importance of proper wound care.</p>
-                        </div>
-                        <div class="card-footer">
-                            <a class="btn btn-dark-red-f-gr btn-sm" href="https://www.ccmhhealth.com/importance-of-wound-care/#:~:text=Wound%20care%20is%20an%20important,reduction%20of%20pain%20and%20discomfort."
-                               target="_blank">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-            </ul>
-        </div>
-
-        <div class="main-content">
-            @* <div class="container-fluid">
-                <div class="section">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5 class="page-title"></h5>
-                        </div>
-                    </div>
-                </div> *@
-                <div class="section welcome-section">
-                    <div class="section-content">
-                        <div class="card-deck">
-                            <div class="card welcome-content-card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6 welcome-text-wrapper align-self-center">
-                                            <h5>Hello, @Model.UserDisplayName</h5>
-                                            <p>Welcome to your dashboard</p>
+                            <ul class="contact-list">
+                                <li>
+                                    <div class="contact-cont">
+                                        <div class="float-left user-img m-r-10">
+                                            <a href="profile.cshtml" title="John Doe"><img src="~/assets/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
                                         </div>
-                                        <div class="col-md-6 welcome-img-wrapper">
-                                            <img src="~/SiteAssets/images/hello.svg" />
+                                        <div class="contact-info">
+                                            <span class="contact-name text-ellipsis">John Doe</span>
+                                            <span class="contact-date">MBBS, MD</span>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card app-stats-card">
-                                <div class="card-body">
-                                    <div class="row text-center">
-                                        <div class="col-md-4">
-                                            <i class="las la-user-injured la-3x align-self-center"></i>
-                                            <p>Total Patients</p>
-                                            <h4><a href="">{@Model.TotalPatients}</a></h4>
+                                </li>
+                                <li>
+                                    <div class="contact-cont">
+                                        <div class="float-left user-img m-r-10">
+                                            <a href="profile.cshtml" title="Richard Miles"><img src="~/assets/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status offline"></span></a>
                                         </div>
-                                        <div class="col-md-4">
-                                            <i class="las la-user-md la-3x align-self-center"></i>
-                                            <p>Total Nurses</p>
-                                            <h4><a href="">{@Model.TotalNurses}</a></h4>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <i class="las la-clinic-medical la-3x align-self-center"></i>
-                                            <p>Total Suburbs</p>
-                                            <h4><a href="">{@Model.TotalSuburbs}</a></h4>
+                                        <div class="contact-info">
+                                            <span class="contact-name text-ellipsis">Richard Miles</span>
+                                            <span class="contact-date">MD</span>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </li>
+                                <li>
+                                    <div class="contact-cont">
+                                        <div class="float-left user-img m-r-10">
+                                            <a href="profile.cshtml" title="John Doe"><img src="~/assets/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status away"></span></a>
+                                        </div>
+                                        <div class="contact-info">
+                                            <span class="contact-name text-ellipsis">John Doe</span>
+                                            <span class="contact-date">BMBS</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="contact-cont">
+                                        <div class="float-left user-img m-r-10">
+                                            <a href="profile.cshtml" title="Richard Miles"><img src="~/assets/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
+                                        </div>
+                                        <div class="contact-info">
+                                            <span class="contact-name text-ellipsis">Richard Miles</span>
+                                            <span class="contact-date">MS, MD</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="contact-cont">
+                                        <div class="float-left user-img m-r-10">
+                                            <a href="profile.cshtml" title="John Doe"><img src="~/assets/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status offline"></span></a>
+                                        </div>
+                                        <div class="contact-info">
+                                            <span class="contact-name text-ellipsis">John Doe</span>
+                                            <span class="contact-date">MBBS</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="contact-cont">
+                                        <div class="float-left user-img m-r-10">
+                                            <a href="profile.cshtml" title="Richard Miles"><img src="~/assets/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status away"></span></a>
+                                        </div>
+                                        <div class="contact-info">
+                                            <span class="contact-name text-ellipsis">Richard Miles</span>
+                                            <span class="contact-date">MBBS, MD</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer text-center bg-white">
+                            <a href="doctors.cshtml" class="text-muted">View all Doctors</a>
                         </div>
                     </div>
-                </div>
-                <div class="section functionality-section">
-                    <div class="section-content">
-                        <div class="card-deck">
-                            <a class="card text-center" href="">
-                                <div class="card-title">
-                                    <div class="icon-wrapper"><i class="las la-clinic-medical"></i></div>
-                                </div>
-                                <div class="card-body">
-                                    <p>Add Nurse</p>
-                                </div>
-                            </a>
-                            <a class="card text-center" href="">
-                                <div class="card-title">
-                                    <div class="icon-wrapper"><i class="las la-user-lock"></i></div>
-                                </div>
-                                <div class="card-body">
-                                    <p>Add an Office Manager</p>
-                                </div>
-                            </a>
-                            <a class="card text-center" href="">
-                                <div class="card-title">
-                                    <div class="icon-wrapper"><i class="las la-plus-circle"></i></div>
-                                </div>
-                                <div class="card-body">
-                                    <p>Add City</p>
-                                </div>
-                            </a>
-                            <a class="card text-center" href="">
-                                <div class="card-title">
-                                    <div class="icon-wrapper"><i class="las la-plus-circle"></i></div>
-                                </div>
-                                <div class="card-body">
-                                    <p>Add Suburb</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="section card-summaries">
-                    <div class="section-content">
-                        <div class="card-deck">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Recent activities</h5>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="recent-activity-chart"></canvas>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Total Care Visits</h5>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="bookings-chart"></canvas>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Conditions summary</h5>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="diseases-chart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-deck">
-                        </div>
-                    </div>
-                </div>
-@Html.Partial("_UserProfileSettings", new UserProfileViewModel())
-            <footer>
-                <div class="aob-items">
-                <div class="card">
-                     <p>&copy; @DateTime.Now.Year. All rights reserved.</p>
                 </div>
             </div>
-            </footer>
+
         </div>
-    </main>
+        <div class="notification-box">
+            <div class="msg-sidebar notifications msg-noti">
+                <div class="topnav-dropdown-header">
+                    <span>Messages</span>
+                </div>
+                <div class="drop-scroll msg-list-scroll" id="msg_list">
+                    <ul class="list-box">
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">R</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author">Richard Miles </span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item new-message">
+                                    <div class="list-left">
+                                        <span class="avatar">J</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author">John Doe</span>
+                                        <span class="message-time">1 Aug</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">T</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author"> Tarah Shropshire </span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">M</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author">Mike Litorus</span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">C</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author"> Catherine Manseau </span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">D</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author"> Domenic Houston </span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">B</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author"> Buster Wigton </span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">R</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author"> Rolland Webber </span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">C</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author"> Claire Mapes </span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">M</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author">Melita Faucher</span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">J</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author">Jeffery Lalor</span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">L</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author">Loren Gatlin</span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="chat.cshtml">
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar">T</span>
+                                    </div>
+                                    <div class="list-body">
+                                        <span class="message-author">Tarah Shropshire</span>
+                                        <span class="message-time">12:28 AM</span>
+                                        <div class="clearfix"></div>
+                                        <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="topnav-dropdown-footer">
+                    <a href="chat.cshtml">See all messages</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="sidebar-overlay" data-reff=""></div>
+    <script src="~/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="~/assets/js/popper.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/jquery.slimscroll.js"></script>
+    <script src="~/assets/js/Chart.bundle.js"></script>
+    <script src="~/assets/js/chart.js"></script>
+    <script src="~/assets/js/app.js"></script>
+
 </body>
+
+
+<!-- index22:59-->
 </html>
