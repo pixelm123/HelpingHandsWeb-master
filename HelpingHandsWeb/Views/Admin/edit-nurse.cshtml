@@ -1,47 +1,27 @@
-﻿@using HelpingHandsWeb.Models.ViewModels.AdminViewModels
-@using HelpingHandsWeb.Models.ViewModels
-
-@{
-    Layout = null;
-}
-
-
-@model List<NurseViewModel>
-
-@{
-    var sortedModel = Model.OrderBy(n => n.Gender).ThenBy(n => n.FirstName).ToList();
-}
-
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 
-<!-- doctors23:12-->
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
-    <title>nurses</title>
-    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">
+    <title>edit nurse</title>
     <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="~/assets/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="~/assets/css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="~/assets/css/style2.css">
-    <!--[if lt IE 9]>
-        <script src="assets/js/html5shiv.min.js"></script>
-        <script src="assets/js/respond.min.js"></script>
-    <![endif]-->
+
 </head>
+
 
 <body>
     <div class="main-wrapper">
         <div class="header">
             <div class="header-left">
-                <a href="AdminDashboard.cshtml" class="logo">
+                <a href="index-2.html" class="logo">
                     <img src="~/images/logo2.webp" width="35" height="35" alt=""> <span>Helping Hands</span>
                 </a>
             </div>
@@ -57,10 +37,10 @@
                         <div class="drop-scroll">
                             <ul class="notification-list">
                                 <li class="notification-message">
-                                    <a href="activities.cshtml">
+                                    <a href="activities.html">
                                         <div class="media">
                                             <span class="avatar">
-                                                <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid">
+                                                <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid rounded-circle">
                                             </span>
                                             <div class="media-body">
                                                 <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
@@ -70,7 +50,7 @@
                                     </a>
                                 </li>
                                 <li class="notification-message">
-                                    <a href="activities.cshtml">
+                                    <a href="activities.html">
                                         <div class="media">
                                             <span class="avatar">V</span>
                                             <div class="media-body">
@@ -81,7 +61,7 @@
                                     </a>
                                 </li>
                                 <li class="notification-message">
-                                    <a href="activities.cshtml">
+                                    <a href="activities.html">
                                         <div class="media">
                                             <span class="avatar">L</span>
                                             <div class="media-body">
@@ -92,7 +72,7 @@
                                     </a>
                                 </li>
                                 <li class="notification-message">
-                                    <a href="activities.cshtml">
+                                    <a href="activities.html">
                                         <div class="media">
                                             <span class="avatar">G</span>
                                             <div class="media-body">
@@ -103,7 +83,7 @@
                                     </a>
                                 </li>
                                 <li class="notification-message">
-                                    <a href="activities.cshtml">
+                                    <a href="activities.html">
                                         <div class="media">
                                             <span class="avatar">V</span>
                                             <div class="media-body">
@@ -116,7 +96,7 @@
                             </ul>
                         </div>
                         <div class="topnav-dropdown-footer">
-                            <a href="activities.cshtml">View all Notifications</a>
+                            <a href="activities.html">View all Notifications</a>
                         </div>
                     </div>
                 </li>
@@ -132,20 +112,20 @@
                         <span>Admin</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="profile.cshtml">My Profile</a>
-                        <a class="dropdown-item" href="edit-profile.cshtml">Edit Profile</a>
-                        <a class="dropdown-item" href="settings.cshtml">Settings</a>
-                        <a class="dropdown-item" href="login.cshtml">Logout</a>
+                        <a class="dropdown-item" href="profile.html">My Profile</a>
+                        <a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
+                        <a class="dropdown-item" href="settings.html">Settings</a>
+                        <a class="dropdown-item" href="login.html">Logout</a>
                     </div>
                 </li>
             </ul>
             <div class="dropdown mobile-user-menu float-right">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="profile.cshtml">My Profile</a>
-                    <a class="dropdown-item" href="edit-profile.cshtml">Edit Profile</a>
-                    <a class="dropdown-item" href="settings.cshtml">Settings</a>
-                    <a class="dropdown-item" href="login.cshtml">Logout</a>
+                    <a class="dropdown-item" href="profile.html">My Profile</a>
+                    <a class="dropdown-item" href="edit-profile.html">Edit Profile</a>
+                    <a class="dropdown-item" href="settings.html">Settings</a>
+                    <a class="dropdown-item" href="login.html">Logout</a>
                 </div>
             </div>
         </div>
@@ -200,101 +180,146 @@
         <div class="page-wrapper">
             <div class="content">
                 <div class="row">
-                    <div class="col-sm-4 col-3">
-                        <h4 class="page-title">Nurses</h4>
-                    </div>
-                    <div class="col-sm-8 col-9 text-right m-b-20">
-                        <a href="add-doctor.cshtml" class="btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Nurse</a>
-                    </div>
-                </div>
-                <div class="row doctor-grid">
-                    <div class="col-md-4 col-sm-4  col-lg-3">
-                        <div class="profile-widget">
-                            <div class="doctor-img">
-                                <a class="avatar" href="profile.cshtml"><img alt="" src="~/assets/img/doctor-thumb-03.jpg"></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="edit-doctor.cshtml"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_doctor"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="doctor-name text-ellipsis"><a href="profile.cshtml">Cristina Groves</a></h4>
-                            <div class="doc-prof">Active</div>
-                            <div class="user-country">
-                                <i class="fa fa-map-marker"></i> United States, San Francisco
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="col-md-4 col-sm-4  col-lg-3">
-                        <div class="profile-widget">
-                            <div class="doctor-img">
-                                <a class="avatar" href="profile.cshtml"><img alt="" src="~/assets/img/doctor-thumb-08.jpg"></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="edit-nurse.cshtml"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_doctor"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="doctor-name text-ellipsis"><a href="profile.cshtml">Pamela Curtis</a></h4>
-                            <div class="doc-prof">Active</div>
-                            <div class="user-country">
-                                <i class="fa fa-map-marker"></i> United States, San Francisco
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-4  col-lg-3">
-                        <div class="profile-widget">
-                            <div class="doctor-img">
-                                <a class="avatar" href="profile.cshtml"><img alt="" src="~/assets/img/doctor-thumb-06.jpg"></a>
-                            </div>
-                            <div class="dropdown profile-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="edit-nurse.cshtml"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_doctor"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="doctor-name text-ellipsis"><a href="profile.cshtml">Justin Parker</a></h4>
-                            <div class="doc-prof">Active</div>
-                            <div class="user-country">
-                                <i class="fa fa-map-marker"></i> United States, San Francisco
-                            </div>
-                        </div>
+                    <div class="col-lg-8 offset-lg-2">
+                        <h4 class="page-title">Edit Nurse</h4>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
-                        <div class="see-all">
-                            <a class="see-all-btn" href="javascript:void(0);">Load More</a>
-                        </div>
+                    <div class="col-lg-8 offset-lg-2">
+                        <form>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>First Name <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" value="Justin">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Surname</label>
+                                        <input class="form-control" type="text" value="Parker">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Username <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" value="justinparker">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Email <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="email" value="justinparker@example.com">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input class="form-control" type="password">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Confirm Password</label>
+                                        <input class="form-control" type="password">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Date of Birth</label>
+                                        <div class="cal-icon">
+                                            <input type="text" class="form-control datetimepicker">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group gender-select">
+                                        <label class="gen-label">Gender:</label>
+                                        <div class="form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="radio" name="gender" class="form-check-input" checked>Male
+                                            </label>
+                                        </div>
+                                        <div class="form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="radio" name="gender" class="form-check-input">Female
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Id number</label>
+                                                <input type="text" class="form-control ">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-6 col-md-6 col-lg-3">
+                                            <div class="form-group">
+                                                <label>Suburb</label>
+                                                <select class="form-control select">
+                                                    <option>California</option>
+                                                    <option>Alaska</option>
+                                                    <option>Alabama</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-3">
+                                            <div class="form-group">
+                                                <label>Postal Code</label>
+                                                <input type="text" value="91403" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Phone </label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Profile Picture:</label>
+                                        <div class="profile-upload">
+                                            <div class="upload-img">
+                                                <img alt="" src="assets/img/user.jpg">
+                                            </div>
+                                            <div class="upload-input">
+                                                <input type="file" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="display-block">Status</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status" id="doctor_active" value="option1" checked>
+                                    <label class="form-check-label" for="doctor_active">
+                                        Active
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status" id="doctor_inactive" value="option2">
+                                    <label class="form-check-label" for="doctor_inactive">
+                                        Inactive
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="m-t-20 text-center">
+                                <button class="btn btn-primary submit-btn">Save</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
 
         </div>
-    </div>
-    <div id="delete_doctor" class="modal fade delete-modal" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body text-center">
-                    <img src="assets/img/sent.png" alt="" width="50" height="46">
-                    <h3>Are you sure want to delete this Nurse?</h3>
-                    <div class="m-t-20">
-                        <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
     <div class="sidebar-overlay" data-reff=""></div>
     <script src="~/assets/js/jquery-3.2.1.min.js"></script>
@@ -308,5 +333,5 @@
 </body>
 
 
-<!-- doctors23:17-->
 </html>
+

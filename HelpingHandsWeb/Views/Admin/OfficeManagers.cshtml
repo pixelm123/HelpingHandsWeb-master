@@ -2,232 +2,307 @@
 @using HelpingHandsWeb.Models.ViewModels.AdminViewModels
 @using HelpingHandsWeb.Models.ViewModels
 
+@{
+    Layout = null;
+}
+
+
 @model List<OfficeManagerViewModel>
 
 @{
-    var sortedModel = Model.OrderBy(u => u.UserName).ThenBy(u => u.Status).ToList();
+    var sortedModel = Model.OrderBy(n => n.Status).ThenBy(n => n.UserName).ToList();
 }
-
 
 
 <!DOCTYPE html>
 <html lang="en">
+
+
+<!-- doctors23:12-->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin OfficeManager Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/SiteAssets/css/styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <title>officemanager</title>
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style2.css">
+    <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.min.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg shadow-sm fixed-top">
-            <a class="navbar-brand" href="#">
-                <img src="~/images/logo2.webp" />
-                <span>Helping Hands</span>
-            </a>
-            <div class="navbar-collapse">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link">
-                            <i class="las la-question-circle"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown dropleft">
-                        <a class="nav-link notification-dropdown" href="#" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <span class="badge badge-pill badge-primary"
-                                  style="float:right;margin-bottom:-10px;"></span>
-                            <i class="las la-bell"></i>
-                        </a>
-                        <div class="dropdown-menu notification-dropdown-menu shadow-lg"
-                             aria-labelledby="notification-dropdown">
-                            <div class="dropdown-title">
-                                <a href="#">Notifications<span class="ml-2 notifications-count">(3)</span></a>
-                                <a class="float-right" href="#">Mark all as read</a>
-                            </div>
-                            <div class="dropdown-body">
-                                <ul class="list-unstyled">
-                                    <li class="media">
-                                        <a class="notification-card" href="#">
-                                            <img class="mr-3" src="~/SiteAssets/images/inbox.svg" alt="..." />
-                                            <div class="media-body">
-                                                <h6 class="mt-0 mb-1">Educational Resources Available</h6>
-                                                <p>Check out our new educational resources on wound care.</p>
-                                                <small class="text-muted">@DateTime.Now.ToString("dd.MM.yyyy, HH:mm")</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="media">
-                                        <a class="notification-card" href="#">
-                                            <img class="mr-3" src="~/SiteAssets/images/inbox.svg" alt="..." />
-                                            <div class="media-body">
-                                                <h6 class="mt-0 mb-1">New Wound Care Techniques</h6>
-                                                <p>Learn about the latest wound care techniques and best practices.</p>
-                                                <small class="text-muted">@DateTime.Now.ToString("dd.MM.yyyy, HH:mm")</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="media">
-                                        <a class="notification-card" href="#">
-                                            <img class="mr-3" src="~/SiteAssets/images/inbox.svg" alt="..." />
-                                            <div class="media-body">
-                                                <h6 class="mt-0 mb-1">Wound Care Webinar</h6>
-                                                <p>Join our upcoming wound care webinar for healthcare professionals.</p>
-                                                <small class="text-muted">@DateTime.Now.ToString("dd.MM.yyyy, HH:mm")</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="dropdown-footer text-center">
-                                <a href="Notifications.cshtml">View more</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link">
-                            <span class="vertical-divider"></span>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link profile-dropdown" href="#" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            <img class="rounded-circle" src="~/SiteAssets/images/person.jpg" />
-                            <span class="d">@Context.Session.GetString("UserDisplayName")</span>
-                        </a>
-                        <div class="dropdown">
-                            <div class="dropdown-menu shadow-lg profile-dropdown-menu"
-                                 aria-labelledby="profile-dropdown">
-                                <a class="dropdown-item" href="#"><i class="las la-user mr-2"></i>profile</a>
-                                <a class="dropdown-item" href="#"><i class="las la-cog mr-2"></i>settings</a>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left">
+                <a href="AdminDashboard.cshtml" class="logo">
+                    <img src="~/images/logo2.webp" width="35" height="35" alt=""> <span>Helping Hands</span>
+                </a>
             </div>
-        </nav>
-    </header>
-    <main>
-        <div class="sidebar">
-            <ul>
-                <a class="list-group-item" href="@Url.Action("AdminDashboard", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Dashboard">
-                    <i class="las la-shapes la-lw"></i><span>dashboard</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("Patients", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Patients">
-                    <i class="las la-user-injured la-lw"></i><span>patients</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("Nurses", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Nurses">
-                    <i class="las la-clinic-medical la-lw"></i><span>nurses</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("OfficeManagers", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Office Managers">
-                    <i class="las la-sms la-lw"></i><span>officemanagers</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("Suburbs", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Suburbs">
-                    <i class="las la-sms la-lw"></i><span>suburb</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("Settings", "Profile")" data-toggle="tooltip" data-placement="bottom" title="Settings">
-                    <i class="las la-cogs la-lw"></i><span>settings</span>
-                </a>
-                <a class="list-group-item" href="@Url.Action("Reports", "Admin")" data-toggle="tooltip" data-placement="bottom" title="Reports">
-                    <i class="las la-sms la-lw"></i><span>reports</span>
-                </a>
-                <hr class="divider" />
-                <div class="aob-items">
-                    <div class="card">
-                        <div class="card-header">
-                            <img src="~/SiteAssets/images/wound-care-image.jfif" alt="Wound Care" />
+            <a id="toggle_btn" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
+            <a id="mobile_btn" class="mobile_btn float-left" href="#sidebar"><i class="fa fa-bars"></i></a>
+            <ul class="nav user-menu float-right">
+                <li class="nav-item dropdown d-none d-sm-block">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"><i class="fa fa-bell-o"></i> <span class="badge badge-pill bg-danger float-right">3</span></a>
+                    <div class="dropdown-menu notifications">
+                        <div class="topnav-dropdown-header">
+                            <span>Notifications</span>
                         </div>
-                        <div class="card-body">
-                            <p><u><i class="las la-book"></i> Educational Resources</u></p>
-                            <p>Explore informative articles, videos, and brochures related to wound care to learn about the importance of proper wound care.</p>
+                        <div class="drop-scroll">
+                            <ul class="notification-list">
+                                <li class="notification-message">
+                                    <a href="activities.cshtml">
+                                        <div class="media">
+                                            <span class="avatar">
+                                                <img alt="John Doe" src="assets/img/user.jpg" class="img-fluid">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
+                                                <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities.cshtml">
+                                        <div class="media">
+                                            <span class="avatar">V</span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title">Appointment booking with payment gateway</span></p>
+                                                <p class="noti-time"><span class="notification-time">6 mins ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities.cshtml">
+                                        <div class="media">
+                                            <span class="avatar">L</span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title">Doctor available module</span></p>
+                                                <p class="noti-time"><span class="notification-time">8 mins ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities.cshtml">
+                                        <div class="media">
+                                            <span class="avatar">G</span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title">Patient and Doctor video conferencing</span></p>
+                                                <p class="noti-time"><span class="notification-time">12 mins ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="activities.cshtml">
+                                        <div class="media">
+                                            <span class="avatar">V</span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title">Private chat module</span></p>
+                                                <p class="noti-time"><span class="notification-time">2 days ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="card-footer">
-                            <a class="btn btn-dark-red-f-gr btn-sm" href="https://www.ccmhhealth.com/importance-of-wound-care/#:~:text=Wound%20care%20is%20an%20important,reduction%20of%20pain%20and%20discomfort."
-                               target="_blank">Learn More</a>
+                        <div class="topnav-dropdown-footer">
+                            <a href="activities.cshtml">View all Notifications</a>
                         </div>
                     </div>
-                </div>
+                </li>
+                <li class="nav-item dropdown d-none d-sm-block">
+                    <a href="javascript:void(0);" id="open_msg_box" class="hasnotifications nav-link"><i class="fa fa-comment-o"></i> <span class="badge badge-pill bg-danger float-right">8</span></a>
+                </li>
+                <li class="nav-item dropdown has-arrow">
+                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                        <span class="user-img">
+                            <img class="rounded-circle" src="assets/img/user.jpg" width="40" alt="Admin">
+                            <span class="status online"></span>
+                        </span>
+                        <span>Admin</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="profile.cshtml">My Profile</a>
+                        <a class="dropdown-item" href="edit-profile.cshtml">Edit Profile</a>
+                        <a class="dropdown-item" href="settings.cshtml">Settings</a>
+                        <a class="dropdown-item" href="login.cshtml">Logout</a>
+                    </div>
+                </li>
             </ul>
+            <div class="dropdown mobile-user-menu float-right">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="profile.cshtml">My Profile</a>
+                    <a class="dropdown-item" href="edit-profile.cshtml">Edit Profile</a>
+                    <a class="dropdown-item" href="settings.cshtml">Settings</a>
+                    <a class="dropdown-item" href="login.cshtml">Logout</a>
+                </div>
+            </div>
         </div>
-        <div class="main-content">
-            <div class="container-fluid">
-                <div class="section title-section">
-                    <h5 class="page-title">Office Managers</h5>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">Main</li>
+                        <li class="active">
+                            <a href="AdminDashboard.cshtml"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+                        </li>
+                        <li>
+                            <a href="nurses.cshtml"><i class="fa fa-user-md"></i> <span>Nurses</span></a>
+                        </li>
+                        <li>
+                            <a href="patients.cshtml"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
+                        </li>
+
+                        <li>
+                            <a href="conditions.cshtml"><i class="fa fa-hospital-o"></i> <span>Chronic Conditions</span></a>
+                        </li>
+
+                        <li>
+                            <a href="officemanagers.cshtml"><i class="fa fa-hospital-o"></i> <span>Office Managers</span></a>
+                        </li>
+
+                        <li>
+                            <a href="reports.cshtml"><i class="fa fa-comments"></i> <span>Reports</span> <span class="badge badge-pill bg-primary float-right">5</span></a>
+                        </li>
+
+
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-commenting-o"></i> <span> Blog</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="blog.cshtml">Blog</a></li>
+                                <li><a href="blog-details.cshtml">Blog View</a></li>
+                                <li><a href="add-blog.cshtml">Add Blog</a></li>
+                                <li><a href="edit-blog.cshtml">Edit Blog</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li>
+                            <a href="settings.cshtml"><i class="fa fa-cog"></i> <span>Settings</span></a>
+                        </li>
+
+
+                    </ul>
                 </div>
-                <div class="section filters-section">
-                    <!-- Filter and sort options here -->
+            </div>
+        </div>
+        <div class="page-wrapper">
+            <div class="content">
+                <div class="row">
+                    <div class="col-sm-4 col-3">
+                        <h4 class="page-title">Office Managers</h4>
+                    </div>
+                    <div class="col-sm-8 col-9 text-right m-b-20">
+                        <a href="add-doctor.cshtml" class="btn btn-primary btn-rounded float-right"><i class="fa fa-plus"></i> Add Nurse</a>
+                    </div>
                 </div>
-                <div class="section patients-card-view">
-                    <div class="row">
-                        @foreach (var user in Model)
-                        {
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-img-top">
-                                            <img class="rounded-circle" src="../SiteAssets/images/people.svg" loading="lazy" />
-                                            <a class="view-more" href="OfficeManagerDetails.cshtml">View profile</a>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="card-subsection-title">
-                                            <h5>@user.UserName</h5>
-                                            <p class="text-muted">Office Manager UserName</p>
-                                        </div>
-                                        <div class="card-subsection-title">
-                                            <h5>@user.Email</h5>
-                                            <p class="text-muted">Office Manager Email</p>
-                                        </div>
-                                        <div class="card-subsection-title">
-                                            <h5>@user.ContactNo</h5>
-                                            <p class="text-muted">Office Manager Contact Number</p>
-                                        </div>
-                                        <div class="card-subsection-title">
-                                            <h5>@user.Status</h5>
-                                            <p class="text-muted">Status</p>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer"></div>
+                <div class="row doctor-grid">
+                    <div class="col-md-4 col-sm-4  col-lg-3">
+                        <div class="profile-widget">
+                            <div class="doctor-img">
+                                <a class="avatar" href="profile.cshtml"><img alt="" src="~/assets/img/doctor-thumb-03.jpg"></a>
+                            </div>
+                            <div class="dropdown profile-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="edit-doctor.cshtml"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_doctor"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                 </div>
                             </div>
-                        }
+                            <h4 class="doctor-name text-ellipsis"><a href="profile.cshtml">Cristina Groves</a></h4>
+                            <div class="doc-prof">Active</div>
+                            <div class="user-country">
+                                <i class="fa fa-map-marker"></i> United States, San Francisco
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="col-md-4 col-sm-4  col-lg-3">
+                        <div class="profile-widget">
+                            <div class="doctor-img">
+                                <a class="avatar" href="profile.cshtml"><img alt="" src="~/assets/img/doctor-thumb-08.jpg"></a>
+                            </div>
+                            <div class="dropdown profile-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="edit-officemanager.cshtml"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_doctor"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                </div>
+                            </div>
+                            <h4 class="doctor-name text-ellipsis"><a href="profile.cshtml">PamelaCurtis</a></h4>
+                            <div class="doc-prof">Active</div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4  col-lg-3">
+                        <div class="profile-widget">
+                            <div class="doctor-img">
+                                <a class="avatar" href="profile.cshtml"><img alt="" src="~/assets/img/doctor-thumb-06.jpg"></a>
+                            </div>
+                            <div class="dropdown profile-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="edit-officemanager.cshtml"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_doctor"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                </div>
+                            </div>
+                            <h4 class="doctor-name text-ellipsis"><a href="profile.cshtml">Justin Parker</a></h4>
+                            <div class="doc-prof">Active</div>
+                           
+                        </div>
                     </div>
                 </div>
-                <div class="section patients-table-view no-display">
-                    <table class="table table-hover table-responsive-lg">
-                        <thead>
-                            <tr>
-                                <th>User Name</th>
-                                <th>Email</th>
-                                <th>Contact Number</th>
-                                <th>Status</th>
-                                <th> </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in Model)
-                            {
-                                <tr>
-                                    <td>@user.UserName</td>
-                                    <td>@user.Email</td>
-                                    <td>@user.ContactNo</td>
-                                    <td>@user.Status</td>
-                                    <td><a class="view-more btn btn-sm btn-dark-red-f" href="OfficeManagerDetails.cshtml">View profile</a></td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="see-all">
+                            <a class="see-all-btn" href="javascript:void(0);">Load More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="delete_doctor" class="modal fade delete-modal" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <img src="assets/img/sent.png" alt="" width="50" height="46">
+                    <h3>Are you sure want to delete this Office Manager?</h3>
+                    <div class="m-t-20">
+                        <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <footer>
-            <div class="aob-items">
-                <div class="card">
-                    <p>&copy; @DateTime.Now.Year. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-    </main>
+    </div>
+    </div>
+    <div class="sidebar-overlay" data-reff=""></div>
+    <script src="~/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="~/assets/js/popper.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/jquery.slimscroll.js"></script>
+    <script src="~/assets/js/select2.min.js"></script>
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/assets/js/app.js"></script>
 </body>
+
+
 </html>
