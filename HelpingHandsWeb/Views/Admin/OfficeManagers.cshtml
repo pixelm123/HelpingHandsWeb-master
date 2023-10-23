@@ -1,17 +1,3 @@
-﻿
-@using HelpingHandsWeb.Models.ViewModels.AdminViewModels
-@using HelpingHandsWeb.Models.ViewModels
-
-@{
-    Layout = null;
-}
-
-
-@model List<OfficeManagerViewModel>
-
-@{
-    var sortedModel = Model.OrderBy(n => n.Status).ThenBy(n => n.UserName).ToList();
-}
 
 
 ﻿@using HelpingHandsWeb.Models.ViewModels.AdminViewModels
@@ -22,7 +8,7 @@
 }
 
 
-@model List<NurseViewModel>
+@model List<OfficeManagerViewModel>
 
 @{
     var sortedModel = Model.OrderBy(n => n.Gender).ThenBy(n => n.FirstName).ToList();
