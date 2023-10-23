@@ -6,7 +6,7 @@
 }
 
 
-@model List<NurseViewModel>
+@model List<PatientViewModel>
 
 @{
     var sortedModel = Model.OrderBy(n => n.Gender).ThenBy(n => n.FirstName).ToList();
