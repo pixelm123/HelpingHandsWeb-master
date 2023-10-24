@@ -55,33 +55,104 @@ namespace HelpingHandsWeb.Controllers
             return View();
         }
 
-       
-
-        public IActionResult PatientDashboard()
-        {
-           
-            return View();
-        }
-
+      
         public IActionResult AdminDashboard()
         {
 
             return View();
         }
-
-
-        public IActionResult OfficeManagerRegistrationPage()
+        public IActionResult ChangePassword()
         {
+            return View();
+        }
+        public IActionResult Profile()
+        {
+            return View();
+        }
+        public IActionResult AddCity()
+        {
+            return View();
+        }
+        public IActionResult EditCity()
+        {
+           return View();    
+        }
+        public IActionResult DeleteCity()
+        {
+           return View();
+        }
+        public IActionResult AddCondition()
+        {
+            return View();
+        }
+        public IActionResult EditCondition()
+        {
+            return View();
+        }
+        public IActionResult DeleteCondition()
+        {
+            return View();
+        }
+        public IActionResult Nurses()
+        {
+            return View();
+        }
 
+        public IActionResult EditNurse()
+        {
+            return View();
+        }
+
+        public IActionResult DeleteNurse()
+        {
+            return View();
+        }
+
+        public IActionResult OfficeManagers()
+        {
+            return View();
+        }
+
+        public IActionResult AddOfficeManager()
+        {
+            return View();
+        }
+
+        public IActionResult EditOfficeManager()
+        {
+            return View();
+        }
+
+        public IActionResult Suburbs()
+        {
+            return View();
+        }
+
+        public IActionResult AddSuburb()
+        {
+            return View();
+        }
+        public IActionResult EditSuburb()
+        {
+            return View();
+        }
+
+        public IActionResult DeleteSuburb()
+        {
+            return View();
+        }
+
+        public IActionResult Patients()
+        {
             return View();
         }
 
 
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
     }
 }
