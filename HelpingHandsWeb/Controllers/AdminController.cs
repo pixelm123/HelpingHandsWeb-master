@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using HelpingHandsWeb.Models.ViewModels;
 using HelpingHandsWeb.Models.ViewModels.AdminViewModels;
 using HelpingHandsWeb.Data;
@@ -24,115 +24,140 @@ namespace HelpingHandsWeb.Controllers
             return HttpContext.Session.GetString("UserDisplayName");
         }
 
-
-
         [HttpGet("AdminDashboard")]
         public IActionResult AdminDashboard()
         {
-            var userDisplayName = GetUserDisplayName(); 
+            var userDisplayName = GetUserDisplayName();
 
             var viewModel = new AdminIndexViewModel(userDisplayName);
 
-            
             ViewData["UserDisplayName"] = userDisplayName;
 
             return View("~/Views/Admin/AdminDashboard.cshtml", viewModel);
         }
 
-
-
-
-        [HttpGet]
-        public async Task<IActionResult> OfficeManagers()
+        
+        [HttpPost("AdminDashboard")]
+        public IActionResult AdminDashboard(AdminViewModel model)
         {
-
-            var userDisplayName = GetUserDisplayName();
-            var officeManagers = await _context.Users
-                .Where(u => u.UserType == "O") 
-                .Select(u => new OfficeManagerViewModel
-                {
-                    UserID = u.UserID,
-                    UserName = u.UserName,
-                    Email = u.Email,
-                    ContactNo = u.ContactNo,
-                    Status = u.Status
-                })
-                .ToListAsync();
-
-            return View(officeManagers);
+            // Implementation
+            return View("~/Views/Admin/AdminDashboard.cshtml", model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Patients()
+        [HttpPost("change-password")]
+        public IActionResult ChangePassword(AdminViewModel model)
         {
-           
-            var patients = await _context.Patients
-                .Where(p => !p.IsDeleted) 
-                .Select(p => new PatientViewModel
-                {
-                    PatientID = p.PatientID,
-                    FirstName = p.FirstName,
-                    Surname = p.Surname,
-                    Gender = p.Gender,
-                    DateOfBirth = p.DateOfBirth.ToString(),
-                    ChronicConditions = p.ChronicConditions,
-                    Status = _context.Users
-                        .FirstOrDefault(u => u.UserID == p.PatientID && u.UserType == "P"),
-                   
-                    Condition = _context.PatientConditions
-                        .Include(pc => pc.Condition)
-                        .Where(pc => pc.PatientID == p.PatientID )
-                        .Select(pc => pc.Condition.Name)
-                        .FirstOrDefault()
-                })
-                .ToListAsync();
-
-            return View(patients);
-        }
-        [HttpGet]
-        public async Task<IActionResult> Nurses()
-        {
-            var nurses = await _context.Users
-                .Where(u => u.UserType == "N")
-                .Join(
-                    _context.Nurses,
-                    u => u.UserID,
-                    n => n.NurseID,
-                    (u, n) => new NurseViewModel
-                    {
-                        NurseID = n.NurseID,
-                        FirstName = n.FirstName,
-                        Surname = n.Surname,
-                        Gender = n.Gender.ToString(),
-                        Email = u.Email,
-                        ContactNo = u.ContactNo,
-                        Status = u.Status,
-                        PreferredSuburb = _context.PreferredSuburbs
-                            .Where(ps => ps.NurseID == n.NurseID)
-                            .Select(ps => ps.Suburb.SuburbName)
-                            .FirstOrDefault()
-                    })
-                .ToListAsync();
-
-            return View(nurses);
+            // Implementation
+            return View("~/Views/Admin/change-password.cshtml", model);
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> Suburbs()
+        [HttpPost("profile")]
+        public IActionResult Profile(ProfileViewModel model)
         {
-            var suburbs = await _context.Suburbs
-                .Include(s => s.City)
-                .Select(s => new SuburbViewModel
-                {
-                    SuburbId = s.SuburbID,
-                    SuburbName = s.SuburbName,
-                    PostalCode = s.PostalCode,
-                    CityName = s.City.Name
-                })
-                .ToListAsync();
-
-            return View(suburbs);
+            // Implementation
+            return View("~/Views/Admin/profile.cshtml", model);
         }
+
+        // Actions for specific entities
+        [HttpPost("add-city")]
+        public IActionResult AddCity(CityViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/add-city.cshtml", model);
+        }
+
+        [HttpPost("edit-city")]
+        public IActionResult EditCity(CityViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/edit-city.cshtml", model);
+        }
+
+        [HttpPost("add-condition")]
+        public IActionResult AddCondition(ConditionViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/add-condition.cshtml", model);
+        }
+
+        [HttpPost("edit-condition")]
+        public IActionResult EditCondition(ConditionViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/edit-condition.cshtml", model);
+        }
+
+        [HttpPost("nurses")]
+        public IActionResult Nurses(NurseViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/nurses.cshtml", model);
+        }
+
+        [HttpPost("add-nurse")]
+        public IActionResult AddNurse(NurseViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/add-nurse.cshtml", model);
+        }
+
+        [HttpPost("edit-nurse")]
+        public IActionResult EditNurse(NurseViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/edit-nurse.cshtml", model);
+        }
+
+        [HttpPost("officemanagers")]
+        public IActionResult OfficeManagers(OfficeManagerViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/officemanagers.cshtml", model);
+        }
+ 
+        [HttpPost("add-officemanager")]
+        public IActionResult AddOfficeManager(OfficeManagerViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/add-officemanager.cshtml", model);
+        }
+
+        [HttpPost("edit-officemanager")]
+        public IActionResult EditOfficeManager(OfficeManagerViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/edit-officemanager.cshtml", model);
+        }
+
+        [HttpPost("suburbs")]
+        public IActionResult Suburbs(SuburbViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/suburbs.cshtml", model);
+        }
+        
+        [HttpPost("add-suburb")]
+        public IActionResult AddSuburb(SuburbViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/add-suburb.cshtml", model);
+        }
+
+        [HttpPost("edit-suburb")]
+        public IActionResult EditSuburb(SuburbViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/edit-suburb.cshtml", model);
+        }
+
+       
+        [HttpPost("patients")]
+        public IActionResult Patients(PatientViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/patients.cshtml", model);
+        }
+
+       
     }
 }
