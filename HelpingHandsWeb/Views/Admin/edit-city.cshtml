@@ -1,3 +1,8 @@
+@model CityViewModel
+@{
+    Layout = null;
+}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -136,34 +141,33 @@
           </div>
         </div>
       </div>
-      <div class="page-wrapper">
-        <div class="content">
-          <div class="row">
-            <div class="col-lg-8 offset-lg-2">
-              <h4 class="page-title">Edit City</h4>
+        <div class="page-wrapper">
+            <div class="content">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2">
+                        <h4 class="page-title">Edit City</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2">
+                        <form asp-action="EditCity">
+                            <div class="form-group">
+                                <label asp-for="Name">City Name</label>
+                                <input asp-for="Name" class="form-control" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Abbreviation">City Abbreviation</label>
+                                <textarea asp-for="Abbreviation" cols="30" rows="4" class="form-control"></textarea>
+                            </div>
+                            <div class="m-t-20 text-center">
+                                <button type="submit" class="btn btn-primary submit-btn">Save City</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-8 offset-lg-2">
-              <form>
-                <div class="form-group">
-                  <label>City Name</label>
-                  <input class="form-control" type="text">
-                </div>
-                <div class="form-group">
-                  <label>City Abbreviation</label>
-                  <textarea cols="30" rows="4" class="form-control"></textarea>
-                </div>
-                
-                <div class="m-t-20 text-center">
-                  <button class="btn btn-primary submit-btn">Save City</button>
-                </div>
-              </form>
-            </div>
-          </div>
         </div>
-        
-      </div>
+
     
     </div>
     <div class="sidebar-overlay" data-reff=""></div>
