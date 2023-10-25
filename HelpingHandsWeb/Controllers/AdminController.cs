@@ -36,16 +36,15 @@ namespace HelpingHandsWeb.Controllers
             return View("~/Views/Admin/AdminDashboard.cshtml", viewModel);
         }
 
-        
         [HttpPost("AdminDashboard")]
-        public IActionResult AdminDashboard(AdminViewModel model)
+        public IActionResult AdminDashboard(AdminIndexViewModel model)
         {
             // Implementation
             return View("~/Views/Admin/AdminDashboard.cshtml", model);
         }
 
         [HttpPost("change-password")]
-        public IActionResult ChangePassword(AdminViewModel model)
+        public IActionResult ChangePassword(AdminIndexViewModel model)
         {
             // Implementation
             return View("~/Views/Admin/change-password.cshtml", model);
@@ -58,7 +57,7 @@ namespace HelpingHandsWeb.Controllers
             return View("~/Views/Admin/profile.cshtml", model);
         }
 
-        // Actions for specific entities
+        // City Actions
         [HttpPost("add-city")]
         public IActionResult AddCity(CityViewModel model)
         {
@@ -73,6 +72,14 @@ namespace HelpingHandsWeb.Controllers
             return View("~/Views/Admin/edit-city.cshtml", model);
         }
 
+        [HttpPost("cities")]
+        public IActionResult Cities(CityViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/cities.cshtml", model);
+        }
+
+        // Condition Actions
         [HttpPost("add-condition")]
         public IActionResult AddCondition(ConditionViewModel model)
         {
@@ -87,13 +94,14 @@ namespace HelpingHandsWeb.Controllers
             return View("~/Views/Admin/edit-condition.cshtml", model);
         }
 
-        [HttpPost("nurses")]
-        public IActionResult Nurses(NurseViewModel model)
+        [HttpPost("conditions")]
+        public IActionResult Conditions(ConditionViewModel model)
         {
             // Implementation
-            return View("~/Views/Admin/nurses.cshtml", model);
+            return View("~/Views/Admin/conditions.cshtml", model);
         }
 
+        // Nurse Actions
         [HttpPost("add-nurse")]
         public IActionResult AddNurse(NurseViewModel model)
         {
@@ -108,13 +116,14 @@ namespace HelpingHandsWeb.Controllers
             return View("~/Views/Admin/edit-nurse.cshtml", model);
         }
 
-        [HttpPost("officemanagers")]
-        public IActionResult OfficeManagers(OfficeManagerViewModel model)
+        [HttpPost("nurses")]
+        public IActionResult Nurses(NurseViewModel model)
         {
             // Implementation
-            return View("~/Views/Admin/officemanagers.cshtml", model);
+            return View("~/Views/Admin/nurses.cshtml", model);
         }
- 
+
+        // OfficeManager Actions
         [HttpPost("add-officemanager")]
         public IActionResult AddOfficeManager(OfficeManagerViewModel model)
         {
@@ -129,28 +138,14 @@ namespace HelpingHandsWeb.Controllers
             return View("~/Views/Admin/edit-officemanager.cshtml", model);
         }
 
-        [HttpPost("suburbs")]
-        public IActionResult Suburbs(SuburbViewModel model)
+        [HttpPost("officemanagers")]
+        public IActionResult OfficeManagers(OfficeManagerViewModel model)
         {
             // Implementation
-            return View("~/Views/Admin/suburbs.cshtml", model);
-        }
-        
-        [HttpPost("add-suburb")]
-        public IActionResult AddSuburb(SuburbViewModel model)
-        {
-            // Implementation
-            return View("~/Views/Admin/add-suburb.cshtml", model);
+            return View("~/Views/Admin/officemanagers.cshtml", model);
         }
 
-        [HttpPost("edit-suburb")]
-        public IActionResult EditSuburb(SuburbViewModel model)
-        {
-            // Implementation
-            return View("~/Views/Admin/edit-suburb.cshtml", model);
-        }
-
-       
+        // Other Entity Actions
         [HttpPost("patients")]
         public IActionResult Patients(PatientViewModel model)
         {
@@ -158,6 +153,11 @@ namespace HelpingHandsWeb.Controllers
             return View("~/Views/Admin/patients.cshtml", model);
         }
 
-       
+        [HttpPost("suburbs")]
+        public IActionResult Suburbs(SuburbViewModel model)
+        {
+            // Implementation
+            return View("~/Views/Admin/suburbs.cshtml", model);
+        }
     }
 }
