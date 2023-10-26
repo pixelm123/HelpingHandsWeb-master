@@ -27,6 +27,22 @@ namespace HelpingHandsWeb.Controllers
             return HttpContext.Session.GetString("UserDisplayName");
         }
 
+        private readonly IConfiguration _configuration;
+
+    public AdminController(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+    private string ConnectionString
+    {
+        get
+        {
+            return _configuration.GetConnectionString("DefaultConnection");
+        }
+    }
+
+
         [HttpGet("AdminDashboard")]
         public IActionResult AdminDashboard()
         {
@@ -380,8 +396,88 @@ namespace HelpingHandsWeb.Controllers
         return RedirectToAction("Conditions");
     }
 
+    [HttpPost("add-officemanager")]
+    public IActionResult AddOfficeManager(OfficeManagerViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
 
+                connection.Execute(
+                    "InsertUser",
+                    new
+                    {
+                        UserName = model.UserName,
+                        Password = model.Password,
+                        Email = model.Email,
+                        ContactNo = model.ContactNo,
+                        UserType = "O",
+                        ProfilePicture = model.ProfilePicture ?? (object)DBNull.Value
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
 
+            return RedirectToAction("OfficeManagers");
+        }
+
+        return View("~/Views/Admin/add-officemanager.cshtml", model);
+    }
+
+    [HttpPost("edit-officemanager")]
+    public IActionResult EditOfficeManager(OfficeManagerViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                connection.Execute(
+                    "UpdateUser",
+                    new
+                    {
+                        UserID = model.UserID,
+                        UserName = model.UserName,
+                        Password = model.Password,
+                        Email = model.Email,
+                        ContactNo = model.ContactNo,
+                        UserType = "O",
+                        Status = model.Status,
+                        ProfilePicture = model.ProfilePicture ?? (object)DBNull.Value
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+
+            return RedirectToAction("OfficeManagers");
+        }
+
+        return View("~/Views/Admin/edit-officemanager.cshtml", model);
+    }
+
+    [HttpGet("officemanagers")]
+    public IActionResult OfficeManagers(int userId)
+    {
+        var model = new List<OfficeManagerViewModel>();
+
+        using (SqlConnection connection = new SqlConnection(ConnectionString))
+        {
+            connection.Open();
+
+            var results = connection.Query<OfficeManagerViewModel>(
+                "GetUser",
+                new { UserID = userId },
+                commandType: CommandType.StoredProcedure
+            );
+
+            model = results.Where(o => o.UserType == "O").ToList();
+        }
+
+        return View("~/Views/Admin/officemanagers.cshtml", model);
+    }
 
 
 
