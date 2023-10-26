@@ -475,31 +475,113 @@ namespace HelpingHandsWeb.Controllers
     }
 
 
-
-
-
-
-        // Nurse Actions
-        [HttpPost("add-nurse")]
-        public IActionResult AddNurse(NurseViewModel model)
+       [HttpPost("add-nurse")]
+    public IActionResult AddNurse(NurseViewModel model)
+    {
+        if (ModelState.IsValid)
         {
-            // Implementation
-            return View("~/Views/Admin/add-nurse.cshtml", model);
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                connection.Execute(
+                    "InsertNurse",
+                    new
+                    {
+                        UserName = model.UserName,
+                        Password = model.Password,
+                        Email = model.Email,
+                        ContactNo = model.ContactNo,
+                        UserType = "N", // Assuming UserType is "N" for Nurse
+                        Status = model.Status,
+                        ProfilePicture = model.ProfilePicture ?? (object)DBNull.Value,
+                        FirstName = model.FirstName,
+                        Surname = model.Surname,
+                        Gender = model.Gender,
+                        IDNo = model.IDNo
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+
+            return RedirectToAction("Nurses");
         }
 
-        [HttpPost("edit-nurse")]
-        public IActionResult EditNurse(NurseViewModel model)
+        return View("~/Views/Admin/add-nurse.cshtml", model);
+    }
+
+    [HttpPost("edit-nurse")]
+    public IActionResult EditNurse(NurseViewModel model)
+    {
+        if (ModelState.IsValid)
         {
-            // Implementation
-            return View("~/Views/Admin/edit-nurse.cshtml", model);
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                connection.Execute(
+                    "UpdateNurse",
+                    new
+                    {
+                        UserID = model.UserID,
+                        UserName = model.UserName,
+                        Password = model.Password,
+                        Email = model.Email,
+                        ContactNo = model.ContactNo,
+                        Status = model.Status,
+                        ProfilePicture = model.ProfilePicture ?? (object)DBNull.Value,
+                        FirstName = model.FirstName,
+                        Surname = model.Surname,
+                        Gender = model.Gender,
+                        IDNo = model.IDNo
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+
+            return RedirectToAction("Nurses");
         }
 
-        [HttpPost("nurses")]
-        public IActionResult Nurses(NurseViewModel model)
+        return View("~/Views/Admin/edit-nurse.cshtml", model);
+    }
+
+    [HttpPost("delete-nurse")]
+    public IActionResult DeleteNurse(int userId)
+    {
+        using (SqlConnection connection = new SqlConnection(ConnectionString))
         {
-            // Implementation
-            return View("~/Views/Admin/nurses.cshtml", model);
+            connection.Open();
+
+            connection.Execute(
+                "DeleteNurse",
+                new { UserID = userId },
+                commandType: CommandType.StoredProcedure
+            );
         }
+
+        return RedirectToAction("Nurses");
+    }
+
+    [HttpGet("nurses")]
+    public IActionResult Nurses()
+    {
+        var model = new List<NurseViewModel>();
+
+        using (SqlConnection connection = new SqlConnection(ConnectionString))
+        {
+            connection.Open();
+
+            var results = connection.Query<NurseViewModel>(
+                "GetNurses",
+                commandType: CommandType.StoredProcedure
+            );
+
+            model = results.ToList();
+        }
+
+        return View("~/Views/Admin/nurses.cshtml", model);
+    }
+
 
        
         // Other Entity Actions
