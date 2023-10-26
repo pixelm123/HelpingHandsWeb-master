@@ -501,28 +501,7 @@ namespace HelpingHandsWeb.Controllers
             return View("~/Views/Admin/nurses.cshtml", model);
         }
 
-        // OfficeManager Actions
-        [HttpPost("add-officemanager")]
-        public IActionResult AddOfficeManager(OfficeManagerViewModel model)
-        {
-            // Implementation
-            return View("~/Views/Admin/add-officemanager.cshtml", model);
-        }
-
-        [HttpPost("edit-officemanager")]
-        public IActionResult EditOfficeManager(OfficeManagerViewModel model)
-        {
-            // Implementation
-            return View("~/Views/Admin/edit-officemanager.cshtml", model);
-        }
-
-        [HttpPost("officemanagers")]
-        public IActionResult OfficeManagers(OfficeManagerViewModel model)
-        {
-            // Implementation
-            return View("~/Views/Admin/officemanagers.cshtml", model);
-        }
-
+       
         // Other Entity Actions
         [HttpPost("patients")]
         public IActionResult Patients(PatientViewModel model)
