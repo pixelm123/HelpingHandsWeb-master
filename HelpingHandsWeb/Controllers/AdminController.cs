@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Dapper;
-
+using Microsoft.Extensions.Configuration;
 
 namespace HelpingHandsWeb.Controllers
 {
