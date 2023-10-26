@@ -15,11 +15,13 @@ namespace HelpingHandsWeb.Controllers
     [Route("[controller]")]
     public class AdminController : Controller
     {
-        private readonly ApplicationDbContext _context;
+      private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         private string GetUserDisplayName()
@@ -27,20 +29,13 @@ namespace HelpingHandsWeb.Controllers
             return HttpContext.Session.GetString("UserDisplayName");
         }
 
-        private readonly IConfiguration _configuration;
-
-    public AdminController(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
-    private string ConnectionString
-    {
-        get
+        private string ConnectionString
         {
-            return _configuration.GetConnectionString("DefaultConnection");
+            get
+            {
+                return _configuration.GetConnectionString("DefaultConnection");
+            }
         }
-    }
 
 
         [HttpGet("AdminDashboard")]
