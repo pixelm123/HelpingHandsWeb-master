@@ -1,3 +1,8 @@
+@model List<ConditionViewModel>
+@{
+    Layout = null;
+}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -137,31 +142,32 @@
         </div>
       </div>
       <div class="page-wrapper">
-        <div class="content">
-          <div class="row">
+    <div class="content">
+        <div class="row">
             <div class="col-lg-8 offset-lg-2">
-              <h4 class="page-title">Add Condition</h4>
+                <h4 class="page-title">Add Condition</h4>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-8 offset-lg-2">
-              <form>
-                <div class="form-group">
-                  <label>Condition Name</label>
-                  <input class="form-control" type="text">
-                </div>
-                <div class="form-group">
-                  <label>Description</label>
-                  <textarea cols="30" rows="4" class="form-control"></textarea>
-                </div>
-                
-                <div class="m-t-20 text-center">
-                  <button class="btn btn-primary submit-btn">Create Condition</button>
-                </div>
-              </form>
-            </div>
-          </div>
         </div>
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <form method="post" action="add-condition">
+                    <div class="form-group">
+                        <label for="Name">Condition Name</label>
+                        <input class="form-control" type="text" name="Name" value="@Model.Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="Description">Description</label>
+                        <textarea cols="30" rows="4" class="form-control" name="Description">@Model.Description</textarea>
+                    </div>
+
+                    <div class="m-t-20 text-center">
+                        <button type="submit" class="btn btn-primary submit-btn">Create Condition</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
         
       </div>
     
