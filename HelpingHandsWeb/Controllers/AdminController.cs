@@ -277,27 +277,115 @@ namespace HelpingHandsWeb.Controllers
 
 
 
-        // Condition Actions
-        [HttpPost("add-condition")]
-        public IActionResult AddCondition(ConditionViewModel model)
+       [HttpGet("conditions")]
+    public IActionResult Conditions()
+    {
+        var conditions = _context.ChronicConditions
+            .Where(c => !c.IsDeleted)
+            .Select(c => new ConditionViewModel
+            {
+                ConditionID = c.ConditionID,
+                Name = c.Name,
+                Description = c.Description
+            })
+            .ToList();
+
+        return View("~/Views/Admin/conditions.cshtml", conditions);
+    }
+
+    [HttpGet("add-condition")]
+    public IActionResult AddCondition()
+    {
+        return View("~/Views/Admin/add-condition.cshtml", new ConditionViewModel());
+    }
+
+    [HttpPost("add-condition")]
+    public IActionResult AddCondition(ConditionViewModel model)
+    {
+        if (ModelState.IsValid)
         {
-            // Implementation
-            return View("~/Views/Admin/add-condition.cshtml", model);
+            var condition = new ChronicCondition
+            {
+                Name = model.Name,
+                Description = model.Description
+            };
+
+            _context.ChronicConditions.Add(condition);
+            _context.SaveChanges();
+
+            return RedirectToAction("Conditions");
         }
 
-        [HttpPost("edit-condition")]
-        public IActionResult EditCondition(ConditionViewModel model)
+        return View("~/Views/Admin/add-condition.cshtml", model);
+    }
+
+    [HttpGet("edit-condition/{id}")]
+    public IActionResult EditCondition(int id)
+    {
+        var condition = _context.ChronicConditions
+            .Where(c => c.ConditionID == id && !c.IsDeleted)
+            .Select(c => new ConditionViewModel
+            {
+                ConditionID = c.ConditionID,
+                Name = c.Name,
+                Description = c.Description
+            })
+            .FirstOrDefault();
+
+        if (condition == null)
         {
-            // Implementation
-            return View("~/Views/Admin/edit-condition.cshtml", model);
+            return RedirectToAction("Conditions");
         }
 
-        [HttpPost("conditions")]
-        public IActionResult Conditions(ConditionViewModel model)
+        return View("~/Views/Admin/edit-condition.cshtml", condition);
+    }
+
+    [HttpPost("edit-condition")]
+    public IActionResult EditCondition(ConditionViewModel model)
+    {
+        if (ModelState.IsValid)
         {
-            // Implementation
-            return View("~/Views/Admin/conditions.cshtml", model);
+            var condition = _context.ChronicConditions
+                .Where(c => c.ConditionID == model.ConditionID && !c.IsDeleted)
+                .FirstOrDefault();
+
+            if (condition != null)
+            {
+                condition.Name = model.Name;
+                condition.Description = model.Description;
+
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Conditions");
         }
+
+        return View("~/Views/Admin/edit-condition.cshtml", model);
+    }
+
+    [HttpPost("delete-condition/{id}")]
+    public IActionResult DeleteCondition(int id)
+    {
+        var condition = _context.ChronicConditions
+            .Where(c => c.ConditionID == id && !c.IsDeleted)
+            .FirstOrDefault();
+
+        if (condition != null)
+        {
+            condition.IsDeleted = true;
+            _context.SaveChanges();
+        }
+
+        return RedirectToAction("Conditions");
+    }
+
+
+
+
+
+
+
+
 
         // Nurse Actions
         [HttpPost("add-nurse")]
