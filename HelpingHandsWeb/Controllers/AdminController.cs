@@ -439,11 +439,11 @@ namespace HelpingHandsWeb.Controllers
             return View("~/Views/Admin/patients.cshtml", model);
         }
 
-        [HttpPost("suburbs")]
-        public IActionResult Suburbs(SuburbViewModel model)
+        [HttpPost("profile")]
+        public IActionResult Profiles(AdminProfileViewModel model)
         {
             // Implementation
-            return View("~/Views/Admin/suburbs.cshtml", model);
+            return View("~/Views/Admin/profile.cshtml", model);
         }
     }
 }
