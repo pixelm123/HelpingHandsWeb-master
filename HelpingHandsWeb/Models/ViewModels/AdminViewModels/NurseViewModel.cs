@@ -8,9 +8,8 @@ namespace HelpingHandsWeb.Models.ViewModels.AdminViewModels
     public class NurseViewModel
     {
 
-     public int NurseID { get; set; }
-    
-    
+          public int UserID { get; set; }
+
     [Required(ErrorMessage = "Username is required.")]
     public string UserName { get; set; }
 
@@ -18,23 +17,22 @@ namespace HelpingHandsWeb.Models.ViewModels.AdminViewModels
     public string Password { get; set; }
 
     [Required(ErrorMessage = "Email is required.")]
-    [EmailAddress(ErrorMessage = "Invalid email address.")]
+    [EmailAddress(ErrorMessage = "Invalid Email Address.")]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Contact number is required.")]
+    [Required(ErrorMessage = "Contact Number is required.")]
+    [Phone(ErrorMessage = "Invalid Contact Number.")]
     public string ContactNo { get; set; }
 
-    [Required(ErrorMessage = "User type is required.")]
-    public char UserType { get; set; }
+    [Required(ErrorMessage = "User Type is required.")]
+    public string UserType { get; set; }
 
     [Required(ErrorMessage = "Status is required.")]
-    public char Status { get; set; }
+    public string Status { get; set; }
 
-    [Required(ErrorMessage = "Profile picture is required.")]
-    public byte[] ProfilePicture { get; set; }
+   
 
-    
-    [Required(ErrorMessage = "First name is required.")]
+    [Required(ErrorMessage = "First Name is required.")]
     public string FirstName { get; set; }
 
     [Required(ErrorMessage = "Surname is required.")]
@@ -43,9 +41,9 @@ namespace HelpingHandsWeb.Models.ViewModels.AdminViewModels
     [Required(ErrorMessage = "Gender is required.")]
     public string Gender { get; set; }
 
-    [Required(ErrorMessage = "ID number is required.")]
+    [Required(ErrorMessage = "ID Number is required.")]
     public string IDNo { get; set; }
-
+    
     }
 }
 
