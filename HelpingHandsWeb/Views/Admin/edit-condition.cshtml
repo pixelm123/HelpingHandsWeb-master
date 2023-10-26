@@ -1,3 +1,5 @@
+@model ConditionViewModel 
+@{ Layout = null; }
 
 <!DOCTYPE html>
 <html lang="en">
@@ -131,7 +133,6 @@
                   </li>
                 </ul>
               </li>
-             
             </ul>
           </div>
         </div>
@@ -145,26 +146,24 @@
           </div>
           <div class="row">
             <div class="col-lg-8 offset-lg-2">
-              <form>
+              <form method="post" action="edit-condition">
+                <input type="hidden" name="ConditionID" value="@Model.ConditionID">
                 <div class="form-group">
-                  <label>Condition Name</label>
-                  <input class="form-control" type="text">
+                  <label for="Name">Condition Name</label>
+                  <input class="form-control" type="text" name="Name" value="@Model.Name">
                 </div>
                 <div class="form-group">
-                  <label>Description</label>
-                  <textarea cols="30" rows="4" class="form-control"></textarea>
+                  <label for="Description">Description</label>
+                  <textarea cols="30" rows="4" class="form-control" name="Description">@Model.Description</textarea>
                 </div>
-                
                 <div class="m-t-20 text-center">
-                  <button class="btn btn-primary submit-btn">Save Condition</button>
+                  <button type="submit" class="btn btn-primary submit-btn">Save Condition</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
-        
       </div>
-    
     </div>
     <div class="sidebar-overlay" data-reff=""></div>
     <script src="~/assets/js/jquery-3.2.1.min.js"></script>
