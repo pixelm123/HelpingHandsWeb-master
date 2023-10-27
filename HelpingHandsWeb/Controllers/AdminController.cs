@@ -184,7 +184,7 @@ namespace HelpingHandsWeb.Controllers
                     SuburbID = s.SuburbID,
                     SuburbName = s.SuburbName,
                     PostalCode = s.PostalCode,
-                    Name = s.City.Name // Assuming you have a navigation property in Suburb class for City
+                    Name = s.City.Name 
                 })
                 .ToList();
 
@@ -606,14 +606,7 @@ public IActionResult Patients()
     return View("~/Views/Admin/patients.cshtml", model);
 }
 
-        // Other Entity Actions
-        [HttpPost("patients")]
-        public IActionResult Patients(PatientViewModel model)
-        {
-            // Implementation
-            return View("~/Views/Admin/patients.cshtml", model);
-        }
-
+       
         [HttpPost("profile")]
         public IActionResult Profiles(AdminProfileViewModel model)
         {
