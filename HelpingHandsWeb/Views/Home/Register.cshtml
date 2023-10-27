@@ -52,122 +52,107 @@
                 <div class="signup-content">
                     <div class="row">
                         <div class="col-md-3 register-left">
-                            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+                            <img src="   " alt="" />
                             <h3>Welcome</h3>
                             <p>Register with Helping Hands today to receive compassionate wound care at your doorstep!</p>
                             <a asp-action="Login" class="btn btn-primary">Login</a>
                         </div>
-                        <div class="col-md-9 register-right">
-                            <div class="signup-form">
-                                <h2 class="form-title">Patient Registration</h2>
-                                <form asp-controller="Register" asp-action="Register" method="post" class="register-form" id="register-form">
 
-                                    <!-- Left Side Fields -->
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <!-- First Name -->
-                                            <div class="form-group">
-                                                <label for="FirstName"><i class="zmdi zmdi-account material-icons-name"></i> First Name</label>
-                                                <input asp-for="FirstName" class="form-control" placeholder="Your First Name" />
-                                                <span asp-validation-for="FirstName" class="text-danger"></span>
-                                            </div>
+                      @model RegisterViewModel
 
-                                            <!-- Surname -->
-                                            <div class="form-group">
-                                                <label for="Surname"><i class="zmdi zmdi-account material-icons-name"></i> Surname</label>
-                                                <input asp-for="Surname" class="form-control" placeholder="Your Surname" />
-                                                <span asp-validation-for="Surname" class="text-danger"></span>
-                                            </div>
+<div class="col-md-9 register-right">
+    <div class="signup-form">
+        <h2 class="form-title">Patient Registration</h2>
+        <form asp-controller="Register" asp-action="Register" method="post" class="register-form" id="register-form">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- First Name -->
+                    <div class="form-group">
+                        <label asp-for="FirstName"><i class="zmdi zmdi-account material-icons-name"></i> First Name</label>
+                        <input asp-for="FirstName" class="form-control" placeholder="Your First Name" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
 
-                                            <!-- Gender -->
-                                            <div class="form-group">
-                                                <label for="Gender"><i class="zmdi zmdi-account material-icons-name"></i> Gender</label>
-                                                <select asp-for="Gender" class="form-control">
-                                                    <option value="M">Male</option>
-                                                    <option value="F">Female</option>
-                                                </select>
-                                                <span asp-validation-for="Gender" class="text-danger"></span>
-                                            </div>
+                    <!-- Surname -->
+                    <div class="form-group">
+                        <label asp-for="Surname"><i class="zmdi zmdi-account material-icons-name"></i> Surname</label>
+                        <input asp-for="Surname" class="form-control" placeholder="Your Surname" />
+                        <span asp-validation-for="Surname" class="text-danger"></span>
+                    </div>
 
-                                            <!-- Birth Date -->
-                                            <div class="form-group">
-                                                <label for="BirthDate"><i class="zmdi zmdi-calendar"></i> Birth Date</label>
-                                                <input asp-for="DateOfBirth" type="date" class="form-control" />
-                                                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                                            </div>
+                    <!-- Gender -->
+                    <div class="form-group">
+                        <label asp-for="Gender"><i class="zmdi zmdi-account material-icons-name"></i> Gender</label>
+                        <select asp-for="Gender" class="form-control">
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
 
-                                            <!-- Emergency Contact Person -->
-                                            <div class="form-group">
-                                                <label for="EmergencyPerson"><i class="zmdi zmdi-account"></i> Emergency Contact Person</label>
-                                                <input asp-for="EmergencyPerson" class="form-control" />
-                                                <span asp-validation-for="EmergencyPerson" class="text-danger"></span>
-                                            </div>
+                    <!-- Birth Date -->
+                    <div class="form-group">
+                        <label asp-for="DateOfBirth"><i class="zmdi zmdi-calendar"></i> Birth Date</label>
+                        <input asp-for="DateOfBirth" type="date" class="form-control" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
 
-                                            <!-- Emergency Contact Number -->
-                                            <div class="form-group">
-                                                <label for="EmergencyContactNo"><i class="zmdi zmdi-phone"></i> Emergency Contact Number</label>
-                                                <input asp-for="EmergencyContactNo" class="form-control" />
-                                                <span asp-validation-for="EmergencyContactNo" class="text-danger"></span>
-                                            </div>
+                    <!-- Emergency Contact Person -->
+                    <div class="form-group">
+                        <label asp-for="EmergencyPerson"><i class="zmdi zmdi-account"></i> Emergency Contact Person</label>
+                        <input asp-for="EmergencyPerson" class="form-control" />
+                        <span asp-validation-for="EmergencyPerson" class="text-danger"></span>
+                    </div>
 
-                                        </div>
+                    <!-- Emergency Contact Number -->
+                    <div class="form-group">
+                        <label asp-for="EmergencyContactNo"><i class="zmdi zmdi-phone"></i> Emergency Contact Number</label>
+                        <input asp-for="EmergencyContactNo" class="form-control" />
+                        <span asp-validation-for="EmergencyContactNo" class="text-danger"></span>
+                    </div>
+                </div>
 
-                                        <!-- Right Side Fields -->
-                                        <div class="col-md-6">
+                <div class="col-md-6">
+                    <!-- Contact Number -->
+                    <div class="form-group">
+                        <label asp-for="ContactNo"><i class="zmdi zmdi-phone"></i> Contact Number</label>
+                        <input asp-for="ContactNo" class="form-control" />
+                        <span asp-validation-for="ContactNo" class="text-danger"></span>
+                    </div>
 
-                                            <!-- Chronic Conditions -->
-                                           <div class="form-group">
-                                               <label for="SelectedChronicConditionId">Select Chronic Condition:</label>
-                                               @Html.DropDownListFor(model => model.SelectedChronicConditionId, 
-                                               new SelectList(Model.AvailableChronicConditions, "ConditionID", "Name"),
-                                               "-- Select Chronic Condition --",
-                                               new { @class = "form-control" })
-                                               @Html.ValidationMessageFor(model => model.SelectedChronicConditionId, "", new { @class = "text-danger" })
-                                           </div>
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label asp-for="Email"><i class="zmdi zmdi-email"></i> Email</label>
+                        <input asp-for="Email" type="email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
 
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label asp-for="UserName"><i class="zmdi zmdi-account"></i> Username</label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
 
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label asp-for="Password"><i class="zmdi zmdi-lock"></i> Password</label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
 
-                                            <!-- Contact Number -->
-                                            <div class="form-group">
-                                                <label for="ContactNo"><i class="zmdi zmdi-phone"></i> Contact Number</label>
-                                                <input asp-for="ContactNo" class="form-control" />
-                                                <span asp-validation-for="ContactNo" class="text-danger"></span>
-                                            </div>
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword"><i class="zmdi zmdi-lock"></i> Confirm Password</label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
 
-                                            <!-- Email -->
-                                            <div class="form-group">
-                                                <label for="Email"><i class="zmdi zmdi-email"></i> Email</label>
-                                                <input asp-for="Email" type="email" class="form-control" />
-                                                <span asp-validation-for="Email" class="text-danger"></span>
-                                            </div>
-
-                                            <!-- Username -->
-                                            <div class="form-group">
-                                                <label for="UserName"><i class="zmdi zmdi-account"></i> Username</label>
-                                                <input asp-for="UserName" class="form-control" />
-                                                <span asp-validation-for="UserName" class="text-danger"></span>
-                                            </div>
-
-                                            <!-- Password -->
-                                            <div class="form-group">
-                                                <label for="Password"><i class="zmdi zmdi-lock"></i> Password</label>
-                                                <input asp-for="Password" type="password" class="form-control" />
-                                                <span asp-validation-for="Password" class="text-danger"></span>
-                                            </div>
-
-                                            <!-- Confirm Password -->
-                                            <div class="form-group">
-                                                <label for="ConfirmPassword"><i class="zmdi zmdi-lock"></i> Confirm Password</label>
-                                                <input asp-for="ConfirmPassword" type="password" class="form-control" />
-                                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                            </div>
-
-                                            <button type="submit" class="form-submit">Register</button>
-                                        </div>
-                                    </div>
-
-                                </form>
-                                <!-- Registration Status Message -->
+                    <button type="submit" class="form-submit">Register</button>
+                </div>
+            </div>
+        </form>
+  <!-- Registration Status Message -->
                                 @if (Model.RegistrationSuccess)
                                 {
                                     <div class="alert alert-success">Registration successful! You can now log in.</div>
@@ -176,9 +161,11 @@
                                 {
                                     <div class="alert alert-danger">Registration failed. Please check your inputs and try again.</div>
                                 }
+    </div>
+</div>
 
-                            </div>
-                        </div>
+
+
                     </div>
                 </div>
             </div>
