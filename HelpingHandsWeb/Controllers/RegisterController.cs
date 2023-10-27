@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Dapper;
+using Microsoft.Extensions.Configuration;
 using HelpingHandsWeb.Models.ViewModels.AdminViewModels;
 using HelpingHandsWeb.Models.ViewModels.OfficeManagerViewModels;
 using HelpingHandsWeb.Models.ViewModels.NurseViewModels;
@@ -13,51 +15,67 @@ namespace HelpingHandsWeb.Controllers
 {
     public class RegisterController : Controller
     {
+       private readonly IConfiguration _configuration;
 
+         public RegisterController(IConfiguration configuration)
+          {
+            _configuration = configuration;
+          }
+
+       private string ConnectionString
+        {
+           get
+           {
+               return _configuration.GetConnectionString("DefaultConnection");
+           }
+        }
+
+         
         public IActionResult Register()
         {
             var model = new RegisterViewModel(); 
             return View("~/Views/Home/register.cshtml", model);
         }
-
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+         [HttpPost]
+    public IActionResult Register(RegisterViewModel model)
+    {
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                try
-                {
-                   
-                    model.RegisterPatient();
+                connection.Open();
 
-                    
-                    model.RegistrationSuccess = true;
+               
+                connection.Execute(
+                    "InsertPatient",
+                    new
+                    {
+                        UserName = model.UserName,
+                        Password = model.Password,
+                        Email = model.Email,
+                        ContactNo = model.ContactNo,
+                        UserType = "P", 
+                        Status = "A",
+                        ProfilePicture = (object)DBNull.Value,
+                        FirstName = model.FirstName,
+                        Surname = model.Surname,
+                        Gender = model.Gender,
+                        DateOfBirth = model.DateOfBirth,
+                        EmergencyPerson = model.EmergencyPerson,
+                        EmergencyContactNo = model.EmergencyContactNo
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
 
-                    return RedirectToAction("PatientDashboard", "Home");
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", "An error occurred during registration: " + ex.Message);
-                   
-                    model.RegistrationSuccess = false;
-                }
+                
             }
 
-           
-            model.AvailableChronicConditions = GetChronicConditions(); 
-            return View("~/Views/Home/register.cshtml", model);
+            return RedirectToAction("Login", "Home");
         }
 
-        private List<ManageChronicConditionViewModel> GetChronicConditions()
-        {
-            var chronicConditionViewModel = new ManageChronicConditionViewModel();
-            List<ManageChronicConditionViewModel> conditions = chronicConditionViewModel.GetChronicConditions();
-            return conditions;
-        }
-
+        
+        return View("~/Views/Register.cshtml", model);
+    }
 
 
 
