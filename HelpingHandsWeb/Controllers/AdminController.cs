@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using HelpingHandsWeb.Models;
 using HelpingHandsWeb.Models.ViewModels.AdminViewModels;
+using HelpingHandsWeb.Models.ViewModels.PatientViewModels;
 using HelpingHandsWeb.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -492,7 +493,7 @@ namespace HelpingHandsWeb.Controllers
                         Password = model.Password,
                         Email = model.Email,
                         ContactNo = model.ContactNo,
-                        UserType = "N", // Assuming UserType is "N" for Nurse
+                        UserType = "N", 
                         Status = model.Status,
                         ProfilePicture = model.ProfilePicture ?? (object)DBNull.Value,
                         FirstName = model.FirstName,
@@ -583,7 +584,28 @@ namespace HelpingHandsWeb.Controllers
     }
 
 
-       
+       [HttpGet("patients")]
+public IActionResult Patients()
+{
+    
+    List<PatientViewModel> model;
+
+    using (SqlConnection connection = new SqlConnection(ConnectionString))
+    {
+        connection.Open();
+
+        
+        var results = connection.Query<PatientViewModel>(
+            "GetPatients",
+            commandType: CommandType.StoredProcedure
+        );
+
+        model = results.ToList();
+    }
+
+    return View("~/Views/Admin/patients.cshtml", model);
+}
+
         // Other Entity Actions
         [HttpPost("patients")]
         public IActionResult Patients(PatientViewModel model)
