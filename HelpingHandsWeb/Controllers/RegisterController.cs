@@ -36,7 +36,7 @@ namespace HelpingHandsWeb.Controllers
             var model = new RegisterViewModel(); 
             return View("~/Views/Home/register.cshtml", model);
         }
-         [HttpPost]
+          [HttpPost("Register")]
     public IActionResult Register(RegisterViewModel model)
     {
         if (ModelState.IsValid)
