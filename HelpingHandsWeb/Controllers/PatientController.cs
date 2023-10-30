@@ -1,114 +1,88 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Dapper;
+using Microsoft.Extensions.Configuration;
 using HelpingHandsWeb.Models.ViewModels.PatientViewModels;
-using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
+using System;
+using System.Threading.Tasks;
 
 namespace HelpingHandsWeb.Controllers
 {
     public class PatientController : Controller
     {
-        private readonly string _connectionString = "Server=SICT-SQL.MANDELA.AC.ZA;Database=GRP-04-34-HelpingHandsDB;User ID=GRP-04-34;Password=grp-04-34-2023#;Trusted_Connection=True;MultipleActiveResultSets=true";
+        private readonly IConfiguration _configuration;
 
-       
-
-
-        public IActionResult PatientDashboard()
+        public PatientController(IConfiguration configuration)
         {
-            var model = new PatientIndexViewModel();
-       
-            return View(model);
+            _configuration = configuration;
         }
 
-        public IActionResult ChangePassword()
+        private string ConnectionString
         {
-            var model = new ChangePasswordViewModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ChangePassword(ChangePasswordViewModel viewModel)
-        {
-            if (ModelState.IsValid)
+            get
             {
-              
+                return _configuration.GetConnectionString("DefaultConnection");
             }
-            return View(viewModel);
         }
 
-        public IActionResult ForgotPassword()
+        [HttpGet("Patients")]
+        public IActionResult Patients()
         {
-            var model = new ForgotPasswordViewModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ForgotPassword(ForgotPasswordViewModel viewModel)
-        {
-            if (ModelState.IsValid)
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
+                connection.Open();
+
                 
+                var patients = connection.Query<PatientViewModel>("GetPatients", commandType: CommandType.StoredProcedure);
+
+                return View("~/Views/Admin/patients.cshtml", patients);
             }
-            return View(viewModel);
         }
 
-        public IActionResult Register()
-        {
-            var model = new RegisterViewModel();
-           
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterViewModel viewModel)
+        [HttpPost("EditPatient")]
+        public IActionResult EditPatient(PatientViewModel model)
         {
             if (ModelState.IsValid)
             {
-                viewModel.RegisterPatient();
-                return RedirectToAction("RegistrationSuccess"); 
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    connection.Open();
+
+                
+                    connection.Execute("UpdatePatient", new
+                    {
+                        UserName = model.UserName,
+                        Password = model.Password,
+                        Email = model.Email,
+                        ContactNo = model.ContactNo,
+                        UserType = "P",
+                        Status = "A",
+                        ProfilePicture = (object)DBNull.Value,
+                        FirstName = model.FirstName,
+                        Surname = model.Surname,
+                        Gender = model.Gender,
+                        DateOfBirth = model.DateOfBirth,
+                        EmergencyPerson = model.EmergencyPerson,
+                        EmergencyContactNo = model.EmergencyContactNo
+                    }, commandType: CommandType.StoredProcedure);
+                }
+                return RedirectToAction("Patients");
             }
-            return View(viewModel);
+            return View("~/Views/Admin/edit-patient.cshtml", model);
         }
 
-
-        public IActionResult RequestCareContract()
+        [HttpGet("DeletePatient/{userId}")]
+        public IActionResult DeletePatient(int userId)
         {
-            var model = new RequestCareContractViewModel();
-           
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult RequestCareContract(RequestCareContractViewModel viewModel)
-        {
-            if (ModelState.IsValid)
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-               
-            }
-            return View(viewModel);
-        }
+                connection.Open();
 
-        public IActionResult UpdateProfile()
-        {
-            var model = new UpdateProfileViewModel();
-           
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult UpdateProfile(UpdateProfileViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-               
+                
+                connection.Execute("DeletePatient", new { UserID = userId }, commandType: CommandType.StoredProcedure);
             }
-            return View(viewModel);
+            return RedirectToAction("Patients");
         }
     }
 }
