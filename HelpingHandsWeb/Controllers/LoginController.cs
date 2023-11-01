@@ -1,47 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using HelpingHandsWeb.Models.ViewModels;
+using Dapper;
 using System.Data;
 using System.Data.SqlClient;
 using System;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace HelpingHandsWeb.Controllers
 {
     public class LoginController : Controller
     {
-        public readonly string connectionString = "Server=SICT-SQL.MANDELA.AC.ZA;Database=GRP-04-34-HelpingHandsDB;User ID=GRP-04-34;Password=grp-04-34-2023#;MultipleActiveResultSets=True;";
+        private readonly IConfiguration _configuration;
+
+        public LoginController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         [HttpGet]
         public IActionResult Login()
         {
-            var model = new LoginViewModel(); 
+            var model = new LoginViewModel();
             return View(model);
         }
 
         private string GetUserType(string userName)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("GetLoginUserType", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@UserName", userName);
+                var result = connection.QueryFirstOrDefault<string>("GetLoginUserType", new { UserName = userName },
+                    commandType: CommandType.StoredProcedure);
 
-                    try
-                    {
-                        return (string)command.ExecuteScalar();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"An error occurred in GetUserType: {ex.Message}");
-                        return null;
-                    }
-                }
+                return result;
             }
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -57,31 +51,32 @@ namespace HelpingHandsWeb.Controllers
                     return View(model);
                 }
 
+                // Set UserType in ViewBag
                 ViewBag.UserType = userType;
 
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
                     connection.Open();
-                    using (SqlCommand command = new SqlCommand("LoginAuthenticateUser", connection))
+                    var parameters = new
                     {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@UserName", model.UserName);
-                        command.Parameters.AddWithValue("@Password", model.Password);
+                        UserName = model.UserName,
+                        Password = model.Password
+                    };
 
-                        int authenticationResult = (int)command.ExecuteScalar();
+                    int authenticationResult = connection.QueryFirstOrDefault<int>("LoginAuthenticateUser", parameters,
+                        commandType: CommandType.StoredProcedure);
 
-                        if (authenticationResult == 1)
-                        {
-                            HttpContext.Session.SetString("IsAuthenticated", "true");
+                    if (authenticationResult == 1)
+                    {
+                        HttpContext.Session.SetString("IsAuthenticated", "true");
 
-                            return RedirectToDashboard(userType);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid username or password.");
-                            ModelState.AddModelError(string.Empty, "Invalid username or password.");
-                            return View(model);
-                        }
+                        return RedirectToDashboard(userType);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid username or password.");
+                        ModelState.AddModelError(string.Empty, "Invalid username or password.");
+                        return View(model);
                     }
                 }
             }
@@ -114,14 +109,9 @@ namespace HelpingHandsWeb.Controllers
                     return RedirectToAction("PatientDashboard", "Patient");
 
                 default:
-                    
                     Console.WriteLine($"Invalid user type: {userType}");
-
                     return RedirectToAction("Error", "Home");
             }
         }
-
-
-       
     }
 }
