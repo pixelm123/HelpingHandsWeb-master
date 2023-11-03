@@ -3,6 +3,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using HelpingHandsWeb.Models.ViewModels.PatientViewModels;
 using HelpingHandsWeb.Models.ViewModels.AdminViewModels;
+using HelpingHandsWeb.Models.ViewModels.PatientViewModels;
 
 using System.Data;
 using System.Data.SqlClient;
@@ -20,6 +21,11 @@ namespace HelpingHandsWeb.Controllers
             _configuration = configuration;
         }
 
+        private string GetUserDisplayName()
+        {
+            return HttpContext.Session.GetString("UserDisplayName");
+        }
+
         private string ConnectionString
         {
             get
@@ -27,6 +33,23 @@ namespace HelpingHandsWeb.Controllers
                 return _configuration.GetConnectionString("DefaultConnection");
             }
         }
+
+
+        [HttpGet("PatientDashboard")]
+        public IActionResult PatientDashboard()
+        {
+            var userDisplayName = GetUserDisplayName();
+            var viewModel = new PatientIndexViewModel(userDisplayName);
+            ViewData["UserDisplayName"] = userDisplayName;
+            return View("~/Views/Patient/PatientDashboard.cshtml", viewModel);
+        }
+        [HttpPost("PatientDashboard")]
+        public IActionResult PatientDashboard(PatientIndexViewModel model)
+        {
+         
+            return View("~/Views/Patient/PatientDashboard.cshtml", model);
+        }
+
 
         [HttpGet("Patients")]
         public IActionResult Patients()
