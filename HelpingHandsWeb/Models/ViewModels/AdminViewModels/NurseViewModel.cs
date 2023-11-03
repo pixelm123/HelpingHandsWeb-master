@@ -28,13 +28,13 @@ namespace HelpingHandsWeb.Models.ViewModels.AdminViewModels
     [Phone(ErrorMessage = "Invalid Contact Number.")]
     public string ContactNo { get; set; }
 
-    [Required(ErrorMessage = "User Type is required.")]
+    
     public string UserType { get; set; }
 
     [Required(ErrorMessage = "Status is required.")]
     public string Status { get; set; }
+    public byte[] ProfilePicture { get; set; }
 
-   
 
     [Required(ErrorMessage = "First Name is required.")]
     public string FirstName { get; set; }

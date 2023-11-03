@@ -51,8 +51,8 @@ namespace HelpingHandsWeb.Controllers
                     return View(model);
                 }
 
-                // Set UserType in ViewBag
-                ViewBag.UserType = userType;
+                //// Set UserType in ViewBag
+                //ViewBag.UserType = userType;
 
                 using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {

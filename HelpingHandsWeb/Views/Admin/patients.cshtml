@@ -1,5 +1,9 @@
+
 @using HelpingHandsWeb.Controllers
 @using HelpingHandsWeb.Models.ViewModels.PatientViewModels
+@{
+    Layout = null;
+}
 
 
 <!DOCTYPE html>
@@ -142,6 +146,20 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        <div id="delete_patient_@patient.PatientID" class="modal fade delete-modal" role="dialog">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-body text-center">
+                                                        <img src="~/assets/img/sent.png" alt="" width="50" height="46">
+                                                        <h3>Are you sure want to delete this Patient?</h3>
+                                                        <div class="m-t-20">
+                                                            <a href="@Url.Action("Patients", "Patient")" class="btn btn-white">Close</a>
+                                                            <a href="DeletePatient/@patient.UserID" class="btn btn-danger">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     }
                                 </tbody>
                             </table>
@@ -150,20 +168,7 @@
                 </div>
             </div>
 
-            <div id="delete_patient_@patient.PatientID" class="modal fade delete-modal" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body text-center">
-                            <img src="~/assets/img/sent.png" alt="" width="50" height="46">
-                            <h3>Are you sure want to delete this Patient?</h3>
-                            <div class="m-t-20">
-                                <a href="@Url.Action("Patients", "Patient")" class="btn btn-white">Close</a>
-                                <a href="DeletePatient/@patient.UserID" class="btn btn-danger">Delete</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
         </div>
     </div>
     <div class="sidebar-overlay" data-reff=""></div>

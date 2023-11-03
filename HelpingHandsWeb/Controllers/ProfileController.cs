@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Http;
 using HelpingHandsWeb.Models.Users;
+using HelpingHandsWeb.Models;
+using UserProfileViewModel = HelpingHandsWeb.Models.UserProfileViewModel;
 
 namespace HelpingHandsWeb.Controllers
 {
@@ -18,20 +20,26 @@ namespace HelpingHandsWeb.Controllers
             {
                 return RedirectToAction("Login", "Login"); 
             }
-
+			 
             
             var userModel = GetUserByUsername(userName);
 
-            
-            var model = new UserProfileViewModel
-            {
-                UserName = userModel.UserName,
-                Email = userModel.Email,
-                ContactNumber = userModel.ContactNo,
-                UserType = userModel.UserType 
-            };
 
-            return View(model);
+			var model = new UserProfileViewModel
+			{
+				UserName = userModel.UserName,
+				Email = userModel.Email,
+				ContactNumber = userModel.ContactNo,
+				UserType = new UserType
+				{
+					UserTypeId = userModel.UserType.UserTypeId,
+					UserTypeDesc = userModel.UserType.UserTypeDesc,
+					IsDeleted = userModel.UserType.IsDeleted
+				}
+			};
+
+
+			return View(model);
         }
 
         [HttpPost]
@@ -50,35 +58,41 @@ namespace HelpingHandsWeb.Controllers
             return View(model);
         }
 
-        private User GetUserByUsername(string userName)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM [dbo].[USER] WHERE [UserName] = @UserName", connection))
-                {
-                    command.Parameters.AddWithValue("@UserName", userName);
+		private User GetUserByUsername(string userName)
+		{
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				connection.Open();
+				using (SqlCommand command = new SqlCommand("SELECT * FROM [dbo].[USER] WHERE [UserName] = @UserName", connection))
+				{
+					command.Parameters.AddWithValue("@UserName", userName);
 
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new User
-                            {
-                                UserName = reader["UserName"].ToString(),
-                                Email = reader["Email"].ToString(),
-                                ContactNo = reader["ContactNo"].ToString(),
-                                UserType = reader["UserType"].ToString()
-                            };
-                        }
-                    }
-                }
-            }
+					using (SqlDataReader reader = command.ExecuteReader())
+					{
+						if (reader.Read())
+						{
+							return new User
+							{
+								UserName = reader["UserName"].ToString(),
+								Email = reader["Email"].ToString(),
+								ContactNo = reader["ContactNo"].ToString(),
+								UserType = new UserType
+								{
+									UserTypeId = reader["UserType"].ToString(),
+									UserTypeDesc = reader["UserTypeDesc"].ToString(),
+									IsDeleted = (bool)reader["IsDeleted"]
+								}
+							};
+						}
+					}
+				}
+			}
 
-            return null; 
-        }
+			return null;
+		}
 
-        private void UpdateUserProfile(UserProfileViewModel model)
+
+		private void UpdateUserProfile(UserProfileViewModel model)
         {
            
             using (SqlConnection connection = new SqlConnection(connectionString))

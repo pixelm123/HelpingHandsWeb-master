@@ -35,9 +35,12 @@ namespace HelpingHandsWeb.Models.ViewModels.AdminViewModels
         [Required(ErrorMessage = "Status is required.")]
         public string Status { get; set; }
 
+        public string UserType { get; set; }
         public OfficeManagerViewModel()
         {
             Status = "A";
+            UserType = "O";
+
         }
     }
 

@@ -19,9 +19,11 @@ namespace HelpingHandsWeb.Models
         [StringLength(10)]
         public string PostalCode { get; set; }
 
-        public int CityId { get; set; }
+        //public int CityId { get; set; }
 
         [ForeignKey("CityID")]
+        public int CityId { get; set; }
+
         public City City { get; set; }
         public bool IsDeleted { get; set; }
     }

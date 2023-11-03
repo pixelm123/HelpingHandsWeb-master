@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using HelpingHandsWeb.Models.ViewModels.PatientViewModels;
+using HelpingHandsWeb.Models.ViewModels.AdminViewModels;
+
 using System.Data;
 using System.Data.SqlClient;
 using System;

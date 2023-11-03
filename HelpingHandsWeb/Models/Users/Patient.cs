@@ -10,26 +10,33 @@ namespace HelpingHandsWeb.Models.Users
         [Key]
         public int PatientID { get; set; }
 
-        [StringLength(50)]
+        [Required(ErrorMessage = "First Name is required.")]
         public string FirstName { get; set; }
 
-        [StringLength(50)]
+        [Required(ErrorMessage = "Surname is required.")]
         public string Surname { get; set; }
 
-        [StringLength(1)]
-        public string Gender { get; set; }
+        [Required(ErrorMessage = "Gender is required.")]
+        public char Gender { get; set; }
 
-        public DateTime? DateOfBirth { get; set; }
+        [Required(ErrorMessage = "Date of Birth is required.")]
+        [DataType(DataType.Date)]
+        public DateTime DateOfBirth { get; set; }
 
-        [StringLength(100)]
+        [Required(ErrorMessage = "Emergency Person is required.")]
         public string EmergencyPerson { get; set; }
 
-        [StringLength(15)]
+        [Required(ErrorMessage = "Emergency Contact Number is required.")]
+        [Phone(ErrorMessage = "Invalid Emergency Contact Number.")]
         public string EmergencyContactNo { get; set; }
 
         public bool IsDeleted { get; set; }
 
-        public List<PatientCondition> PatientConditions { get; set; }
-        public List<ChronicCondition> ChronicConditions { get; set; }
+       
+        [ForeignKey("User")]
+        public int? UserID { get; set; }
+
+       
+        public virtual User User { get; set; }
     }
 }
