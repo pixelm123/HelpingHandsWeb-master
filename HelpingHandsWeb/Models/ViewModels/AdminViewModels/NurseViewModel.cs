@@ -13,8 +13,10 @@ namespace HelpingHandsWeb.Models.ViewModels.AdminViewModels
     {
 
           public int UserID { get; set; }
+        public int NurseID { get; set; }
 
-    [Required(ErrorMessage = "Username is required.")]
+
+        [Required(ErrorMessage = "Username is required.")]
     public string UserName { get; set; }
 
     [Required(ErrorMessage = "Password is required.")]

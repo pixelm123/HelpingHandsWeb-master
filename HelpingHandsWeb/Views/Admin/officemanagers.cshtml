@@ -5,6 +5,8 @@
     Layout = null;
 }
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +30,7 @@
     <div class="main-wrapper">
         <div class="header">
             <div class="header-left">
-                <a href="Index.cshtml" class="logo">
+                <a href="@Url.Action("Index", "Admin")" class="logo">
                     <img src="~/images/logo2.webp" width="35" height="35" alt="">
                     <span>Helping Hands</span>
                 </a>
@@ -55,40 +57,33 @@
                         <span>Admin</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="profile.cshtml">My Profile</a>
-                        <a class="dropdown-item" href="edit-profile.cshtml">Edit Profile</a>
-                        <a class="dropdown-item" href="change-password.cshtml">Change Password</a>
-                        <a class="dropdown-item" href="login.cshtml">Logout</a>
+                        <a class="dropdown-item" href="@Url.Action("Profile", "Admin")">My Profile</a>
+                        <a class="dropdown-item" href="@Url.Action("EditProfile", "Admin")">Edit Profile</a>
+                        <a class="dropdown-item" href="@Url.Action("ChangePassword", "Admin")">Change Password</a>
+                        <a class="dropdown-item" href="@Url.Action("Logout", "Admin")">Logout</a>
                     </div>
                 </li>
             </ul>
             
         </div>
         <div class="sidebar" id="sidebar">
-            <div class="sidebar-inner">
+            <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul class="horizontal-menu">
-                        <li class="menu-title">Main</li>
-                        <li><a href="AdminDashboard.cshtml"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-                        <li><a href="nurses.cshtml"><i class="fa fa-user-md"></i><span>Nurses</span></a></li>
-                        <li><a href="patients.cshtml"><i class="fa fa-wheelchair"></i><span>Patients</span></a></li>
-                        <li><a href="officemanagers.cshtml"><i class="fa fa-hospital-o"></i><span>Office Managers</span></a>
-                        </li>
-                        <li><a href="conditions.cshtml"><i class="fa fa-hospital-o"></i><span>Chronic Conditions</span></a>
-                        </li>
-                        <li><a href="cities.cshtml"><i class="fa fa-hospital-o"></i><span>Cities</span></a></li>
-                        <li><a href="suburbs.cshtml"><i class="fa fa-hospital-o"></i><span>Suburbs</span></a></li>
-                        <li class="submenu">
-                            <a href="#"><i class="fa fa-flag-o"></i><span>Reports</span><span class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                <li><a href="expense-reports.cshtml">Expense Report</a></li>
-                                <li><a href="invoice-reports.cshtml">Invoice Report</a></li>
-                            </ul>
-                        </li>
+                        <li class="menu-title">Admin Dashboard</li>
+                        <li><a href="@Url.Action("AdminDashboard", "Admin")"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                        <li><a href="@Url.Action("Nurses", "Admin")"><i class="fa fa-user-md"></i><span>Nurses</span></a></li>
+                        <li><a href="@Url.Action("Patients", "Admin")"><i class="fa fa-wheelchair"></i><span>Patients</span></a></li>
+                        <li><a href="@Url.Action("OfficeManagers", "Admin")"><i class="fa fa-hospital-o"></i><span>Office Managers</span></a></li>
+                        <li><a href="@Url.Action("Conditions", "Admin")"><i class="fa fa-hospital-o"></i><span>Chronic Conditions</span></a></li>
+                        <li><a href="@Url.Action("Cities", "Admin")"><i class="fa fa-hospital-o"></i><span>Cities</span></a></li>
+                        <li><a href="@Url.Action("Suburbs", "Admin")"><i class="fa fa-hospital-o"></i><span>Suburbs</span></a></li>
+
                     </ul>
                 </div>
             </div>
         </div>
+
         <div class="page-wrapper">
             <div class="content">
                 <div class="row">
@@ -119,9 +114,16 @@
                             <div class="profile-widget">
                                 <div class="doctor-img">
                                     <a class="avatar" asp-controller="Admin" asp-action="EditOfficeManager"
-                                        asp-route-id="@manager.UserID">
-                                        <img alt="" src="data:image;base64,@Convert.ToBase64String(manager.ProfilePicture)">
-                                    </a>
+                   asp-route-id="@manager.UserID">
+                    @if (manager.ProfilePicture != null)
+                    {
+                        <img alt="" src="data:image;base64,@Convert.ToBase64String(manager.ProfilePicture)">
+                    }
+                    else
+                    {
+                        <img alt="" src="~/assets/img/user.jpg">
+                    }
+                </a>
                                 </div>
                                 <div class="dropdown profile-action">
                                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"

@@ -1,4 +1,9 @@
+﻿using HelpingHandsWeb.Data;
+using HelpingHandsWeb.Models.ViewModels.AdminViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
+ using Microsoft.AspNetCore.Mvc;
 using HelpingHandsWeb.Models;
 using HelpingHandsWeb.Models.ViewModels.AdminViewModels;
 using HelpingHandsWeb.Models.ViewModels.PatientViewModels;
@@ -12,22 +17,25 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+
 namespace HelpingHandsWeb.Controllers
 {
-    [Route("[controller]")]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
+
         public AdminController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
         }
+
         private string GetUserDisplayName()
         {
             return HttpContext.Session.GetString("UserDisplayName");
         }
+
         private string ConnectionString
         {
             get
@@ -39,28 +47,53 @@ namespace HelpingHandsWeb.Controllers
         public IActionResult AdminDashboard()
         {
             var userDisplayName = GetUserDisplayName();
-            var viewModel = new AdminIndexViewModel(userDisplayName);
+            var viewModel = new AdminIndexViewModel(userDisplayName, _configuration);
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+
+                viewModel.TotalOfficeManagers = connection.QueryFirstOrDefault<int>("GetTotalOfficeManagers", commandType: CommandType.StoredProcedure);
+                viewModel.TotalPatients = connection.QueryFirstOrDefault<int>("GetTotalPatients", commandType: CommandType.StoredProcedure);
+                viewModel.TotalNurses = connection.QueryFirstOrDefault<int>("GetTotalNurses", commandType: CommandType.StoredProcedure);
+                viewModel.TotalChronicConditions = connection.QueryFirstOrDefault<int>("GetTotalChronicConditions", commandType: CommandType.StoredProcedure);
+
+
+                var patientResults = connection.Query<PatientViewModel>("GetPatients", commandType: CommandType.StoredProcedure);
+                viewModel.Patients = patientResults.ToList();
+
+
+                var nurseResults = connection.Query<NurseViewModel>("GetNurses", commandType: CommandType.StoredProcedure);
+                viewModel.Nurses = nurseResults.ToList();
+            }
+
             ViewData["UserDisplayName"] = userDisplayName;
-            return View("~/Views/Admin/AdminDashboard.cshtml", viewModel);
+            return View("AdminDashboard", viewModel);
         }
+
+
         [HttpPost("AdminDashboard")]
         public IActionResult AdminDashboard(AdminIndexViewModel model)
         {
-            // Implementation
-            return View("~/Views/Admin/AdminDashboard.cshtml", model);
+
+            return View("AdminDashboard", model);
         }
+
         [HttpPost("change-password")]
         public IActionResult ChangePassword(AdminIndexViewModel model)
         {
-            // Implementation
-            return View("~/Views/Admin/change-password.cshtml", model);
+
+            return View("change-password", model);
         }
+
         [HttpPost("profile")]
-        public IActionResult Profile(ProfileViewModel model)
+        public IActionResult Profile(AdminProfileViewModel model)
         {
             // Implementation
-            return View("~/Views/Admin/profile.cshtml", model);
+            return View("profile", model);
         }
+
         [HttpGet("cities")]
         [HttpPost("add-city")]
         public IActionResult AddCity(CityViewModel model)
@@ -78,7 +111,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Cities");
             }
-            return View("~/Views/Admin/add-city.cshtml", model);
+            return View("add-city", model);
         }
 
         [HttpPost("edit-city")]
@@ -98,7 +131,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Cities");
             }
-            return View("~/Views/Admin/edit-city.cshtml", model);
+            return View("edit-city", model);
         }
 
         [HttpPost("delete-city/{id}")]
@@ -125,12 +158,13 @@ namespace HelpingHandsWeb.Controllers
                 var results = connection.Query<CityViewModel>("GetCity", commandType: CommandType.StoredProcedure);
                 model = results.ToList();
             }
-            return View("~/Views/Admin/cities.cshtml", model);
+            return View("cities", model);
         }
+
         [HttpGet("add-city")]
         public IActionResult AddCity()
         {
-            return View("~/Views/Admin/add-city.cshtml", new CityViewModel());
+            return View("add-city", new CityViewModel());
         }
 
         [HttpPost("add-suburb")]
@@ -143,7 +177,7 @@ namespace HelpingHandsWeb.Controllers
                     connection.Open();
                     connection.Execute("InsertSuburb", new
                     {
-                        SuburbName = model.SuburbName,
+                        Suburb = model.Suburb,
                         PostalCode = model.PostalCode,
                         CityId = model.CityId
                     }, commandType: CommandType.StoredProcedure);
@@ -151,7 +185,7 @@ namespace HelpingHandsWeb.Controllers
                 return RedirectToAction("Suburbs");
             }
             ViewBag.CityList = new SelectList(_context.Cities.Where(c => !c.IsDeleted), "CityId", "Name", model.CityId);
-            return View("~/Views/Admin/add-suburb.cshtml", model);
+            return View("add-suburb", model);
         }
 
         [HttpPost("edit-suburb")]
@@ -165,7 +199,7 @@ namespace HelpingHandsWeb.Controllers
                     connection.Execute("UpdateSuburb", new
                     {
                         SuburbID = model.SuburbID,
-                        SuburbName = model.SuburbName,
+                        Suburb = model.Suburb,
                         PostalCode = model.PostalCode,
                         CityId = model.CityId
                     }, commandType: CommandType.StoredProcedure);
@@ -173,7 +207,7 @@ namespace HelpingHandsWeb.Controllers
                 return RedirectToAction("Suburbs");
             }
             ViewBag.CityList = new SelectList(_context.Cities.Where(c => !c.IsDeleted), "CityId", "Name", model.CityId);
-            return View("~/Views/Admin/edit-suburb.cshtml", model);
+            return View("edit-suburb", model);
         }
 
         [HttpPost("delete-suburb/{id}")]
@@ -200,8 +234,9 @@ namespace HelpingHandsWeb.Controllers
                 var results = connection.Query<SuburbViewModel>("GetSuburb", commandType: CommandType.StoredProcedure);
                 model = results.ToList();
             }
-            return View("~/Views/Admin/suburbs.cshtml", model);
+            return View("suburbs", model);
         }
+
 
         [HttpGet("conditions")]
         public IActionResult Conditions()
@@ -210,17 +245,16 @@ namespace HelpingHandsWeb.Controllers
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                var results = connection.Query<ConditionViewModel>("GetConditions", commandType: CommandType.StoredProcedure);
+                var results = connection.Query<ConditionViewModel>("GetChronicCondition", commandType: CommandType.StoredProcedure);
                 model = results.ToList();
             }
-            return View("~/Views/Admin/conditions.cshtml", model);
+            return View("conditions", model);
         }
-
 
         [HttpGet("add-condition")]
         public IActionResult AddCondition()
         {
-            return View("~/Views/Admin/add-condition.cshtml", new ConditionViewModel());
+            return View("add-condition", new ConditionViewModel());
         }
 
         [HttpPost("add-condition")]
@@ -239,7 +273,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Conditions");
             }
-            return View("~/Views/Admin/add-condition.cshtml", model);
+            return View("add-condition", model);
         }
 
         [HttpGet("edit-condition/{id}")]
@@ -256,7 +290,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 model = result;
             }
-            return View("~/Views/Admin/edit-condition.cshtml", model);
+            return View("edit-condition", model);
         }
 
         [HttpPost("edit-condition")]
@@ -276,7 +310,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Conditions");
             }
-            return View("~/Views/Admin/edit-condition.cshtml", model);
+            return View("edit-condition", model);
         }
 
         [HttpPost("delete-condition/{id}")]
@@ -306,13 +340,13 @@ namespace HelpingHandsWeb.Controllers
                         ContactNo = model.ContactNo,
                         UserType = "O",
                         ProfilePicture = model.ProfilePicture ?? (object)DBNull.Value
-
                     }, commandType: CommandType.StoredProcedure);
                 }
                 return RedirectToAction("OfficeManagers");
             }
-            return View("~/Views/Admin/add-officemanager.cshtml", model);
+            return View("add-officemanager", model);
         }
+
         [HttpPost("edit-officemanager")]
         public IActionResult EditOfficeManager(OfficeManagerViewModel model)
         {
@@ -331,12 +365,11 @@ namespace HelpingHandsWeb.Controllers
                         UserType = "O",
                         Status = model.Status,
                         ProfilePicture = model.ProfilePicture ?? (object)DBNull.Value
-
                     }, commandType: CommandType.StoredProcedure);
                 }
                 return RedirectToAction("OfficeManagers");
             }
-            return View("~/Views/Admin/edit-officemanager.cshtml", model);
+            return View("edit-officemanager", model);
         }
 
         [HttpGet("officemanagers")]
@@ -352,8 +385,9 @@ namespace HelpingHandsWeb.Controllers
                 }, commandType: CommandType.StoredProcedure);
                 model = results.Where(o => o.UserType == "O").ToList();
             }
-            return View("~/Views/Admin/officemanagers.cshtml", model);
+            return View("officemanagers", model);
         }
+
         [HttpPost("add-nurse")]
         public IActionResult AddNurse(NurseViewModel model)
         {
@@ -379,8 +413,9 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Nurses");
             }
-            return View("~/Views/Admin/add-nurse.cshtml", model);
+            return View("add-nurse", model);
         }
+
         [HttpPost("edit-nurse")]
         public IActionResult EditNurse(NurseViewModel model)
         {
@@ -398,7 +433,6 @@ namespace HelpingHandsWeb.Controllers
                         ContactNo = model.ContactNo,
                         Status = model.Status,
                         ProfilePicture = model.ProfilePicture ?? (object)DBNull.Value,
-
                         FirstName = model.FirstName,
                         Surname = model.Surname,
                         Gender = model.Gender,
@@ -407,8 +441,9 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Nurses");
             }
-            return View("~/Views/Admin/edit-nurse.cshtml", model);
+            return View("edit-nurse", model);
         }
+
         [HttpPost("delete-nurse")]
         public IActionResult DeleteNurse(int userId)
         {
@@ -422,18 +457,45 @@ namespace HelpingHandsWeb.Controllers
             }
             return RedirectToAction("Nurses");
         }
-        [HttpGet("nurses")]
-        public IActionResult Nurses()
+
+        [HttpGet("Admin/nurses")]
+        [HttpPost("Admin/nurses")]
+        public IActionResult Nurses(string firstName, string surname, string gender)
         {
             var model = new List<NurseViewModel>();
+
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                var results = connection.Query<NurseViewModel>("GetNurses", commandType: CommandType.StoredProcedure);
-                model = results.ToList();
+
+                if (string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(surname) && string.IsNullOrEmpty(gender))
+                {
+                    var results = connection.Query<NurseViewModel>("GetNurses", commandType: CommandType.StoredProcedure);
+                    model = results.ToList();
+                }
+                else
+                {
+                    if (gender == "Male")
+                    {
+                        gender = "M";
+                    }
+                    else if (gender == "Female")
+                    {
+                        gender = "F";
+                    }
+
+                    var results = connection.Query<NurseViewModel>("SearchNurses",
+                        new { FirstName = firstName, Surname = surname, Gender = gender },
+                        commandType: CommandType.StoredProcedure);
+
+                    model = results.ToList();
+                }
             }
-            return View("~/Views/Admin/nurses.cshtml", model);
+
+            return View("nurses", model);
         }
+
+
         [HttpGet("patients")]
         public IActionResult Patients()
         {
@@ -444,13 +506,8 @@ namespace HelpingHandsWeb.Controllers
                 var results = connection.Query<PatientViewModel>("GetPatients", commandType: CommandType.StoredProcedure);
                 model = results.ToList();
             }
-            return View("~/Views/Admin/patients.cshtml", model);
+            return View("patients", model);
         }
-        [HttpPost("profile")]
-        public IActionResult Profiles(AdminProfileViewModel model)
-        {
-            // Implementation
-            return View("~/Views/Admin/profile.cshtml", model);
-        }
+
     }
 }

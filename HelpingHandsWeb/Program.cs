@@ -62,7 +62,7 @@ app.MapControllerRoute(
     defaults: new { controller = "Home", action = "Contact" });
 
 app.MapControllerRoute(
-    name: "service",  // Unique route name for the "service" route
+    name: "service",  
     pattern: "service",
     defaults: new { controller = "Home", action = "Service" });
 
@@ -83,37 +83,116 @@ app.MapControllerRoute(
    pattern: "AdminDashboard",
    defaults: new { controller = "Admin", action = "AdminDashboard" });
 
-
+app.MapControllerRoute(
+    name: "changePassword",
+    pattern: "Admin/change-password",
+    defaults: new { controller = "Admin", action = "ChangePassword" });
 
 app.MapControllerRoute(
-    name: "admin-patients",
-    pattern: "Admin/Patients",
-    defaults: new { controller = "Admin", action = "Patients" });
+    name: "profile",
+    pattern: "Admin/profile",
+    defaults: new { controller = "Admin", action = "Profile" });
 
 app.MapControllerRoute(
-    name: "admin-nurses",
-    pattern: "Admin/Nurses",
-    defaults: new { controller = "Admin", action = "Nurses" });
+    name: "addCity",
+    pattern: "Admin/add-city",
+    defaults: new { controller = "Admin", action = "AddCity" });
 
 app.MapControllerRoute(
-    name: "admin-office-managers",
-    pattern: "Admin/OfficeManagers",
-    defaults: new { controller = "Admin", action = "OfficeManagers" });
+    name: "editCity",
+    pattern: "Admin/edit-city",
+    defaults: new { controller = "Admin", action = "EditCity" });
 
 app.MapControllerRoute(
-    name: "admin-suburbs",
-    pattern: "Admin/Suburbs",
+    name: "deleteCity",
+    pattern: "Admin/delete-city/{id}",
+    defaults: new { controller = "Admin", action = "DeleteCity" });
+
+app.MapControllerRoute(
+    name: "cities",
+    pattern: "Admin/cities",
+    defaults: new { controller = "Admin", action = "Cities" });
+
+app.MapControllerRoute(
+    name: "addSuburb",
+    pattern: "Admin/add-suburb",
+    defaults: new { controller = "Admin", action = "AddSuburb" });
+
+app.MapControllerRoute(
+    name: "editSuburb",
+    pattern: "Admin/edit-suburb",
+    defaults: new { controller = "Admin", action = "EditSuburb" });
+
+app.MapControllerRoute(
+    name: "deleteSuburb",
+    pattern: "Admin/delete-suburb/{id}",
+    defaults: new { controller = "Admin", action = "DeleteSuburb" });
+
+app.MapControllerRoute(
+    name: "suburbs",
+    pattern: "Admin/suburbs",
     defaults: new { controller = "Admin", action = "Suburbs" });
 
 app.MapControllerRoute(
-    name: "profile-settings",
-    pattern: "Profile/Settings",
-    defaults: new { controller = "Profile", action = "Settings" });
+    name: "conditions",
+    pattern: "Admin/conditions",
+    defaults: new { controller = "Admin", action = "Conditions" });
 
 app.MapControllerRoute(
-    name: "admin-reports",
-    pattern: "Admin/Reports",
-    defaults: new { controller = "Admin", action = "Reports" });
+    name: "addCondition",
+    pattern: "Admin/add-condition",
+    defaults: new { controller = "Admin", action = "AddCondition" });
+
+app.MapControllerRoute(
+    name: "editCondition",
+    pattern: "Admin/edit-condition/{id}",
+    defaults: new { controller = "Admin", action = "EditCondition" });
+
+app.MapControllerRoute(
+    name: "deleteCondition",
+    pattern: "Admin/delete-condition/{id}",
+    defaults: new { controller = "Admin", action = "DeleteCondition" });
+
+app.MapControllerRoute(
+    name: "addOfficeManager",
+    pattern: "Admin/add-officemanager",
+    defaults: new { controller = "Admin", action = "AddOfficeManager" });
+
+app.MapControllerRoute(
+    name: "editOfficeManager",
+    pattern: "Admin/edit-officemanager",
+    defaults: new { controller = "Admin", action = "EditOfficeManager" });
+
+app.MapControllerRoute(
+    name: "officeManagers",
+    pattern: "Admin/officemanagers",
+    defaults: new { controller = "Admin", action = "OfficeManagers" });
+
+app.MapControllerRoute(
+    name: "addNurse",
+    pattern: "Admin/add-nurse",
+    defaults: new { controller = "Admin", action = "AddNurse" });
+
+app.MapControllerRoute(
+    name: "editNurse",
+    pattern: "Admin/edit-nurse",
+    defaults: new { controller = "Admin", action = "EditNurse" });
+
+app.MapControllerRoute(
+    name: "deleteNurse",
+    pattern: "Admin/delete-nurse/{id}",
+    defaults: new { controller = "Admin", action = "DeleteNurse" });
+
+app.MapControllerRoute(
+    name: "nurses",
+    pattern: "Admin/nurses",
+    defaults: new { controller = "Admin", action = "Nurses" });
+
+app.MapControllerRoute(
+    name: "patients",
+    pattern: "Admin/patients",
+    defaults: new { controller = "Admin", action = "Patients" });
+
 
 
 app.MapControllerRoute(

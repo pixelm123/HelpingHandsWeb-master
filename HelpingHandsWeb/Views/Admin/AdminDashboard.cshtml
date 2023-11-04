@@ -1,18 +1,37 @@
 ﻿@using HelpingHandsWeb.Models.ViewModels.AdminViewModels
 
-
 @model AdminIndexViewModel
 @{
     ViewData["Title"] = "AdminDashboard";
-
 }
 @{
-    Layout = null; 
+    Layout = null;
+}
+
+@functions {
+    string GetStatusLabel(string status)
+    {
+        return status == "A" ? "Active" : "Inactive";
+    }
+
+    string GetRandomButtonClass()
+    {
+        var random = new Random();
+        var classes = new[]
+        {
+            "btn btn-primary btn-primary-one float-right",
+            "btn btn-primary btn-primary-two float-right",
+            "btn btn-primary btn-primary-three float-right",
+            "btn btn-primary btn-primary-four float-right"
+        
+    };
+
+        return classes[random.Next(classes.Length)];
+    }
 }
 <!DOCTYPE html>
 <html lang="en">
-  <!-- index22:59-->
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <link rel="shortcut icon" type="image/x-icon" href="~/assets/img/favicon.ico">
@@ -22,267 +41,202 @@
     <link rel="stylesheet" type="text/css" href="~/assets/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="~/assets/css/style2.css">
     <!--[if lt IE 9]>
-									<script src="~/assets/js/html5shiv.min.js"></script>
-									<script src="~/assets/js/respond.min.js"></script>
-									<![endif]-->
-  </head>
-  <body>
+    <script src="~/assets/js/html5shiv.min.js"></script>
+    <script src="~/assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
     <div class="main-wrapper">
-      <div class="header">
-        <div class="header-left">
-          <a href="Index.cshtml" class="logo">
-            <img src="~/images/logo2.webp" width="35" height="35" alt="">
-            <span>Helping Hands</span>
-          </a>
-        </div>
-        <a id="toggle_btn" href="javascript:void(0);">
-          <i class="fa fa-bars"></i>
-        </a>
-        <a id="mobile_btn" class="mobile_btn float-left" href="#sidebar">
-          <i class="fa fa-bars"></i>
-        </a>
-        <ul class="nav user-menu float-right">
-          <li class="nav-item dropdown d-none d-sm-block">
-            <a href="javascript:void(0);" id="open_msg_box" class="hasnotifications nav-link">
-              <i class="fa fa-comment-o"></i>
-              <span class="badge badge-pill bg-danger float-right">8</span>
+        <div class="header">
+            <div class="header-left">
+                <a href="@Url.Action("Index", "Home")" class="logo">
+                    <img src="~/images/logo2.webp" width="35" height="35" alt="">
+                    <span>Helping Hands</span>
+                </a>
+            </div>
+            <a id="toggle_btn" href="javascript:void(0);">
+                <i class="fa fa-bars"></i>
             </a>
-          </li>
-          <li class="nav-item dropdown has-arrow">
-            <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-              <span class="user-img">
-                <img class="rounded-circle" src="~/assets/img/user.jpg" width="24" alt="Admin">
-                <span class="status online"></span>
-              </span>
-              <span>Admin</span>
+            <a id="mobile_btn" class="mobile_btn float-left" href="#sidebar">
+                <i class="fa fa-bars"></i>
             </a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="profile.cshtml">My Profile</a>
-              <a class="dropdown-item" href="edit-profile.cshtml">Edit Profile</a>
-              <a class="dropdown-item" href="settings.cshtml">Settings</a>
-              <a class="dropdown-item" href="login.cshtml">Logout</a>
-            </div>
-          </li>
-        </ul>
-        <div class="dropdown mobile-user-menu float-right">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <i class="fa fa-ellipsis-v"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="profile.cshtml">My Profile</a>
-            <a class="dropdown-item" href="edit-profile.cshtml">Edit Profile</a>
-            <a class="dropdown-item" href="settings.cshtml">Settings</a>
-            <a class="dropdown-item" href="login.cshtml">Logout</a>
-          </div>
-        </div>
-      </div>
-      <div class="sidebar" id="sidebar">
-        <div class="sidebar-inner slimscroll">
-          <div id="sidebar-menu" class="sidebar-menu">
-            <ul>
-              <li class="menu-title">Main</li>
-              <a href="AdminDashboard.cshtml">
-                <i class="fa fa-dashboard"></i>
-                <span>Dashboard</span>
-              </a>
-              </li>
-              <li>
-                <a href="nurses.cshtml">
-                  <i class="fa fa-user-md"></i>
-                  <span>Nurses</span>
-                </a>
-              </li>
-              <li>
-                <a href="patients.cshtml">
-                  <i class="fa fa-wheelchair"></i>
-                  <span>Patients</span>
-                </a>
-              </li>
-              <li>
-                <a href="officemanagers.cshtml">
-                  <i class="fa fa-hospital-o"></i>
-                  <span>Office Managers</span>
-                </a>
-              </li>
-              <li>
-                <a href="conditions.cshtml">
-                  <i class="fa fa-hospital-o"></i>
-                  <span>Chronic Conditions</span>
-                </a>
-              </li>
-              <li>
-                <a href="cities.cshtml">
-                  <i class="fa fa-hospital-o"></i>
-                  <span>Cities</span>
-                </a>
-              </li>
-              <li>
-                <a href="suburbs.cshtml">
-                  <i class="fa fa-hospital-o"></i>
-                  <span>Suburbs</span>
-                </a>
-              </li>
-              <li class="submenu">
-                <a href="#">
-                  <i class="fa fa-flag-o"></i>
-                  <span> Reports </span>
-                  <span class="menu-arrow"></span>
-                </a>
-                <ul style="display: none;">
-                  <li>
-                    <a href="expense-reports.cshtml"> Expense Report </a>
-                  </li>
-                  <li>
-                    <a href="invoice-reports.cshtml"> Invoice Report </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="settings.cshtml">
-                  <i class="fa fa-cog"></i>
-                  <span>Settings</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="page-wrapper">
-        <div class="content">
-          <div class="row">
-            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-              <div class="dash-widget">
-                <span class="dash-widget-bg1">
-                  <i class="fa fa-stethoscope" aria-hidden="true"></i>
-                </span>
-                <div class="dash-widget-info text-right">
-                  <h3>98</h3>
-                  <span class="widget-title1">Nurses <i class="fa fa-check" aria-hidden="true"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-              <div class="dash-widget">
-                <span class="dash-widget-bg2">
-                  <i class="fa fa-user-o"></i>
-                </span>
-                <div class="dash-widget-info text-right">
-                  <h3>1072</h3>
-                  <span class="widget-title2">Patients <i class="fa fa-check" aria-hidden="true"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-              <div class="dash-widget">
-                <span class="dash-widget-bg2">
-                  <i class="fa fa-user-o"></i>
-                </span>
-                <div class="dash-widget-info text-right">
-                  <h3>1072</h3>
-                  <span class="widget-title2">Office Managers <i class="fa fa-check" aria-hidden="true"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-              <div class="dash-widget">
-                <span class="dash-widget-bg4">
-                  <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                </span>
-                <div class="dash-widget-info text-right">
-                  <h3>618</h3>
-                  <span class="widget-title4">Chronic Conditions <i class="fa fa-check" aria-hidden="true"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12 col-md-6 col-lg-8 col-xl-8">
-              <div class="card">
-                <div class="card-header">
-                  <h4 class="card-title d-inline-block">New Patients </h4>
-                  <a href="patients.cshtml" class="btn btn-primary float-right">View all</a>
-                </div>
-                <div class="card-block">
-                  <div class="table-responsive">
-                    <table class="table mb-0 new-patient-table">
-                      <tbody>
-                        <tr>
-                          <td>
-                            <img width="28" height="28" class="rounded-circle" src="~/assets/img/user.jpg" alt="">
-                            <h2>Villiam</h2>
-                          </td>
-                          <td>Richard123@yahoo.com</td>
-                          <td>+1-202-555-0106</td>
-                          <td>
-                            <button class="btn btn-primary btn-primary-three float-right">Eye</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <img width="28" height="28" class="rounded-circle" src="~/assets/img/user.jpg" alt="">
-                            <h2>Martin</h2>
-                          </td>
-                          <td>Richard123@yahoo.com</td>
-                          <td>776-2323 89562015</td>
-                          <td>
-                            <button class="btn btn-primary btn-primary-four float-right">Fever</button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-4">
-              <div class="card member-panel">
-                <div class="card-header bg-white">
-                  <h4 class="card-title mb-0">Nurses</h4>
-                </div>
-                <div class="card-body">
-                  <ul class="contact-list">
-                    <li>
-                      <div class="contact-cont">
-                        <div class="float-left user-img m-r-10">
-                          <a href="nurse-profile.cshtml" title="Richard Miles">
-                            <img src="~/assets/img/user.jpg" alt="" class="w-40 rounded-circle">
+            <ul class="nav user-menu float-right">
+                
+                <li class="nav-item dropdown has-arrow">
+                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                        <span class="user-img">
+                            <img class="rounded-circle" src="~/assets/img/user.jpg" width="24" alt="Admin">
                             <span class="status online"></span>
-                          </a>
-                        </div>
-                        <div class="contact-info">
-                          <span class="contact-name text-ellipsis">Richard Miles</span>
-                          <span class="contact-date">MS, MD</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="contact-cont">
-                        <div class="float-left user-img m-r-10">
-                          <a href="nurse-profile.cshtml" title="Richard Miles">
-                            <img src="~/assets/img/user.jpg" alt="" class="w-40 rounded-circle">
-                            <span class="status away"></span>
-                          </a>
-                        </div>
-                        <div class="contact-info">
-                          <span class="contact-name text-ellipsis">Richard Miles</span>
-                          <span class="contact-date">MBBS, MD</span>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <div class="card-footer text-center bg-white">
-                  <a href="nurses.cshtml" class="text-muted">View all Nurses</a>
-                </div>
-              </div>
-            </div>
-          </div>
+                        </span>
+                        <span>Admin</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="@Url.Action("Profile", "Admin")">My Profile</a>
+                        <a class="dropdown-item" href="@Url.Action("EditProfile", "Admin")">Edit Profile</a>
+                        <a class="dropdown-item" href="@Url.Action("Settings", "Admin")">Settings</a>
+                        <a class="dropdown-item" href="@Url.Action("Logout", "Account")">Logout</a>
+                    </div>
+                </li>
+            </ul>
+            
         </div>
-      </div>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul class="horizontal-menu">
+                        <li class="menu-title">Admin Dashboard</li>
+                        <li><a href="@Url.Action("AdminDashboard", "Admin")"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                        <li><a href="@Url.Action("Nurses", "Admin")"><i class="fa fa-user-md"></i><span>Nurses</span></a></li>
+                        <li><a href="@Url.Action("Patients", "Admin")"><i class="fa fa-wheelchair"></i><span>Patients</span></a></li>
+                        <li><a href="@Url.Action("OfficeManagers", "Admin")"><i class="fa fa-hospital-o"></i><span>Office Managers</span></a></li>
+                        <li><a href="@Url.Action("Conditions", "Admin")"><i class="fa fa-hospital-o"></i><span>Chronic Conditions</span></a></li>
+                        <li><a href="@Url.Action("Cities", "Admin")"><i class="fa fa-hospital-o"></i><span>Cities</span></a></li>
+                        <li><a href="@Url.Action("Suburbs", "Admin")"><i class="fa fa-hospital-o"></i><span>Suburbs</span></a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="page-wrapper">
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <a href="@Url.Action("Nurses", "Admin")" class="dashboard-link">
+                            <div class="dash-widget">
+                                <span class="dash-widget-bg1">
+                                    <i class="fa fa-stethoscope" aria-hidden="true"></i>
+                                </span>
+                                <div class="dash-widget-info text-right">
+                                    <h3>@Model.TotalNurses</h3>
+                                    <span class="widget-title1">Nurses <i class="fa fa-check" aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <a href="@Url.Action("Patients", "Admin")" class="dashboard-link">
+                            <div class="dash-widget">
+                                <span class="dash-widget-bg2">
+                                    <i class="fa fa-wheelchair"></i>
+                                </span>
+                                <div class="dash-widget-info text-right">
+                                    <h3>@Model.TotalPatients</h3>
+                                    <span class="widget-title2">Patients <i class="fa fa-check" aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <a href="@Url.Action("OfficeManagers", "Admin")" class="dashboard-link">
+                            <div class="dash-widget">
+                                <span class="dash-widget-bg2">
+                                    <i class="fa fa-user-o"></i>
+                                </span>
+                                <div class="dash-widget-info text-right">
+                                    <h3>@Model.TotalOfficeManagers</h3>
+                                    <span class="widget-title2">Office Managers <i class="fa fa-check" aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <a href="@Url.Action("Conditions", "Admin")" class="dashboard-link">
+                            <div class="dash-widget">
+                                <span class="dash-widget-bg4">
+                                    <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                                </span>
+                                <div class="dash-widget-info text-right">
+                                    <h3>@Model.TotalChronicConditions</h3>
+                                    <span class="widget-title4">Chronic Conditions <i class="fa fa-check" aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-8 col-xl-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title d-inline-block">New Patients </h4>
+                                <a href="@Url.Action("Patients", "Admin")" class="btn btn-primary float-right">View all</a>
+                            </div>
+                            <div class="card-block">
+                                <div class="table-responsive">
+                                    <table class="table mb-0 new-patient-table">
+                                        <tbody>
+                                            @foreach (var patient in Model.Patients.Take(6))
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <div>
+                                                            @if (patient.ProfilePicture != null)
+                                                            {
+                                                                <img width="28" height="28" class="rounded-circle" src="data:image/jpeg;base64,@Convert.ToBase64String(patient.ProfilePicture)" alt="">
+                                                            }
+                                                            else
+                                                            {
+                                                                <img width="28" height="28" class="rounded-circle" src="~/assets/img/user.jpg" alt="">
+                                                            }
+                                                            <h2>@patient.FirstName</h2>
+                                                        </div>
+                                                    </td>
+                                                    <td>@patient.Surname</td>
+                                                    <td>@patient.UserName</td>
+                                                    <td>@patient.Email</td>
+                                                    <td>@(patient.Gender == "M" ? "Male" : "Female")</td>
+                                                    <td>
+                                                        <button class="@GetRandomButtonClass()">@GetStatusLabel(patient.Status)</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-4">
+                        <div class="card member-panel">
+                            <div class="card-header bg-white">
+                                <h4 class="card-title mb-0">Nurses</h4>
+                            </div>
+                            <div class="card-body">
+                                <ul class="contact-list">
+                                    @foreach (var nurse in Model.Nurses.Take(7))
+                                    {
+                                        <li>
+                                            <div class="contact-cont">
+                                                <div class="float-left user-img m-r-10">
+                                                    @if (nurse.ProfilePicture != null)
+                                                    {
+                                                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(nurse.ProfilePicture)" alt="" class="w-40 rounded-circle">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/assets/img/user.jpg" alt="" class="w-40 rounded-circle">
+                                                    }
+                                                </div>
+                                                <div class="contact-info">
+                                                    <span class="contact-name text-ellipsis">@nurse.FirstName     @nurse.Surname</span>
+                                                    <span class="contact-date">@((nurse.Gender == "M") ? "Male" : "Female")</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </div>
+                            <div class="card-footer text-center bg-white">
+                                <a href="@Url.Action("Nurses", "Admin")" class="text-muted">View all Nurses</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="sidebar-overlay" data-reff=""></div>
     <script src="~/assets/js/jquery-3.2.1.min.js"></script>
@@ -292,6 +246,5 @@
     <script src="~/assets/js/Chart.bundle.js"></script>
     <script src="~/assets/js/chart.js"></script>
     <script src="~/assets/js/app.js"></script>
-  </body>
-  <!-- index22:59-->
+</body>
 </html>

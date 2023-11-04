@@ -55,44 +55,52 @@ namespace HelpingHandsWeb.Controllers
             return View();
         }
 
-      
+
         public IActionResult AdminDashboard()
         {
-
             return View();
         }
+
         public IActionResult ChangePassword()
         {
             return View();
         }
+
         public IActionResult Profile()
         {
             return View();
         }
+
         public IActionResult AddCity()
         {
             return View();
         }
+
         public IActionResult EditCity()
         {
-           return View();    
+            return View();
         }
+
         public IActionResult DeleteCity()
         {
-           return View();
+            return View();
         }
+
         public IActionResult AddCondition()
         {
             return View();
         }
+
         public IActionResult EditCondition()
         {
             return View();
         }
+
         public IActionResult DeleteCondition()
         {
             return View();
         }
+
         public IActionResult Nurses()
         {
             return View();
@@ -132,6 +140,7 @@ namespace HelpingHandsWeb.Controllers
         {
             return View();
         }
+
         public IActionResult EditSuburb()
         {
             return View();
