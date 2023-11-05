@@ -298,17 +298,17 @@
 
                 $.ajax({
                     url: "/Admin/nurses",
-                    type: "POST", // Use POST for the search action
+                    type: "POST", 
                     data: { firstName: firstName, surname: surname, gender: gender },
                     success: function (data) {
                         console.log("Search success");
-                        // Update the existing content with search results
+                       
                         $("#resultContainer").html(data);
 
-                        // Display the result container
+                        
                         $("#resultContainer").show();
 
-                        // Hide the original content
+                        
                         $("#originalNurses").hide();
                     },
                     error: function (xhr, status, error) {
