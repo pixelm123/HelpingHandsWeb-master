@@ -273,6 +273,7 @@
                     </div>
                 </div>
 
+
             </div>
         </div>
 
@@ -297,8 +298,8 @@
                 var gender = $("#genderInput").val();
 
                 $.ajax({
-                    url: "/Admin/nurses",
-                    type: "POST", 
+                    url: "/Admin/nurses", // Update the URL
+                    type: "POST",
                     data: { firstName: firstName, surname: surname, gender: gender },
                     success: function (data) {
                         console.log("Search success");
