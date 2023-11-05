@@ -1,7 +1,8 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
+using Microsoft.Extensions.Configuration; // Add this using statement for IConfiguration
 
 namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
 {
@@ -9,37 +10,34 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
     {
         private readonly string _connectionString;
 
-        public int TotalOfficeManagers { get; set; }
-        public int TotalPatients { get; set; }
-        public int TotalNurses { get; set; }
-        public int TotalCities { get; set; }
-        public int TotalSuburbs { get; set; }
         public string UserDisplayName { get; set; }
+        public int TotalPatientCareVisits { get; set; }
+        public int TotalPatientCareContracts { get; set; }
+        public List<PatientConditionsViewModel> PatientConditions { get; set; }
+        public List<PatientAppointmentsViewModel> PatientAppointments { get; set; }
 
         public PatientIndexViewModel(string userDisplayName, IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
             UserDisplayName = userDisplayName;
 
-            TotalOfficeManagers = GetTotal("GetTotalOfficeManagers");
-            TotalPatients = GetTotal("GetTotalPatients");
-            TotalNurses = GetTotal("GetTotalNurses");
-            TotalCities = GetTotal("GetTotalCities");
-            TotalSuburbs = GetTotal("GetTotalSuburbs");
-        }
-
-        public PatientIndexViewModel(string userDisplayName)
-        {
-            UserDisplayName = userDisplayName;
-        }
-
-        private int GetTotal(string storedProcedureName)
-        {
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                return connection.ExecuteScalar<int>(storedProcedureName, commandType: CommandType.StoredProcedure);
+                TotalPatientCareVisits = connection.QueryFirstOrDefault<int>("GetTotalCareVisits", commandType: CommandType.StoredProcedure);
+                TotalPatientCareContracts = connection.QueryFirstOrDefault<int>("GetTotalCareContracts", commandType: CommandType.StoredProcedure);
             }
+        }
+
+        // Add a constructor to initialize properties with data from the database
+        public PatientIndexViewModel(string userDisplayName, IConfiguration configuration, int totalPatientCareVisits, int totalPatientCareContracts, List<PatientConditionsViewModel> patientConditions, List<PatientAppointmentsViewModel> patientAppointments)
+        {
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            UserDisplayName = userDisplayName;
+            TotalPatientCareVisits = totalPatientCareVisits;
+            TotalPatientCareContracts = totalPatientCareContracts;
+            PatientConditions = patientConditions;
+            PatientAppointments = patientAppointments;
         }
     }
 }

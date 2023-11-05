@@ -8,48 +8,46 @@ using HelpingHandsWeb.Models.ViewModels.PatientViewModels;
 using System.Data;
 using System.Data.SqlClient;
 using System;
-using System.Threading.Tasks;
+using HelpingHandsWeb.Data;
 
 namespace HelpingHandsWeb.Controllers
 {
-    public class PatientController : Controller
+    public class PatientController : BaseController
     {
-        private readonly IConfiguration _configuration;
-
-        public PatientController(IConfiguration configuration)
+        public PatientController(ApplicationDbContext context, IConfiguration configuration)
+            : base(context, configuration)
         {
-            _configuration = configuration;
         }
-
-        private string GetUserDisplayName()
-        {
-            return HttpContext.Session.GetString("UserDisplayName");
-        }
-
-        private string ConnectionString
-        {
-            get
-            {
-                return _configuration.GetConnectionString("DefaultConnection");
-            }
-        }
-
 
         [HttpGet("PatientDashboard")]
         public IActionResult PatientDashboard()
         {
             var userDisplayName = GetUserDisplayName();
-            var viewModel = new PatientIndexViewModel(userDisplayName);
+            var viewModel = new PatientIndexViewModel(userDisplayName, _configuration);
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                viewModel.TotalPatientCareVisits = connection.QueryFirstOrDefault<int>("GetPatientTotalCareVisits", commandType: CommandType.StoredProcedure);
+                viewModel.TotalPatientCareContracts = connection.QueryFirstOrDefault<int>("GetPatientTotalChronicConditions", commandType: CommandType.StoredProcedure);
+
+                var patientResults = connection.Query<PatientConditionsViewModel>("GetPatientsConditions", commandType: CommandType.StoredProcedure);
+                viewModel.PatientConditions = patientResults.ToList();
+
+                var nurseResults = connection.Query<PatientAppointmentsViewModel>("GetPatientsAppointment", commandType: CommandType.StoredProcedure);
+                viewModel.PatientAppointments = nurseResults.ToList();
+            }
+
             ViewData["UserDisplayName"] = userDisplayName;
-            return View("~/Views/Patient/PatientDashboard.cshtml", viewModel);
-        }
-        [HttpPost("PatientDashboard")]
-        public IActionResult PatientDashboard(PatientIndexViewModel model)
-        {
-         
-            return View("~/Views/Patient/PatientDashboard.cshtml", model);
+            return View("PatientDashboard", viewModel);
         }
 
+        [HttpPost("AdminDashboard")]
+        public IActionResult AdminDashboard(AdminIndexViewModel model)
+        {
+            return View("AdminDashboard", model);
+        }
 
         [HttpGet("Patients")]
         public IActionResult Patients()
@@ -57,10 +55,7 @@ namespace HelpingHandsWeb.Controllers
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-
-                
                 var patients = connection.Query<PatientViewModel>("GetPatients", commandType: CommandType.StoredProcedure);
-
                 return View("~/Views/Admin/patients.cshtml", patients);
             }
         }
@@ -73,8 +68,6 @@ namespace HelpingHandsWeb.Controllers
                 using (SqlConnection connection = new SqlConnection(ConnectionString))
                 {
                     connection.Open();
-
-                
                     connection.Execute("UpdatePatient", new
                     {
                         UserName = model.UserName,
@@ -103,8 +96,6 @@ namespace HelpingHandsWeb.Controllers
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-
-                
                 connection.Execute("DeletePatient", new { UserID = userId }, commandType: CommandType.StoredProcedure);
             }
             return RedirectToAction("Patients");

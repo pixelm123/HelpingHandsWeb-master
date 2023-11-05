@@ -42,6 +42,29 @@ namespace HelpingHandsWeb.Controllers
             }
         }
 
+        private int GetUserId(string userName)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("GetUserIdByUsername", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@UserName", userName);
+
+                    try
+                    {
+                        return (int)command.ExecuteScalar();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"An error occurred in GetUserId: {ex.Message}");
+                        return 0;
+                    }
+                }
+            }
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -72,7 +95,11 @@ namespace HelpingHandsWeb.Controllers
 
                         if (authenticationResult == 1)
                         {
+                            int userId = GetUserId(model.UserName);
+                            HttpContext.Session.SetInt32("UserId", userId);
                             HttpContext.Session.SetString("IsAuthenticated", "true");
+                            HttpContext.Session.SetString("UserName", model.UserName);
+
 
                             return RedirectToDashboard(userType);
                         }
@@ -92,6 +119,57 @@ namespace HelpingHandsWeb.Controllers
                 return View(model);
             }
         }
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Login(LoginViewModel model)
+        //{
+        //    try
+        //    {
+        //        string userType = GetUserType(model.UserName);
+
+        //        if (userType == null)
+        //        {
+        //            ModelState.AddModelError(string.Empty, "Invalid username or password.");
+        //            return View(model);
+        //        }
+
+        //        ViewBag.UserType = userType;
+
+        //        using (SqlConnection connection = new SqlConnection(connectionString))
+        //        {
+        //            connection.Open();
+        //            using (SqlCommand command = new SqlCommand("LoginAuthenticateUser", connection))
+        //            {
+        //                command.CommandType = CommandType.StoredProcedure;
+        //                command.Parameters.AddWithValue("@UserName", model.UserName);
+        //                command.Parameters.AddWithValue("@Password", model.Password);
+
+        //                int authenticationResult = (int)command.ExecuteScalar();
+
+        //                if (authenticationResult == 1)
+        //                {
+        //                    HttpContext.Session.SetString("IsAuthenticated", "true");
+
+        //                    return RedirectToDashboard(userType);
+        //                }
+        //                else
+        //                {
+        //                    Console.WriteLine("Invalid username or password.");
+        //                    ModelState.AddModelError(string.Empty, "Invalid username or password.");
+        //                    return View(model);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"An error occurred: {ex.Message}");
+        //        ModelState.AddModelError(string.Empty, "An error occurred during login.");
+        //        return View(model);
+        //    }
+        //}
 
         private IActionResult RedirectToDashboard(string userType)
         {

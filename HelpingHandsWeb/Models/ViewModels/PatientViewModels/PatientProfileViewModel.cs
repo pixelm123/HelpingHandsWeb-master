@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
 {
-    public class UpdateProfileViewModel
+    public class PatientProfileViewModel
     {
         [Required(ErrorMessage = "First Name is required.")]
         [StringLength(50, ErrorMessage = "First Name cannot exceed 50 characters.")]
@@ -30,7 +30,6 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
 
         public string UserType { get; set; }
 
-        
-        public List<int> UpdatedChronicConditions { get; set; }
+       
     }
 }

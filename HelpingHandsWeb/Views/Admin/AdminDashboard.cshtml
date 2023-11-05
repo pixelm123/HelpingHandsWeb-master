@@ -68,7 +68,8 @@
                             <img class="rounded-circle" src="~/assets/img/user.jpg" width="24" alt="Admin">
                             <span class="status online"></span>
                         </span>
-                        <span>Admin</span>
+                        <span>@Model.UserName</span>
+
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="@Url.Action("Profile", "Admin")">My Profile</a>

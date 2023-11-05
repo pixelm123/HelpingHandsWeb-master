@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
 {
-    public class RequestCareContractViewModel
+    public class CareContractViewModel
     {
         [Required(ErrorMessage = "Please enter your name.")]
         [Display(Name = "Patient First Name")]

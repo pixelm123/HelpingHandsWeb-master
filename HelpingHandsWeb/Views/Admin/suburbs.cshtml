@@ -83,50 +83,99 @@
                 </div>
             </div>
         </div>
+
         <div class="page-wrapper">
-    <div class="content">
-        <div class="row">
-            <div class="col-sm-5 col-5">
-                <h4 class="page-title">Suburbs</h4>
-            </div>
-            <div class="col-sm-7 col-7 text-right m-b-30">
-                <a href="add-suburb.cshtml" class="btn btn-primary btn-rounded">
-                    <i class="fa fa-plus"></i> Add Suburb
-                </a>
-            </div>
-        </div>
+            <div class="content">
                 <div class="row">
+                    <div class="col-sm-4 col-3">
+                        <h4 class="page-title">Suburbs</h4>
+                    </div>
+                    @* <div class="col-sm-8 col-9 text-right m-b-20">
+                        <div class="form-group form-focus select-focus" style="margin-bottom: 0;">
+                            <label class="focus-label">City</label>
+                            <select id="cityDropdown" class="select">
+                                <option value="">All Cities</option>
+                                <!-- Populate the dropdown with cities from the database -->
+                                @foreach (var city in Model.Select(s => s.CityName).Distinct())
+                                {
+                                    <option value="@city">@city</option>
+                                }
+                            </select>
+                        </div>
+                    </div> *@
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="row filter-row">
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus">
+                                    <label class="focus-label">Suburb</label>
+                                    <input type="text" id="suburbInput" class="form-control floating">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus select-focus">
+                                    <label class="focus-label">City</label>
+                                    <select id="cityInput" class="select floating">
+                                        <option value="">All Cities</option>
+                                        <!-- Populate the dropdown with cities from the database -->
+                                        @foreach (var city in Model.Select(s => s.CityName).Distinct())
+                                        {
+                                            <option value="@city">@city</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus">
+                                    <label class="focus-label">Number of Records</label>
+                                    <input type="number" id="recordCountInput" class="form-control floating" value="10">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <a id="searchButton" class="btn btn-success btn-block">Search</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Display search results -->
+                <div id="resultContainer" class="row doctor-grid">
+                    <!-- Results will be dynamically added here using JavaScript -->
+                </div>
+                <!-- Your existing code -->
+
+                <div class="row" id="originalSuburbs">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table table-striped custom-table mb-0 datatable">
+                            <table class="table table-striped custom-table">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Suburb Name</th>
-                                        <th>Postal Code</th>
-                                        <th>City</th>
+                                        <th>Suburb</th>
+                                        <th>City Name</th>
+                                        <th>City Abbreviation</th>
+                                        <!-- Add more columns as needed -->
                                         <th class="text-right">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var suburb in Model)
+                                    @for (int i = 0; i < Model.Count; i++)
                                     {
+                                        var suburb = Model[i];
                                         <tr>
-                                            <td>@suburb.SuburbID</td>
+                                            <td>@(i + 1)</td>
                                             <td>@suburb.Suburb</td>
-                                            <td>@suburb.PostalCode</td>
                                             <td>@suburb.CityName</td>
-
+                                            <td>@suburb.CityAbbreviation</td>
+                                            <!-- Add more columns as needed -->
                                             <td class="text-right">
                                                 <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa fa-ellipsis-v"></i>
-                                                    </a>
+                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit-condition.html">
+                                                        <a class="dropdown-item" href="@Url.Action("EditSuburb", "Admin", new { id = suburb.SuburbID })">
                                                             <i class="fa fa-pencil m-r-5"></i> Edit
                                                         </a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_department_@suburb.SuburbID">
+                                                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_suburb_@suburb.SuburbID">
                                                             <i class="fa fa-trash-o m-r-5"></i> Delete
                                                         </a>
                                                     </div>
@@ -140,29 +189,84 @@
                     </div>
                 </div>
 
-    </div>
+                <!-- Your existing code -->
 
-    @foreach (var suburb in Model)
-    {
-        <div id="delete_department_@suburb.SuburbID" class="modal fade delete-modal" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body text-center">
-                        <img src="~/assets/img/sent.png" alt="" width="50" height="46">
-                        <h3>Are you sure want to delete this suburb?</h3>
-                        <div class="m-t-20">
-                            <a href="@Url.Action("Suburbs", "Admin")" class="btn btn-white">Close</a>
-                            <a href="@Url.Action("DeleteSuburb", "Admin", new { id = suburb.SuburbID })" class="btn btn-danger">Delete</a>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="see-all">
+                            <a id="loadMoreButton" class="see-all-btn">Load More</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    }
-</div>
+
+        <!-- Delete Suburb Modal -->
+        @foreach (var suburb in Model)
+        {
+            <div id="delete_suburb_@suburb.SuburbID" class="modal fade delete-modal" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Delete Suburb</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this suburb?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="@Url.Action("DeleteSuburb", "Admin", new { id = suburb.SuburbID })" class="btn btn-danger btn-rounded">Delete</a>
+                            <button type="button" class="btn btn-default btn-rounded" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                // Initial load with 10 records
+                loadResults();
+
+                $("#searchButton").click(function () {
+                    loadResults();
+                });
+
+                $("#loadMoreButton").click(function () {
+                    loadResults(true);
+                });
+
+                function loadResults(loadMore = false) {
+                    var suburb = $("#suburbInput").val();
+                    var city = $("#cityInput").val();
+                    var recordCount = loadMore ? $("#recordCountInput").val() : 10;
+
+                    $.ajax({
+                        url: "/Admin/Suburbs", // Update the URL
+                        type: "POST",
+                        data: { suburb: suburb, city: city, recordCount: recordCount, loadMore: loadMore },
+                        success: function (data) {
+                            if (loadMore) {
+                                // If loading more, append the data
+                                $("#resultContainer").append(data);
+                            } else {
+                                // If not loading more, replace the existing data
+                                $("#resultContainer").html(data);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert("Error occurred while loading suburbs. Check the console for more details.");
+                        }
+                    });
+                }
+            });
+        </script>
 
 
-    
     </div>
     <div class="sidebar-overlay" data-reff=""></div>
     <script src="~/assets/js/jquery-3.2.1.min.js"></script>
