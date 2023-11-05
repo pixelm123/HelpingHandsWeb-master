@@ -223,7 +223,12 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>@nurse.IDNo</td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(nurse.IDNo))
+                                                {
+                                                    @string.Format("{0:### ### #### ####}", double.Parse(nurse.IDNo))
+                                                }
+                                            </td>
                                             <td>@nurse.Email</td>
                                             <td>@nurse.ContactNo</td>
 

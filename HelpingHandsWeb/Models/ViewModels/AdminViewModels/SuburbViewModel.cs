@@ -19,11 +19,9 @@ namespace HelpingHandsWeb.Models.ViewModels.AdminViewModels
 
         public int CityId { get; set; }
 
-        
-        
         public string CityName { get; set; }
+        public string CityAbbreviation { get; set; }
 
-        public City City { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

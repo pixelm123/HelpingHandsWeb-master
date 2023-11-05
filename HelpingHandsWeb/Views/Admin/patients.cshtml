@@ -90,45 +90,113 @@
                     <div class="col-sm-4 col-3">
                         <h4 class="page-title">Patients</h4>
                     </div>
-                    <div class="row filter-row">
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus">
-                                <label class="focus-label">Name</label>
-                                <input type="text" class="form-control floating">
+                    <div class="col-sm-8 col-9 text-right m-b-20">
+                        <a asp-action="AddPatient" class="btn btn-primary btn-rounded float-right">
+                            <i class="fa fa-plus"></i> Add Patient
+                        </a>
+                    </div>
+                </div>
+                <div class="row mb-3">
+
+                    <div class="col-md-12">
+
+                        <div class="row filter-row">
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus">
+                                    <label class="focus-label">First Name</label>
+                                    <input type="text" id="firstNameInput" class="form-control floating">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus">
+                                    <label class="focus-label">Surname</label>
+                                    <input type="text" id="surnameInput" class="form-control floating">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus select-focus">
+                                    <label class="focus-label">Gender</label>
+                                    <select id="genderInput" class="select floating">
+                                        <option>Select Gender</option>
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <a id="searchButton" class="btn btn-success btn-block">Search</a>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus">
-                                <label class="focus-label">Surname</label>
-                                <input type="text" class="form-control floating">
+
+                        <div class="row filter-row">
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group form-focus select-focus">
+                                    <label class="focus-label">View Mode</label>
+                                    <select id="viewMode" class="select floating">
+                                        <option value="grid">Grid View</option>
+                                        <option value="list">List View</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <div class="form-group form-focus select-focus">
-                                <label class="focus-label">Gender</label>
-                                <select class="select floating">
-                                    <option>Select Gender</option>
-                                    <option>Female</option>
-                                    <option>Male</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                            <a href="#" class="btn btn-success btn-block"> Search </a>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <!-- Display search results -->
+                <div id="resultContainer" class="row doctor-grid">
+                    <!-- Results will be dynamically added here using JavaScript -->
+                </div>
+
+                <div class="row doctor-grid" id="originalPatients">
+                    @foreach (var patient in Model)
+                    {
+                        <div class="col-md-4 col-sm-4 col-lg-3">
+                            <div class="profile-widget">
+                                <div class="doctor-img">
+                                    <a class="avatar" href="@Url.Action("EditPatient", "Admin", new { id = patient.UserID })">
+                                        @if (patient.ProfilePicture != null)
+                                        {
+                                            <img alt="" src="data:image;base64,@Convert.ToBase64String(patient.ProfilePicture)">
+                                        }
+                                        else
+                                        {
+                                            <img alt="" src="~/assets/img/user.jpg">
+                                        }
+                                    </a>
+                                </div>
+                                <div class="dropdown profile-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="@Url.Action("EditPatient", "Admin", new { id = patient.UserID })">
+                                            <i class="fa fa-pencil m-r-5"></i> Edit
+                                        </a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_patient_@patient.UserID">
+                                            <i class="fa fa-trash-o m-r-5"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                                <h4 class="doctor-name text-ellipsis">
+                                    <a href="@Url.Action("EditPatient", "Admin", new { id = patient.UserID })">@patient.FirstName  @patient.Surname </a>
+                                </h4>
+                                <div class="doc-prof">@((patient.Gender == "M") ? "Male" : "Female")</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!-- List view of patients -->
+                <div class="row" id="listContainer">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table table-border table-striped custom-table datatable mb-0">
+                            <table class="table table-striped custom-table">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Surname</th>
-                                        <th>Gender</th>
-                                        <th>Contact Number</th>
+                                        <th style="min-width:200px;">Name</th>
+                                        
                                         <th>Email</th>
+                                        <th>Contact Number</th>
+                                        <th style="min-width: 110px;">Gender</th>
+                                        <th>Status</th>
                                         <th class="text-right">Action</th>
                                     </tr>
                                 </thead>
@@ -136,45 +204,153 @@
                                     @foreach (var patient in Model)
                                     {
                                         <tr>
-                                            <td>@patient.FirstName</td>
-                                            <td>@patient.Surname</td>
-                                            <td>@(patient.Gender == 'M' ? "Male" : "Female")</td>
-                                            <td>@patient.ContactNo</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    @if (patient.ProfilePicture != null)
+                                                    {
+                                                        <img width="28" height="28" src="data:image;base64,@Convert.ToBase64String(patient.ProfilePicture)" class="rounded-circle" alt="">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img width="28" height="28" src="~/assets/img/user.jpg" class="rounded-circle" alt="">
+                                                    }
+                                                    <div class="ml-2">
+                                                        <h2>@patient.FirstName @patient.Surname</h2>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                          
                                             <td>@patient.Email</td>
+                                            <td>@string.Format("{0:### ### ####}", double.Parse(patient.ContactNo))</td>
+                                            <td>
+                                                @if (patient.Gender == "M")
+                                                {
+                                                    <span>Male</span>
+                                                }
+                                                else if (patient.Gender == "F")
+                                                {
+                                                    <span>Female</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (patient.Status == "A")
+                                                {
+                                                    <span class="custom-badge status-green">Active</span>
+                                                }
+                                                else if (patient.Status == "I")
+                                                {
+                                                    <span class="custom-badge status-red">Inactive</span>
+                                                }
+                                            </td>
                                             <td class="text-right">
                                                 <div class="dropdown dropdown-action">
                                                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="edit-patient.cshtml?id=@patient.PatientID"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient_@patient.PatientID"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                        <a class="dropdown-item" href="@Url.Action("EditPatient", "Admin", new { id = patient.UserID })"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient_@patient.UserID"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
-                                        <div id="delete_patient_@patient.PatientID" class="modal fade delete-modal" role="dialog">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-body text-center">
-                                                        <img src="~/assets/img/sent.png" alt="" width="50" height="46">
-                                                        <h3>Are you sure want to delete this Patient?</h3>
-                                                        <div class="m-t-20">
-                                                            <a href="@Url.Action("Patients", "Patient")" class="btn btn-white">Close</a>
-                                                            <a href="DeletePatient/@patient.UserID" class="btn btn-danger">Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     }
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="see-all">
+                            <a asp-action="Patients" class="see-all-btn">Load More</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-           
         </div>
+        <!-- Delete Patient Modal -->
+        @foreach (var patient in Model)
+        {
+            <div class="modal fade" id="delete_patient_@patient.UserID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete Patient</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete @patient.FirstName @patient.Surname?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a class="btn btn-danger" href="@Url.Action("DeletePatient", "Admin", new { id = patient.UserID })">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                // Initial load with grid view
+                loadGridView();
+
+                $("#searchButton").click(function () {
+                    console.log("Search button clicked");
+                    var firstName = $("#firstNameInput").val();
+                    var surname = $("#surnameInput").val();
+                    var gender = $("#genderInput").val();
+
+                    $.ajax({
+                        url: "/Admin/patients", // Update the URL
+                        type: "POST",
+                        data: { firstName: firstName, surname: surname, gender: gender },
+                        success: function (data) {
+                            console.log("Search success");
+
+                            $("#resultContainer").html(data);
+
+                            $("#resultContainer").show();
+
+                            $("#originalPatients").hide();
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert("Error occurred while searching patients. Check the console for more details.");
+                        }
+                    });
+                });
+
+                $("#viewMode").change(function () {
+                    console.log("View mode changed");
+                    var selectedMode = $("#viewMode").val();
+                    if (selectedMode === "list") {
+                        loadListView();
+                    } else {
+                        loadGridView();
+                    }
+                });
+
+                function loadListView() {
+                    console.log("Loading list view");
+                    $("#listContainer").show();
+                    $("#resultContainer").hide();
+                    $("#originalPatients").hide();
+                }
+
+                function loadGridView() {
+                    console.log("Loading grid view");
+                    $("#originalPatients").show();
+                    $("#listContainer").hide();
+                    $("#resultContainer").hide();
+                }
+            });
+        </script>
+
+        
     </div>
     <div class="sidebar-overlay" data-reff=""></div>
     <script src="~/assets/js/jquery-3.2.1.min.js"></script>

@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using HelpingHandsWeb.Models.Users;
 
 namespace HelpingHandsWeb.Controllers
 {
@@ -231,11 +232,16 @@ namespace HelpingHandsWeb.Controllers
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                var results = connection.Query<SuburbViewModel>("GetSuburb", commandType: CommandType.StoredProcedure);
+                var results = connection.Query<SuburbViewModel>(
+                    "GetSuburb",
+                    commandType: CommandType.StoredProcedure
+                );
                 model = results.ToList();
             }
             return View("suburbs", model);
         }
+
+
 
 
         [HttpGet("conditions")]
@@ -373,20 +379,31 @@ namespace HelpingHandsWeb.Controllers
         }
 
         [HttpGet("officemanagers")]
-        public IActionResult OfficeManagers(int userId)
+        public IActionResult OfficeManagers(string username)
         {
             var model = new List<OfficeManagerViewModel>();
+
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                var results = connection.Query<OfficeManagerViewModel>("GetUser", new
+
+                if (string.IsNullOrEmpty(username))
                 {
-                    UserID = userId
-                }, commandType: CommandType.StoredProcedure);
-                model = results.Where(o => o.UserType == "O").ToList();
+                    
+                    var results = connection.Query<OfficeManagerViewModel>("GetUser", commandType: CommandType.StoredProcedure);
+                    model = results.Where(o => o.UserType == "O").ToList();
+                }
+                else
+                {
+                   
+                    var searchResults = connection.Query<OfficeManagerViewModel>("SearchOfficeManagers", new { Username = username }, commandType: CommandType.StoredProcedure);
+                    model = searchResults.ToList();
+                }
             }
+
             return View("officemanagers", model);
         }
+
 
         [HttpPost("add-nurse")]
         public IActionResult AddNurse(NurseViewModel model)
@@ -496,18 +513,55 @@ namespace HelpingHandsWeb.Controllers
         }
 
 
-        [HttpGet("patients")]
-        public IActionResult Patients()
+        [HttpGet("Admin/patients")]
+        [HttpPost("Admin/patients")]
+        public IActionResult Patients(string firstName, string surname, string gender)
         {
-            List<PatientViewModel> model;
+            var model = new List<PatientViewModel>();
+
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                var results = connection.Query<PatientViewModel>("GetPatients", commandType: CommandType.StoredProcedure);
-                model = results.ToList();
+
+                if (string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(surname) && string.IsNullOrEmpty(gender))
+                {
+                    var results = connection.Query<PatientViewModel>("GetPatients", commandType: CommandType.StoredProcedure);
+                    model = results.ToList();
+                }
+                else
+                {
+                    if (gender == "Male")
+                    {
+                        gender = "M";
+                    }
+                    else if (gender == "Female")
+                    {
+                        gender = "F";
+                    }
+
+                    var results = connection.Query<PatientViewModel>("SearchPatients",
+                        new { FirstName = firstName, Surname = surname, Gender = gender },
+                        commandType: CommandType.StoredProcedure);
+
+                    model = results.ToList();
+                }
             }
+
             return View("patients", model);
         }
+
+        //[HttpGet("patients")]
+        //public IActionResult Patients()
+        //{
+        //    List<PatientViewModel> model;
+        //    using (SqlConnection connection = new SqlConnection(ConnectionString))
+        //    {
+        //        connection.Open();
+        //        var results = connection.Query<PatientViewModel>("GetPatients", commandType: CommandType.StoredProcedure);
+        //        model = results.ToList();
+        //    }
+        //    return View("patients", model);
+        //}
 
     }
 }
