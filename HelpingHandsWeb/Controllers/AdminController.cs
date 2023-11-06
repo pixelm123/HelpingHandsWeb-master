@@ -60,6 +60,8 @@ namespace HelpingHandsWeb.Controllers
         [HttpPost("AdminDashboard")]
         public IActionResult AdminDashboard(AdminIndexViewModel model)
         {
+
+
             return View("AdminDashboard", model);
         }
 

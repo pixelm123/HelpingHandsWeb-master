@@ -10,12 +10,11 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
 {
     public class PatientConditionsViewModel
     {
-
-        [Key]
         public int PatientID { get; set; }
-
-        public string PatientName { get; set; }
-
-        public string ConditionName { get; set; }
+        public int ConditionID { get; set; }
+        public bool IsDeleted { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
+
 }

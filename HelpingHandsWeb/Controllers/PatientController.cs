@@ -32,24 +32,26 @@ namespace HelpingHandsWeb.Controllers
         public IActionResult PatientDashboard()
         {
             var userDisplayName = GetUserDisplayName();
-            var viewModel = new PatientIndexViewModel(userDisplayName, _configuration);
+            var viewModel = new PatientIndexViewModel(userDisplayName, _configuration, this);
+
+            // Retrieve UserId from the session
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
 
-                viewModel.TotalCareVisits = connection.QueryFirstOrDefault<int>("GetTotalCareVisits", commandType: CommandType.StoredProcedure);
-                viewModel.TotalCareContracts = connection.QueryFirstOrDefault<int>("GetTotalChronicConditions", commandType: CommandType.StoredProcedure);
+                viewModel.TotalCareVisits = GetTotalCareContracts(userId);
+                viewModel.TotalCareContracts = GetTotalCareVisits(userId);
+
 
                 // Call the new method to get patient conditions
-                viewModel.PatientConditions = GetPatientConditions(viewModel.PatientId);
+                viewModel.PatientConditions = GetPatientConditions(userId).ToList();
 
-                var nurseResults = connection.Query<PatientAppointmentsViewModel>("GetPatientsAppointments", commandType: CommandType.StoredProcedure);
-                viewModel.Appointments = nurseResults.ToList();
+                viewModel.Appointments = GetPatientAppointments(userId);
             }
 
             ViewData["UserName"] = userDisplayName;
-
             return View("PatientDashboard", viewModel);
         }
 
@@ -58,24 +60,23 @@ namespace HelpingHandsWeb.Controllers
         {
             return View("PatientDashboard", model);
         }
-
         // New method to get patient conditions
         // New method to get patient conditions
-        private List<PatientConditionsViewModel> GetPatientConditions(int patientId)
-        {
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
+        //private List<PatientConditionsViewModel> GetPatientConditions(int patientId)
+        //{
+        //    using (SqlConnection connection = new SqlConnection(ConnectionString))
+        //    {
+        //        connection.Open();
 
-                var results = connection.Query<PatientConditionsViewModel>(
-                    "GetPatientCondition",
-                    new { PatientID = patientId },
-                    commandType: CommandType.StoredProcedure
-                );
+        //        var results = connection.Query<PatientConditionsViewModel>(
+        //            "GetPatientCondition",
+        //            new { PatientID = patientId },
+        //            commandType: CommandType.StoredProcedure
+        //        );
 
-                return results.ToList(); // Explicitly convert to List<PatientConditionsViewModel>
-            }
-        }
+        //        return results.ToList(); // Explicitly convert to List<PatientConditionsViewModel>
+        //    }
+        //}
 
         [HttpPost("change-password")]
         public IActionResult cc(PatientIndexViewModel model)
@@ -89,6 +90,8 @@ namespace HelpingHandsWeb.Controllers
             // Implementation
             return View("profile", model);
         }
+
+
 
     }
 }

@@ -66,6 +66,8 @@ namespace HelpingHandsWeb.Controllers
             }
         }
 
+        
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -94,6 +96,7 @@ namespace HelpingHandsWeb.Controllers
 
                         int authenticationResult = (int)command.ExecuteScalar();
 
+                        // Inside the LoginController
                         if (authenticationResult == 1)
                         {
                             int userId = GetUserId(model.UserName);
@@ -101,9 +104,11 @@ namespace HelpingHandsWeb.Controllers
                             HttpContext.Session.SetString("IsAuthenticated", "true");
                             HttpContext.Session.SetString("UserName", model.UserName);
 
-
                             return RedirectToDashboard(userType);
                         }
+
+
+                       
                         else
                         {
                             Console.WriteLine("Invalid username or password.");
@@ -119,6 +124,8 @@ namespace HelpingHandsWeb.Controllers
                 ModelState.AddModelError(string.Empty, "An error occurred during login.");
                 return View(model);
             }
+
+
         }
 
 

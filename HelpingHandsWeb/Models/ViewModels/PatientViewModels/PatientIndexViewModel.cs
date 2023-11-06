@@ -7,60 +7,39 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
+using HelpingHandsWeb.Controllers;
+
 
 namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
 {
     public class PatientIndexViewModel
     {
         private readonly string _connectionString;
+        private readonly BaseController _baseController;
 
         public string UserName { get; set; }
         public int PatientId { get; set; }
         public int TotalCareVisits { get; set; }
         public int TotalCareContracts { get; set; }
+
         public List<PatientConditionsViewModel> PatientConditions { get; set; }
-        public List<PatientAppointmentsViewModel> Appointments{ get; set; }
+        public IEnumerable<PatientAppointmentsViewModel> Appointments { get; set; }
 
-
-        public PatientIndexViewModel(string userName, IConfiguration configuration)
+        public PatientIndexViewModel(string userName, IConfiguration configuration, BaseController baseController)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
             UserName = userName;
+            _baseController = baseController;
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                TotalCareVisits = connection.QueryFirstOrDefault<int>("GetTotalCareVisits", commandType: CommandType.StoredProcedure);
-                TotalCareContracts = connection.QueryFirstOrDefault<int>("GetTotalCareContracts", commandType: CommandType.StoredProcedure);
+            TotalCareVisits = _baseController.GetTotalCareVisits(_baseController.GetUserId(userName));
+            TotalCareContracts = _baseController.GetTotalCareContracts(_baseController.GetUserId(userName));
 
 
-            }
+            // You may need to adjust these lines based on your actual method signatures and return types
+            PatientConditions = _baseController.GetPatientConditions(_baseController.GetUserId(userName)).ToList();
+            Appointments = _baseController.GetPatientAppointments(_baseController.GetUserId(userName)).ToList();
         }
 
-
-
-        //public PatientIndexViewModel(string userDisplayName, IConfiguration configuration)
-        //{
-        //    _connectionString = configuration.GetConnectionString("DefaultConnection");
-        //    UserDisplayName = userDisplayName;
-
-        //    using (SqlConnection connection = new SqlConnection(_connectionString))
-        //    {
-        //        connection.Open();
-        //        TotalCareVisits = connection.QueryFirstOrDefault<int>("GetTotalCareVisits", commandType: CommandType.StoredProcedure);
-        //        TotalCareContracts = connection.QueryFirstOrDefault<int>("GetTotalCareContracts", commandType: CommandType.StoredProcedure);
-        //    }
-        //}
-
-        //// Add a constructor to initialize properties with data from the database
-        //public PatientIndexViewModel(string userDisplayName, IConfiguration configuration, int totalPatientCareVisits, int totalPatientCareContracts, List<PatientConditionsViewModel> patientConditions, List<PatientAppointmentsViewModel> patientAppointments)
-        //{
-        //    _connectionString = configuration.GetConnectionString("DefaultConnection");
-        //    UserDisplayName = userDisplayName;
-        //    TotalCareVisits = totalPatientCareVisits;
-        //    TotalCareContracts = totalPatientCareContracts;
-        //    PatientConditions = patientConditions;
-        //    PatientAppointments = patientAppointments;
-        //}
+        // Your other methods remain unchanged
     }
 }
