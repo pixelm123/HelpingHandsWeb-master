@@ -47,7 +47,7 @@
     <![endif]-->
 </head>
 <body>
-    @Html.Partial("_AdminPartial") 
+    @await Html.PartialAsync("_AdminPartial", ViewData)
 
     <div class="page-wrapper">
         <div class="content">

@@ -1,4 +1,4 @@
-﻿using System;
+﻿  using System;
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
@@ -34,9 +34,6 @@ namespace HelpingHandsWeb.Models.ViewModels.AdminViewModels
             }
         }
 
-        //public AdminIndexViewModel(string userDisplayName)
-        //{
-        //    UserDisplayName = userDisplayName;
-        //}
+        
     }
 }

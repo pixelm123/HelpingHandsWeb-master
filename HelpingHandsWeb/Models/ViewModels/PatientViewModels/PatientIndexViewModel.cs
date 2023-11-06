@@ -2,7 +2,11 @@
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
-using Microsoft.Extensions.Configuration; // Add this using statement for IConfiguration
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using Dapper;
 
 namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
 {
@@ -10,34 +14,53 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
     {
         private readonly string _connectionString;
 
-        public string UserDisplayName { get; set; }
-        public int TotalPatientCareVisits { get; set; }
-        public int TotalPatientCareContracts { get; set; }
+        public string UserName { get; set; }
+        public int PatientId { get; set; }
+        public int TotalCareVisits { get; set; }
+        public int TotalCareContracts { get; set; }
         public List<PatientConditionsViewModel> PatientConditions { get; set; }
-        public List<PatientAppointmentsViewModel> PatientAppointments { get; set; }
+        public List<PatientAppointmentsViewModel> Appointments{ get; set; }
 
-        public PatientIndexViewModel(string userDisplayName, IConfiguration configuration)
+
+        public PatientIndexViewModel(string userName, IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
-            UserDisplayName = userDisplayName;
+            UserName = userName;
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                TotalPatientCareVisits = connection.QueryFirstOrDefault<int>("GetTotalCareVisits", commandType: CommandType.StoredProcedure);
-                TotalPatientCareContracts = connection.QueryFirstOrDefault<int>("GetTotalCareContracts", commandType: CommandType.StoredProcedure);
+                TotalCareVisits = connection.QueryFirstOrDefault<int>("GetTotalCareVisits", commandType: CommandType.StoredProcedure);
+                TotalCareContracts = connection.QueryFirstOrDefault<int>("GetTotalCareContracts", commandType: CommandType.StoredProcedure);
+
+
             }
         }
 
-        // Add a constructor to initialize properties with data from the database
-        public PatientIndexViewModel(string userDisplayName, IConfiguration configuration, int totalPatientCareVisits, int totalPatientCareContracts, List<PatientConditionsViewModel> patientConditions, List<PatientAppointmentsViewModel> patientAppointments)
-        {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
-            UserDisplayName = userDisplayName;
-            TotalPatientCareVisits = totalPatientCareVisits;
-            TotalPatientCareContracts = totalPatientCareContracts;
-            PatientConditions = patientConditions;
-            PatientAppointments = patientAppointments;
-        }
+
+
+        //public PatientIndexViewModel(string userDisplayName, IConfiguration configuration)
+        //{
+        //    _connectionString = configuration.GetConnectionString("DefaultConnection");
+        //    UserDisplayName = userDisplayName;
+
+        //    using (SqlConnection connection = new SqlConnection(_connectionString))
+        //    {
+        //        connection.Open();
+        //        TotalCareVisits = connection.QueryFirstOrDefault<int>("GetTotalCareVisits", commandType: CommandType.StoredProcedure);
+        //        TotalCareContracts = connection.QueryFirstOrDefault<int>("GetTotalCareContracts", commandType: CommandType.StoredProcedure);
+        //    }
+        //}
+
+        //// Add a constructor to initialize properties with data from the database
+        //public PatientIndexViewModel(string userDisplayName, IConfiguration configuration, int totalPatientCareVisits, int totalPatientCareContracts, List<PatientConditionsViewModel> patientConditions, List<PatientAppointmentsViewModel> patientAppointments)
+        //{
+        //    _connectionString = configuration.GetConnectionString("DefaultConnection");
+        //    UserDisplayName = userDisplayName;
+        //    TotalCareVisits = totalPatientCareVisits;
+        //    TotalCareContracts = totalPatientCareContracts;
+        //    PatientConditions = patientConditions;
+        //    PatientAppointments = patientAppointments;
+        //}
     }
 }

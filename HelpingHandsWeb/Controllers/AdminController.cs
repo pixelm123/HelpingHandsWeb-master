@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using HelpingHandsWeb.Models.Users;
+using System.Collections.Generic;
 
 namespace HelpingHandsWeb.Controllers
 {
@@ -26,8 +27,6 @@ namespace HelpingHandsWeb.Controllers
         public AdminController(ApplicationDbContext context, IConfiguration configuration) : base(context, configuration)
         {
         }
-
-
 
 
         [HttpGet("AdminDashboard")]
@@ -52,14 +51,13 @@ namespace HelpingHandsWeb.Controllers
                 viewModel.Nurses = nurseResults.ToList();
             }
 
-            ViewData["UserDisplayName"] = userDisplayName;
+       
+            ViewData["UserName"] = userDisplayName;
+
             return View("AdminDashboard", viewModel);
-       }
-    
+        }
 
-
-
-    [HttpPost("AdminDashboard")]
+        [HttpPost("AdminDashboard")]
         public IActionResult AdminDashboard(AdminIndexViewModel model)
         {
             return View("AdminDashboard", model);
@@ -95,6 +93,8 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Cities");
             }
+
+            ViewData["UserName"] = GetUserDisplayName();
             return View("add-city", model);
         }
 
@@ -115,6 +115,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Cities");
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return View("edit-city", model);
         }
 
@@ -142,12 +143,14 @@ namespace HelpingHandsWeb.Controllers
                 var results = connection.Query<CityViewModel>("GetCity", commandType: CommandType.StoredProcedure);
                 model = results.ToList();
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return View("cities", model);
         }
 
         [HttpGet("add-city")]
         public IActionResult AddCity()
         {
+            ViewData["UserName"] = GetUserDisplayName();
             return View("add-city", new CityViewModel());
         }
 
@@ -166,6 +169,7 @@ namespace HelpingHandsWeb.Controllers
                         CityId = model.CityId
                     }, commandType: CommandType.StoredProcedure);
                 }
+                ViewData["UserName"] = GetUserDisplayName();
                 return RedirectToAction("Suburbs");
             }
             ViewBag.CityList = new SelectList(_context.Cities.Where(c => !c.IsDeleted), "CityId", "Name", model.CityId);
@@ -191,6 +195,7 @@ namespace HelpingHandsWeb.Controllers
                 return RedirectToAction("Suburbs");
             }
             ViewBag.CityList = new SelectList(_context.Cities.Where(c => !c.IsDeleted), "CityId", "Name", model.CityId);
+            ViewData["UserName"] = GetUserDisplayName();
             return View("edit-suburb", model);
         }
 
@@ -237,7 +242,7 @@ namespace HelpingHandsWeb.Controllers
                     model = model.Take(recordCount).ToList();
                 }
             }
-
+            ViewData["UserName"] = GetUserDisplayName();
             return View("suburbs", model);
         }
 
@@ -251,12 +256,14 @@ namespace HelpingHandsWeb.Controllers
                 var results = connection.Query<ConditionViewModel>("GetChronicCondition", commandType: CommandType.StoredProcedure);
                 model = results.ToList();
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return View("conditions", model);
         }
 
         [HttpGet("add-condition")]
         public IActionResult AddCondition()
         {
+            ViewData["UserName"] = GetUserDisplayName();
             return View("add-condition", new ConditionViewModel());
         }
 
@@ -276,6 +283,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Conditions");
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return View("add-condition", model);
         }
 
@@ -293,6 +301,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 model = result;
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return View("edit-condition", model);
         }
 
@@ -313,6 +322,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Conditions");
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return View("edit-condition", model);
         }
 
@@ -324,6 +334,7 @@ namespace HelpingHandsWeb.Controllers
                 connection.Open();
                 connection.Execute("DeleteChronicCondition", new { ConditionID = id }, commandType: CommandType.StoredProcedure);
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return RedirectToAction("Conditions");
         }
 
@@ -347,6 +358,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("OfficeManagers");
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return View("add-officemanager", model);
         }
 
@@ -372,6 +384,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("OfficeManagers");
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return View("edit-officemanager", model);
         }
 
@@ -395,7 +408,7 @@ namespace HelpingHandsWeb.Controllers
                     model = searchResults.ToList();
                 }
             }
-
+            ViewData["UserName"] = GetUserDisplayName();
             return View("officemanagers", model);
         }
 
@@ -424,6 +437,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Nurses");
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return View("add-nurse", model);
         }
 
@@ -452,6 +466,7 @@ namespace HelpingHandsWeb.Controllers
                 }
                 return RedirectToAction("Nurses");
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return View("edit-nurse", model);
         }
 
@@ -466,6 +481,7 @@ namespace HelpingHandsWeb.Controllers
                     UserID = userId
                 }, commandType: CommandType.StoredProcedure);
             }
+            ViewData["UserName"] = GetUserDisplayName();
             return RedirectToAction("Nurses");
         }
 
@@ -503,6 +519,7 @@ namespace HelpingHandsWeb.Controllers
                 }
             }
 
+            ViewData["UserName"] = GetUserDisplayName();
             return View("nurses", model);
 
         }
@@ -540,7 +557,7 @@ namespace HelpingHandsWeb.Controllers
                     model = results.ToList();
                 }
             }
-
+            ViewData["UserName"] = GetUserDisplayName();
             return View("patients", model);
         }
     }

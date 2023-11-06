@@ -158,48 +158,50 @@
             </div>
         }
 
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-        <script>
-            $(document).ready(function () {
-                // Initial load with 10 records
-                loadResults();
-
-                $("#searchButton").click(function () {
-                    loadResults();
-                });
-
-                $("#loadMoreButton").click(function () {
-                    loadResults(true);
-                });
-
-                function loadResults(loadMore = false) {
-                    var suburb = $("#suburbInput").val();
-                    var city = $("#cityInput").val();
-                    var recordCount = loadMore ? $("#recordCountInput").val() : 10;
-
-                    $.ajax({
-                        url: "/Admin/Suburbs", // Update the URL
-                        type: "POST",
-                        data: { suburb: suburb, city: city, recordCount: recordCount, loadMore: loadMore },
-                        success: function (data) {
-                            if (loadMore) {
-                                // If loading more, append the data
-                                $("#resultContainer").append(data);
-                            } else {
-                                // If not loading more, replace the existing data
-                                $("#resultContainer").html(data);
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error(xhr.responseText);
-                            alert("Error occurred while loading suburbs. Check the console for more details.");
-                        }
-                    });
-                }
-            });
-        </script>
+       
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Initial load with 10 records
+            loadResults();
+
+            $("#searchButton").click(function () {
+                loadResults();
+            });
+
+            $("#loadMoreButton").click(function () {
+                loadResults(true);
+            });
+
+            function loadResults(loadMore = false) {
+                var suburb = $("#suburbInput").val();
+                var city = $("#cityInput").val();
+                var recordCount = loadMore ? $("#recordCountInput").val() : 10;
+
+                $.ajax({
+                    url: "/Admin/Suburbs", // Update the URL with the correct endpoint
+                    type: "POST",
+                    data: { suburb: suburb, city: city, recordCount: recordCount, loadMore: loadMore },
+                    success: function (data) {
+                        if (loadMore) {
+                            // If loading more, append the data
+                            $("#resultContainer").append(data);
+                        } else {
+                            // If not loading more, replace the existing data
+                            $("#resultContainer").html(data);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert("Error occurred while loading suburbs. Check the console for more details.");
+                    }
+                });
+            }
+        });
+    </script>
+
     <div class="sidebar-overlay" data-reff=""></div>
     <script src="~/assets/js/jquery-3.2.1.min.js"></script>
     <script src="~/assets/js/popper.min.js"></script>

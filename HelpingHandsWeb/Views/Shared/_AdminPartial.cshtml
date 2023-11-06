@@ -17,13 +17,15 @@
                 <span class="user-img">
                     <img class="rounded-circle" src="~/assets/img/user.jpg" width="24" alt="Admin">
                     <span class="status online"></span>
+                
                     <span>@ViewData["UserName"]</span>
+
                 </span>
             </a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="@Url.Action("Profile", "Admin")">My Profile</a>
                 <a class="dropdown-item" href="@Url.Action("EditProfile", "Admin")">Edit Profile</a>
-                <a class="dropdown-item" href="@Url.Action("ChangePassword", "Admin")">Settings</a>
+                <a class="dropdown-item" href="@Url.Action("ChangePassword", "Admin")">Change Password</a>
                 <a class="dropdown-item" href="@Url.Action("Logout", "Account")">Logout</a>
             </div>
         </li>
@@ -47,7 +49,7 @@
                 <li><a href="@Url.Action("Conditions", "Admin")"><i class="fa fa-hospital-o"></i><span>Chronic Conditions</span></a></li>
                 <li><a href="@Url.Action("Cities", "Admin")"><i class="fa fa-hospital-o"></i><span>Cities</span></a></li>
                 <li><a href="@Url.Action("Suburbs", "Admin")"><i class="fa fa-hospital-o"></i><span>Suburbs</span></a></li>
-                <li><a href="@Url.Action("ChangePassword", "Admin")"><i class="fa fa-hospital-o"></i><span>Change Password</span></a></li>
+              
 
             </ul>
         </div>

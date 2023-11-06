@@ -2,8 +2,8 @@
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using HelpingHandsWeb.Data;
-
 using System.Data.SqlClient;
+using Microsoft.AspNetCore.Http;
 using System;
 
 namespace HelpingHandsWeb.Controllers
@@ -13,7 +13,7 @@ namespace HelpingHandsWeb.Controllers
         protected readonly IConfiguration _configuration;
 
        
-        protected readonly ApplicationDbContext _context;  // Add this line
+        protected readonly ApplicationDbContext _context; 
 
         public BaseController(ApplicationDbContext context, IConfiguration configuration)
         {
@@ -31,13 +31,17 @@ namespace HelpingHandsWeb.Controllers
         }
 
 
-
         private string SetUserNameInViewData()
         {
-            var userName = HttpContext.Session.GetString("UserName");
+            var userName = ControllerContext.HttpContext?.Session?.Keys.Contains("UserName") == true
+                ? ControllerContext.HttpContext.Session.GetString("UserName")
+                : null;
+
             ViewData["UserName"] = userName;
             return userName;
         }
+
+
 
 
         protected string ConnectionString
