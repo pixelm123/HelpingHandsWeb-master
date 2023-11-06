@@ -61,7 +61,7 @@ namespace HelpingHandsWeb.Controllers
         }
 
         [HttpPost("change-password")]
-        public IActionResult ChangePassword(AdminIndexViewModel model)
+        public IActionResult cc(AdminIndexViewModel model)
         {
             return View("change-password", model);
         }

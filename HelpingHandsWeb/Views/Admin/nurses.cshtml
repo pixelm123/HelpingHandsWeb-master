@@ -6,7 +6,6 @@
     Layout = null;
 }
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,270 +23,207 @@
     <script src="assets/js/html5shiv.min.js"></script>
     <script src="assets/js/respond.min.js"></script>
     <![endif]-->
-
-    
-
 </head>
 
 <body>
-    <div class="main-wrapper">
-        <div class="header">
-            <div class="header-left">
-                <a href="@Url.Action("Index", "Admin")" class="logo">
-                    <img src="~/images/logo2.webp" width="35" height="35" alt="">
-                    <span>Helping Hands</span>
-                </a>
-            </div>
-            <a id="toggle_btn" href="javascript:void(0);">
-                <i class="fa fa-bars"></i>
-            </a>
-            <a id="mobile_btn" class="mobile_btn float-left" href="#sidebar">
-                <i class="fa fa-bars"></i>
-            </a>
-            <ul class="nav user-menu float-right">
-                <li class="nav-item dropdown d-none d-sm-block">
-                    <a href="javascript:void(0);" id="open_msg_box" class="hasnotifications nav-link">
-                        <i class="fa fa-comment-o"></i>
-                        <span class="badge badge-pill bg-danger float-right">8</span>
-                    </a>
-                </li>
-                <li class="nav-item dropdown has-arrow">
-                    <a href="#" class="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                        <span class="user-img">
-                            <img class="rounded-circle" src="~/assets/img/user.jpg" width="24" alt="Admin">
-                            <span class="status online"></span>
-                        </span>
-                        <span>Admin</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="@Url.Action("Profile", "Admin")">My Profile</a>
-                        <a class="dropdown-item" href="@Url.Action("EditProfile", "Admin")">Edit Profile</a>
-                        <a class="dropdown-item" href="@Url.Action("ChangePassword", "Admin")">Change Password</a>
-                        <a class="dropdown-item" href="@Url.Action("Logout", "Admin")">Logout</a>
-                    </div>
-                </li>
-            </ul>
+    @Html.Partial("_AdminPartial")
 
-        </div>
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-inner slimscroll">
-                <div id="sidebar-menu" class="sidebar-menu">
-                    <ul class="horizontal-menu">
-                        <li class="menu-title">Admin Dashboard</li>
-                        <li><a href="@Url.Action("AdminDashboard", "Admin")"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-                        <li><a href="@Url.Action("Nurses", "Admin")"><i class="fa fa-user-md"></i><span>Nurses</span></a></li>
-                        <li><a href="@Url.Action("Patients", "Admin")"><i class="fa fa-wheelchair"></i><span>Patients</span></a></li>
-                        <li><a href="@Url.Action("OfficeManagers", "Admin")"><i class="fa fa-hospital-o"></i><span>Office Managers</span></a></li>
-                        <li><a href="@Url.Action("Conditions", "Admin")"><i class="fa fa-hospital-o"></i><span>Chronic Conditions</span></a></li>
-                        <li><a href="@Url.Action("Cities", "Admin")"><i class="fa fa-hospital-o"></i><span>Cities</span></a></li>
-                        <li><a href="@Url.Action("Suburbs", "Admin")"><i class="fa fa-hospital-o"></i><span>Suburbs</span></a></li>
-
-                    </ul>
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-4 col-3">
+                    <h4 class="page-title">Nurses</h4>
+                </div>
+                <div class="col-sm-8 col-9 text-right m-b-20">
+                    <a asp-action="AddNurse" class="btn btn-primary btn-rounded float-right">
+                        <i class="fa fa-plus"></i> Add Nurse
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="page-wrapper">
-            <div class="content">
-                <div class="row">
-                    <div class="col-sm-4 col-3">
-                        <h4 class="page-title">Nurses</h4>
-                    </div>
-                    <div class="col-sm-8 col-9 text-right m-b-20">
-                        <a asp-action="AddNurse" class="btn btn-primary btn-rounded float-right">
-                            <i class="fa fa-plus"></i> Add Nurse
-                        </a>
-                    </div>
-                </div>
-                <div class="row mb-3">
-               
-                    <div class="col-md-12">
-                       
-                        <div class="row filter-row">
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">First Name</label>
-                                    <input type="text" id="firstNameInput" class="form-control floating">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus">
-                                    <label class="focus-label">Surname</label>
-                                    <input type="text" id="surnameInput" class="form-control floating">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus select-focus">
-                                    <label class="focus-label">Gender</label>
-                                    <select id="genderInput" class="select floating">
-                                        <option>Select Gender</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <a id="searchButton" class="btn btn-success btn-block">Search</a>
+            <div class="row mb-3">
+
+                <div class="col-md-12">
+
+                    <div class="row filter-row">
+                        <div class="col-sm-6 col-md-3">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">First Name</label>
+                                <input type="text" id="firstNameInput" class="form-control floating">
                             </div>
                         </div>
-                        
-                        <div class="row filter-row">
-                            <div class="col-sm-6 col-md-3">
-                                <div class="form-group form-focus select-focus">
-                                    <label class="focus-label">View Mode</label>
-                                    <select id="viewMode" class="select floating">
-                                        <option value="grid">Grid View</option>
-                                        <option value="list">List View</option>
-                                    </select>
-                                </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="form-group form-focus">
+                                <label class="focus-label">Surname</label>
+                                <input type="text" id="surnameInput" class="form-control floating">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="form-group form-focus select-focus">
+                                <label class="focus-label">Gender</label>
+                                <select id="genderInput" class="select floating">
+                                    <option>Select Gender</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <a id="searchButton" class="btn btn-success btn-block">Search</a>
+                        </div>
+                    </div>
+
+                    <div class="row filter-row">
+                        <div class="col-sm-6 col-md-3">
+                            <div class="form-group form-focus select-focus">
+                                <label class="focus-label">View Mode</label>
+                                <select id="viewMode" class="select floating">
+                                    <option value="grid">Grid View</option>
+                                    <option value="list">List View</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Display search results -->
-                <div id="resultContainer" class="row doctor-grid">
-                    <!-- Results will be dynamically added here using JavaScript -->
-                </div>
-               
-                <div class="row doctor-grid" id="originalNurses">
-                    @foreach (var nurse in Model)
-                    {
-                        
-                        <div class="col-md-4 col-sm-4 col-lg-3">
-                            <div class="profile-widget">
-                                <div class="doctor-img">
-                                    <a class="avatar" href="@Url.Action("EditNurse", "Admin", new { id = nurse.UserID })">
-                                        @if (nurse.ProfilePicture != null)
-                                        {
-                                            <img alt="" src="data:image;base64,@Convert.ToBase64String(nurse.ProfilePicture)">
-                                        }
-                                        else
-                                        {
-                                            <img alt="" src="~/assets/img/user.jpg">
-                                        }
-                                    </a>
-                                </div>
-                                <div class="dropdown profile-action">
-                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="@Url.Action("EditNurse", "Admin", new { id = nurse.UserID })">
-                                            <i class="fa fa-pencil m-r-5"></i> Edit
-                                        </a>
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_nurse_@nurse.UserID">
-                                            <i class="fa fa-trash-o m-r-5"></i> Delete
-                                        </a>
-                                    </div>
-                                </div>
-                                <h4 class="doctor-name text-ellipsis">
-                                    <a href="@Url.Action("EditNurse", "Admin", new { id = nurse.UserID })">@nurse.FirstName  @nurse.Surname </a>
-                                </h4>
-                                <div class="doc-prof">@((nurse.Gender == "M") ? "Male" : "Female")</div>
-                            </div>
-                        </div>
-                    }
-                </div>
-                <!-- List view of nurses -->
-                <div class="row" id="listContainer">
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            <table class="table table-striped custom-table">
-                                <thead>
-                                    <tr>
-                                        <th style="min-width:200px;">Name</th>
-                                        <th>ID Number</th>
-                                        <th>Email</th>
-                                        <th>Contact Number</th>
-                                        <th style="min-width: 110px;">Gender</th>
-                                        <th>Status</th>
-                                        <th class="text-right">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var nurse in Model)
+            </div>
+            <!-- Display search results -->
+            <div id="resultContainer" class="row doctor-grid">
+                <!-- Results will be dynamically added here using JavaScript -->
+            </div>
+
+            <div class="row doctor-grid" id="originalNurses">
+                @foreach (var nurse in Model)
+                {
+
+                    <div class="col-md-4 col-sm-4 col-lg-3">
+                        <div class="profile-widget">
+                            <div class="doctor-img">
+                                <a class="avatar" href="@Url.Action("EditNurse", "Admin", new { id = nurse.UserID })">
+                                    @if (nurse.ProfilePicture != null)
                                     {
-                                        
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    @if (nurse.ProfilePicture != null)
-                                                    {
-                                                        <img width="28" height="28" src="data:image;base64,@Convert.ToBase64String(nurse.ProfilePicture)" class="rounded-circle" alt="">
-                                                    }
-                                                    else
-                                                    {
-                                                        <img width="28" height="28" src="~/assets/img/user.jpg" class="rounded-circle" alt="">
-                                                    }
-                                                    <div class="ml-2">
-                                                        <h2>@nurse.FirstName @nurse.Surname</h2>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                @if (!string.IsNullOrEmpty(nurse.IDNo))
-                                                {
-                                                    @string.Format("{0:### ### #### ####}", double.Parse(nurse.IDNo))
-                                                }
-                                            </td>
-                                            <td>@nurse.Email</td>
-                                            <td>@nurse.ContactNo</td>
-
-                                            <td>
-                                                @if (nurse.Gender == "M")
-                                                {
-                                                    <span>Male</span>
-                                                }
-                                                else if (nurse.Gender == "F")
-                                                {
-                                                    <span>Female</span>
-                                                }
-                                            </td>
-                                            <td>
-                                                @if (nurse.Status == "A")
-                                                {
-                                                    <span class="custom-badge status-green">Active</span>
-                                                }
-                                                else if (nurse.Status == "I")
-                                                {
-                                                    <span class="custom-badge status-red">Inactive</span>
-                                                }
-                                            </td>
-
-                                            <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="@Url.Action("EditNurse", "Admin", new { id = nurse.UserID })"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_nurse_@nurse.UserID"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-
-                                        </tr>
+                                        <img alt="" src="data:image;base64,@Convert.ToBase64String(nurse.ProfilePicture)">
                                     }
-                                </tbody>
-                            </table>
+                                    else
+                                    {
+                                        <img alt="" src="~/assets/img/user.jpg">
+                                    }
+                                </a>
+                            </div>
+                            <div class="dropdown profile-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="@Url.Action("EditNurse", "Admin", new { id = nurse.UserID })">
+                                        <i class="fa fa-pencil m-r-5"></i> Edit
+                                    </a>
+                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_nurse_@nurse.UserID">
+                                        <i class="fa fa-trash-o m-r-5"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
+                            <h4 class="doctor-name text-ellipsis">
+                                <a href="@Url.Action("EditNurse", "Admin", new { id = nurse.UserID })">@nurse.FirstName  @nurse.Surname </a>
+                            </h4>
+                            <div class="doc-prof">@((nurse.Gender == "M") ? "Male" : "Female")</div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="see-all">
-                            <a asp-action="Nurses" class="see-all-btn">Load More</a>
-                        </div>
-                    </div>
-                </div>
-
-
+                }
             </div>
+            <!-- List view of nurses -->
+            <div class="row" id="listContainer">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table">
+                            <thead>
+                                <tr>
+                                    <th style="min-width:200px;">Name</th>
+                                    <th>ID Number</th>
+                                    <th>Email</th>
+                                    <th>Contact Number</th>
+                                    <th style="min-width: 110px;">Gender</th>
+                                    <th>Status</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var nurse in Model)
+                                {
+
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                @if (nurse.ProfilePicture != null)
+                                                {
+                                                    <img width="28" height="28" src="data:image;base64,@Convert.ToBase64String(nurse.ProfilePicture)" class="rounded-circle" alt="">
+                                                }
+                                                else
+                                                {
+                                                    <img width="28" height="28" src="~/assets/img/user.jpg" class="rounded-circle" alt="">
+                                                }
+                                                <div class="ml-2">
+                                                    <h2>@nurse.FirstName @nurse.Surname</h2>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(nurse.IDNo))
+                                            {
+                                                @string.Format("{0:### ### #### ####}", double.Parse(nurse.IDNo))
+                                            }
+                                        </td>
+                                        <td>@nurse.Email</td>
+                                        <td>@nurse.ContactNo</td>
+
+                                        <td>
+                                            @if (nurse.Gender == "M")
+                                            {
+                                                <span>Male</span>
+                                            }
+                                            else if (nurse.Gender == "F")
+                                            {
+                                                <span>Female</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (nurse.Status == "A")
+                                            {
+                                                <span class="custom-badge status-green">Active</span>
+                                            }
+                                            else if (nurse.Status == "I")
+                                            {
+                                                <span class="custom-badge status-red">Inactive</span>
+                                            }
+                                        </td>
+
+                                        <td class="text-right">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="@Url.Action("EditNurse", "Admin", new { id = nurse.UserID })"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_nurse_@nurse.UserID"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="see-all">
+                        <a asp-action="Nurses" class="see-all-btn">Load More</a>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
-
-
-        
-       
-
-        
     </div>
+
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -308,13 +244,13 @@
                     data: { firstName: firstName, surname: surname, gender: gender },
                     success: function (data) {
                         console.log("Search success");
-                       
+
                         $("#resultContainer").html(data);
 
-                        
+
                         $("#resultContainer").show();
 
-                        
+
                         $("#originalNurses").hide();
                     },
                     error: function (xhr, status, error) {
@@ -350,8 +286,14 @@
         });
     </script>
 
-
-
+    <div class="sidebar-overlay" data-reff=""></div>
+    <script src="~/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="~/assets/js/popper.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/jquery.slimscroll.js"></script>
+    <script src="~/assets/js/select2.min.js"></script>
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/assets/js/app.js"></script>
 </body>
 </html>
-
