@@ -10,20 +10,34 @@ namespace HelpingHandsWeb.Controllers
 {
     public class BaseController : Controller
     {
-        protected readonly ApplicationDbContext _context;
         protected readonly IConfiguration _configuration;
+
+       
+        protected readonly ApplicationDbContext _context;  // Add this line
 
         public BaseController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
+            SetUserNameInViewData();
         }
+
+
 
         protected string GetUserDisplayName()
         {
-            return HttpContext.Session.GetString("UserName");
+            var userName = ControllerContext.HttpContext?.Session.GetString("UserName");
+            return userName;
         }
 
+
+
+        private string SetUserNameInViewData()
+        {
+            var userName = HttpContext.Session.GetString("UserName");
+            ViewData["UserName"] = userName;
+            return userName;
+        }
 
 
         protected string ConnectionString
@@ -34,4 +48,5 @@ namespace HelpingHandsWeb.Controllers
             }
         }
     }
+
 }

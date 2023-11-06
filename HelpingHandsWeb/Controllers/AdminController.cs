@@ -27,12 +27,14 @@ namespace HelpingHandsWeb.Controllers
         {
         }
 
+
+
+
         [HttpGet("AdminDashboard")]
         public IActionResult AdminDashboard()
         {
             var userDisplayName = GetUserDisplayName();
             var viewModel = new AdminIndexViewModel(userDisplayName, _configuration);
-
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
@@ -52,9 +54,12 @@ namespace HelpingHandsWeb.Controllers
 
             ViewData["UserDisplayName"] = userDisplayName;
             return View("AdminDashboard", viewModel);
-        }
+       }
+    
 
-        [HttpPost("AdminDashboard")]
+
+
+    [HttpPost("AdminDashboard")]
         public IActionResult AdminDashboard(AdminIndexViewModel model)
         {
             return View("AdminDashboard", model);

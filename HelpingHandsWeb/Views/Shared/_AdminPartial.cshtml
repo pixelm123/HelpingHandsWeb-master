@@ -1,7 +1,4 @@
-﻿@using HelpingHandsWeb.Models.ViewModels.AdminViewModels
-@model AdminIndexViewModel
-
-<div class="header">
+﻿<div class="header">
     <div class="header-left">
         <a href="@Url.Action("Index", "Home")" class="logo">
             <img src="~/images/logo2.webp" width="35" height="35" alt="">
@@ -20,8 +17,7 @@
                 <span class="user-img">
                     <img class="rounded-circle" src="~/assets/img/user.jpg" width="24" alt="Admin">
                     <span class="status online"></span>
-                    <span>@Model.UserName</span>
-
+                    <span>@ViewData["UserName"]</span>
                 </span>
             </a>
             <div class="dropdown-menu">
@@ -33,6 +29,11 @@
         </li>
     </ul>
 </div>
+
+<div class="sidebar" id="sidebar">
+    <!-- Rest of your sidebar code -->
+</div>
+
 
 <div class="sidebar" id="sidebar">
     <div class="sidebar-inner slimscroll">
@@ -52,5 +53,3 @@
         </div>
     </div>
 </div>
-
-
