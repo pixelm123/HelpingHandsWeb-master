@@ -17,6 +17,11 @@ namespace HelpingHandsWeb.Models
         [ForeignKey("PatientID")]
         public Patient Patient { get; set; }
 
+        [Required(ErrorMessage = "Suburb is required")]
+        public int SuburbId { get; set; }
+
+       
+
         public DateTime? ContractDate { get; set; }
 
         [StringLength(100)]
@@ -25,8 +30,6 @@ namespace HelpingHandsWeb.Models
         [StringLength(100)]
         public string AddressLine2 { get; set; }
 
-        [StringLength(50)]
-        public string Suburb { get; set; }
 
         [StringLength(maximumLength: int.MaxValue)]
         public string WoundDescription { get; set; }

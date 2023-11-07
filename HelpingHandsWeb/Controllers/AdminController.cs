@@ -19,6 +19,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using HelpingHandsWeb.Models.Users;
 using System.Collections.Generic;
+using HelpingHandsWeb.Helper;
 
 namespace HelpingHandsWeb.Controllers
 {
@@ -214,39 +215,16 @@ namespace HelpingHandsWeb.Controllers
             }
             return RedirectToAction("Suburbs");
         }
-
         [HttpGet("Admin/suburbs")]
         [HttpPost("Admin/suburbs")]
         public IActionResult Suburbs(string suburb, string city, int recordCount, bool loadMore)
         {
-            var model = new List<SuburbViewModel>();
-
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
-
-                if (string.IsNullOrEmpty(suburb) && string.IsNullOrEmpty(city))
-                {
-                    var results = connection.Query<SuburbViewModel>("GetSuburb", commandType: CommandType.StoredProcedure);
-                    model = results.ToList();
-                }
-                else
-                {
-                    var results = connection.Query<SuburbViewModel>("SearchSuburbs",
-                        new { Suburb = suburb, City = city },
-                        commandType: CommandType.StoredProcedure);
-
-                    model = results.ToList();
-                }
-
-                if (!loadMore)
-                {
-                    model = model.Take(recordCount).ToList();
-                }
-            }
+            var model = SuburbHelper.GetSuburbsFromDatabase(suburb, city, recordCount, loadMore);
             ViewData["UserName"] = GetUserDisplayName();
             return View("suburbs", model);
         }
+
+
 
         [HttpGet("conditions")]
         public IActionResult Conditions()

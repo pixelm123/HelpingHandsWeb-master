@@ -7,14 +7,11 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
     {
         [Required(ErrorMessage = "Please enter your name.")]
         [Display(Name = "Patient First Name")]
-
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Please enter your name.")]
         [Display(Name = "Patient Surname")]
-
         public string Surname { get; set; }
-
 
         [Required(ErrorMessage = "Please enter the first line of your address.")]
         [Display(Name = "Address Line 1")]
@@ -24,7 +21,7 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
         public string AddressLine2 { get; set; }
 
         [Required(ErrorMessage = "Please enter your suburb.")]
-        public string Suburb { get; set; }
+        public int SuburbId { get; set; }
 
         [Display(Name = "Chronic Conditions")]
         public string ChronicConditions { get; set; }

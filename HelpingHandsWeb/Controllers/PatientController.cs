@@ -20,6 +20,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using HelpingHandsWeb.Models.Users;
 using System.Collections.Generic;
+using HelpingHandsWeb.Helper;
 
 namespace HelpingHandsWeb.Controllers
 {
@@ -159,42 +160,6 @@ namespace HelpingHandsWeb.Controllers
         }
 
 
-
-        //[HttpGet("Profile")]
-        //public IActionResult PatientProfile()
-        //{
-        //    var userName = GetUserDisplayName();
-        //    var userId = GetUserId(userName);
-
-        //    var patient = GetPatientById(userId);
-
-        //    var user = GetUserById(userId);
-
-
-        //    var chronicConditions = GetPatientConditions(userId);
-
-        //    var profileViewModel = new PatientProfileViewModel
-        //    {
-
-        //        UserName = userName,
-        //        FirstName = patient.FirstName,
-        //        Surname = patient.Surname,
-        //        Gender = patient.Gender.ToString(),
-        //        DateOfBirth = patient.DateOfBirth,
-        //        EmergencyPerson = patient.EmergencyPerson,
-        //        EmergencyContactNo = patient.EmergencyContactNo,
-        //        ContactNo = user.ContactNo,
-        //        Email = user.Email,
-        //        ProfilePicture = user.ProfilePicture,
-        //        Password = user.Password,
-
-        //        ChronicConditions = chronicConditions
-        //    };
-
-        //    return View("patient-profile", profileViewModel);
-        //}
-
-
         [HttpPost("EditProfile")]
         public IActionResult EditProfile(PatientProfileViewModel model)
         {
@@ -227,6 +192,56 @@ namespace HelpingHandsWeb.Controllers
 
             return View("edit-profile", model);
         }
+
+        [HttpGet("RequestCareContract")]
+        public IActionResult RequestCareContract()
+        {
+            var suburbs = SuburbHelper.GetSuburbsFromDatabase(null, null, 0, false);
+            ViewBag.Suburbs = new SelectList(suburbs, "SuburbId", "SuburbName");
+            return View();
+        }
+
+
+
+        [HttpPost("RequestCareContract")]
+        public IActionResult RequestCareContract(CareContractViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                var userName = GetUserDisplayName();
+                var userId = GetUserId(userName);
+
+            
+                var careContract = new CareContract
+                {
+                    PatientID = userId,
+                    ContractDate = DateTime.Now,
+                    AddressLine1 = model.AddressLine1,
+                    AddressLine2 = model.AddressLine2,
+                    SuburbId = model.SuburbId,
+                    WoundDescription = model.WoundDescription,
+                    StartCareDate = null, 
+                    EndCareDate = null,   
+                    NurseID = null,      
+                    ContractStatus = "New", 
+                    IsDeleted = false
+                };
+
+                
+                _context.CareContracts.Add(careContract);
+                _context.SaveChanges();
+
+                return RedirectToAction("PatientDashboard");
+            }
+
+          
+            var suburbs = SuburbHelper.GetSuburbsFromDatabase(null, null, 0, false);
+            ViewBag.Suburbs = new SelectList(suburbs, "SuburbId", "SuburbName");
+            return View(model);
+        }
+
+
 
     }
 }
