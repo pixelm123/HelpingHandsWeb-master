@@ -29,7 +29,10 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
 
         public byte[] ProfilePicture { get; set; }
 
-        public IEnumerable<PatientConditionsViewModel> ChronicConditions { get; set; }
+        public List<PatientConditionsViewModel> ChronicConditions { get; set; }
+
+
+        //public List<PatientConditionsViewModel> ChronicConditions { get; set; }
 
 
 

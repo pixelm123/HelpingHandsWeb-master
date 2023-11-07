@@ -217,10 +217,10 @@ namespace HelpingHandsWeb.Controllers
 
                 var results = connection.Query<PatientConditionsViewModel>(
                     @"SELECT PC.PatientID,
-                     PC.ConditionID,
-                     PC.IsDeleted,
-                     CC.Name,
-                     CC.Description
+                 PC.ConditionID,
+                 PC.IsDeleted,
+                 CC.Name,
+                 CC.Description
               FROM PATIENT_CONDITION AS PC
               INNER JOIN CHRONIC_CONDITION AS CC ON PC.ConditionID = CC.ConditionID
               INNER JOIN PATIENTS AS P ON PC.PatientID = P.PatientID
@@ -231,6 +231,33 @@ namespace HelpingHandsWeb.Controllers
                 return results;
             }
         }
+
+
+        //public IEnumerable<PatientConditionsViewModel> GetPatientConditions(int userId)
+        //{
+        //    using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+        //    {
+        //        connection.Open();
+
+        //        var parameters = new DynamicParameters();
+        //        parameters.Add("userId", userId);
+
+        //        var results = connection.Query<PatientConditionsViewModel>(
+        //            @"SELECT PC.PatientID,
+        //             PC.ConditionID,
+        //             PC.IsDeleted,
+        //             CC.Name,
+        //             CC.Description
+        //      FROM PATIENT_CONDITION AS PC
+        //      INNER JOIN CHRONIC_CONDITION AS CC ON PC.ConditionID = CC.ConditionID
+        //      INNER JOIN PATIENTS AS P ON PC.PatientID = P.PatientID
+        //      WHERE P.UserID = @userId;"
+        //            , parameters
+        //        );
+
+        //        return results;
+        //    }
+        //}
 
         public void UpdatePassword(int userId, string newPassword)
         {

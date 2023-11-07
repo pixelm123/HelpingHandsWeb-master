@@ -117,7 +117,6 @@ namespace HelpingHandsWeb.Controllers
             }
         }
 
-
         [HttpGet("Profile")]
         public IActionResult PatientProfile()
         {
@@ -125,15 +124,23 @@ namespace HelpingHandsWeb.Controllers
             var userId = GetUserId(userName);
 
             var patient = GetPatientById(userId);
-
             var user = GetUserById(userId);
 
+          
+            var selectedConditions = GetPatientConditions(userId);
+        
+            var chronicConditions = selectedConditions.Select(pc => new PatientConditionsViewModel
+            {
+                ConditionID = pc.ConditionID,
+                Name = pc.Name,
+                Description = pc.Description,
+                IsDeleted = pc.IsDeleted
+              
+            }).ToList();
 
-            var chronicConditions = GetPatientConditions(userId);
 
             var profileViewModel = new PatientProfileViewModel
             {
-
                 UserName = userName,
                 FirstName = patient.FirstName,
                 Surname = patient.Surname,
@@ -145,12 +152,49 @@ namespace HelpingHandsWeb.Controllers
                 Email = user.Email,
                 ProfilePicture = user.ProfilePicture,
                 Password = user.Password,
-
                 ChronicConditions = chronicConditions
             };
 
             return View("patient-profile", profileViewModel);
         }
+
+
+
+        //[HttpGet("Profile")]
+        //public IActionResult PatientProfile()
+        //{
+        //    var userName = GetUserDisplayName();
+        //    var userId = GetUserId(userName);
+
+        //    var patient = GetPatientById(userId);
+
+        //    var user = GetUserById(userId);
+
+
+        //    var chronicConditions = GetPatientConditions(userId);
+
+        //    var profileViewModel = new PatientProfileViewModel
+        //    {
+
+        //        UserName = userName,
+        //        FirstName = patient.FirstName,
+        //        Surname = patient.Surname,
+        //        Gender = patient.Gender.ToString(),
+        //        DateOfBirth = patient.DateOfBirth,
+        //        EmergencyPerson = patient.EmergencyPerson,
+        //        EmergencyContactNo = patient.EmergencyContactNo,
+        //        ContactNo = user.ContactNo,
+        //        Email = user.Email,
+        //        ProfilePicture = user.ProfilePicture,
+        //        Password = user.Password,
+
+        //        ChronicConditions = chronicConditions
+        //    };
+
+        //    return View("patient-profile", profileViewModel);
+        //}
+
+
         [HttpPost("EditProfile")]
         public IActionResult EditProfile(PatientProfileViewModel model)
         {
