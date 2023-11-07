@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using HelpingHandsWeb.Models;
+using HelpingHandsWeb.Models.Users;
 using HelpingHandsWeb.Models.ViewModels.AdminViewModels;
 using HelpingHandsWeb.Models.ViewModels.PatientViewModels;
 using HelpingHandsWeb.Data;
@@ -34,7 +35,7 @@ namespace HelpingHandsWeb.Controllers
             var userDisplayName = GetUserDisplayName();
             var viewModel = new PatientIndexViewModel(userDisplayName, _configuration, this);
 
-          
+
             int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
@@ -45,7 +46,7 @@ namespace HelpingHandsWeb.Controllers
                 viewModel.TotalCareContracts = GetTotalCareVisits(userId);
 
 
-               
+
                 viewModel.PatientConditions = GetPatientConditions(userId).ToList();
 
                 viewModel.Appointments = GetPatientAppointments(userId);
@@ -61,43 +62,41 @@ namespace HelpingHandsWeb.Controllers
             return View("PatientDashboard", model);
         }
 
-        // Inside PatientController
-        [HttpPost("change-password")]
+
+        [HttpPost("ChangePassword")]
         public IActionResult ChangePassword(PatientProfileViewModel model)
         {
             var userName = GetUserDisplayName();
             var userId = GetUserId(userName);
 
-            // Assuming you have fields in the model for old, new, and confirm passwords
-            // Replace these with your actual property names
             var oldPassword = model.OldPassword;
             var newPassword = model.NewPassword;
             var confirmPassword = model.ConfirmPassword;
 
-            // Validate the old password (add your own logic here)
+
             if (!ValidateOldPassword(userId, oldPassword))
             {
-                // Handle invalid old password
+
                 ModelState.AddModelError("OldPassword", "Invalid old password");
                 return View("change-password", model);
             }
 
-            // Validate new and confirm passwords
+
             if (newPassword != confirmPassword)
             {
-                // Handle password mismatch
+
                 ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
                 return View("change-password", model);
             }
 
-            // Update the password
+
             UpdatePassword(userId, newPassword);
 
-            // Redirect or show success message
+
             return RedirectToAction("PatientProfile");
         }
 
-        // Inside PatientController
+
         private bool ValidateOldPassword(int userId, string oldPassword)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
@@ -108,62 +107,82 @@ namespace HelpingHandsWeb.Controllers
                 parameters.Add("userId", userId);
                 parameters.Add("oldPassword", oldPassword);
 
-                // Fetch the user's stored password from the database
+
                 var storedPassword = connection.QueryFirstOrDefault<string>(
                     @"SELECT Password FROM [USER] WHERE UserID = @userId;",
                     parameters
                 );
 
-                // Compare the provided old password with the stored password
                 return storedPassword == oldPassword;
             }
         }
 
 
-
-
-
-        [HttpGet("profile")]
+        [HttpGet("Profile")]
         public IActionResult PatientProfile()
         {
             var userName = GetUserDisplayName();
             var userId = GetUserId(userName);
 
-            // Fetch data from USER table
-            var user = GetUserById(userId);
-
-            // Fetch data from PATIENTS table
             var patient = GetPatientById(userId);
 
-            // Fetch the patient's chronic conditions
+            var user = GetUserById(userId);
+
+
             var chronicConditions = GetPatientConditions(userId);
 
             var profileViewModel = new PatientProfileViewModel
             {
-                // Populate user and patient information
+
                 UserName = userName,
                 FirstName = patient.FirstName,
                 Surname = patient.Surname,
-                Gender = patient.Gender,
+                Gender = patient.Gender.ToString(),
                 DateOfBirth = patient.DateOfBirth,
                 EmergencyPerson = patient.EmergencyPerson,
                 EmergencyContactNo = patient.EmergencyContactNo,
-                // Add other properties as needed
+                ContactNo = user.ContactNo,
+                Email = user.Email,
+                ProfilePicture = user.ProfilePicture,
+                Password = user.Password,
+
                 ChronicConditions = chronicConditions
             };
 
-            return View("profile", profileViewModel);
+            return View("patient-profile", profileViewModel);
         }
-
-
-        [HttpPost("profile")]
+        [HttpPost("EditProfile")]
         public IActionResult EditProfile(PatientProfileViewModel model)
         {
-            // Implementation
+            if (ModelState.IsValid)
+            {
+                var userName = GetUserDisplayName();
+                var userId = GetUserId(userName);
+                var user = GetUserById(userId);
+                var patient = GetPatientById(userId);
+                patient.FirstName = model.FirstName;
+                patient.Surname = model.Surname;
+
+                patient.Gender = string.IsNullOrEmpty(model.Gender) ? '\0' : model.Gender[0];
+
+                patient.DateOfBirth = model.DateOfBirth;
+                patient.EmergencyPerson = model.EmergencyPerson;
+                patient.EmergencyContactNo = model.EmergencyContactNo;
+                user.ContactNo = model.ContactNo;
+                user.Email = model.Email;
+                user.ProfilePicture = model.ProfilePicture;
+
+                _context.SaveChanges();
+
+                UpdatePatientChronicConditions(userId, model.ChronicConditions.Select(cc => cc.ConditionID).ToList());
+
+
+
+                return RedirectToAction("Profile");
+            }
+
             return View("edit-profile", model);
         }
-
-
 
     }
 }

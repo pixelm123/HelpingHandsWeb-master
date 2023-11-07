@@ -8,6 +8,7 @@ using System;
 using Humanizer.Configuration;
 using HelpingHandsWeb.Models.ViewModels.PatientViewModels;
 using System.Data;
+using HelpingHandsWeb.Models.Users;
 
 namespace HelpingHandsWeb.Controllers
 {
@@ -51,7 +52,7 @@ namespace HelpingHandsWeb.Controllers
                 return _configuration.GetConnectionString("DefaultConnection");
             }
         }
-        // Inside the LoginController or BaseController
+
         public int GetUserId(string userName)
         {
             using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
@@ -74,6 +75,40 @@ namespace HelpingHandsWeb.Controllers
                 }
             }
         }
+
+        public Patient GetPatientById(int userId)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var parameters = new DynamicParameters();
+                parameters.Add("userId", userId);
+
+
+                var patient = connection.QueryFirstOrDefault<Patient>(
+                    @"SELECT * FROM PATIENTS WHERE UserID = @userId;", parameters);
+
+                return patient;
+            }
+        }
+
+        public User GetUserById(int userId)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var parameters = new DynamicParameters();
+                parameters.Add("userId", userId);
+
+                var user = connection.QueryFirstOrDefault<User>(
+                    @"SELECT * FROM [USER] WHERE UserID = @userId;", parameters);
+
+                return user;
+            }
+        }
+
 
         public int GetTotalCareContracts(int userId)
         {
@@ -180,7 +215,6 @@ namespace HelpingHandsWeb.Controllers
                 var parameters = new DynamicParameters();
                 parameters.Add("userId", userId);
 
-                // Fetch patient's conditions
                 var results = connection.Query<PatientConditionsViewModel>(
                     @"SELECT PC.PatientID,
                      PC.ConditionID,
@@ -197,7 +231,7 @@ namespace HelpingHandsWeb.Controllers
                 return results;
             }
         }
-       
+
         public void UpdatePassword(int userId, string newPassword)
         {
             using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
@@ -208,11 +242,39 @@ namespace HelpingHandsWeb.Controllers
                 parameters.Add("userId", userId);
                 parameters.Add("newPassword", newPassword);
 
-                // Update the user's password in the USER table
+
                 connection.Execute(
                     @"UPDATE [USER] SET Password = @newPassword WHERE UserID = @userId;",
                     parameters
                 );
+            }
+        }
+        public void UpdatePatientChronicConditions(int userId, List<int> selectedConditionIds)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+
+                var deleteParameters = new DynamicParameters();
+                deleteParameters.Add("userId", userId);
+                connection.Execute(
+                    @"DELETE FROM PATIENT_CONDITION WHERE PatientID = (SELECT PatientID FROM PATIENTS WHERE UserID = @userId);",
+                    deleteParameters
+                );
+
+
+                foreach (var conditionId in selectedConditionIds)
+                {
+                    var insertParameters = new DynamicParameters();
+                    insertParameters.Add("userId", userId);
+                    insertParameters.Add("conditionId", conditionId);
+                    connection.Execute(
+                        @"INSERT INTO PATIENT_CONDITION (PatientID, ConditionID, IsDeleted) 
+                  VALUES ((SELECT PatientID FROM PATIENTS WHERE UserID = @userId), @conditionId, 0);",
+                        insertParameters
+                    );
+                }
             }
         }
 

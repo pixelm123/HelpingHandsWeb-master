@@ -24,8 +24,6 @@ namespace HelpingHandsWeb.Models.Users
         [Phone(ErrorMessage = "Invalid Contact Number.")]
         public string ContactNo { get; set; }
 
-        [ForeignKey("UserType")]
-        public string UserTypeId { get; set; } 
 
         [Required(ErrorMessage = "Status is required.")]
         public string Status { get; set; }
@@ -34,11 +32,12 @@ namespace HelpingHandsWeb.Models.Users
 
         public byte[] ProfilePicture { get; set; }
 
-        // Navigation Properties
+
         public virtual Patient Patient { get; set; }
 
-        // Rename this navigation property to UserType
-        public virtual UserType UserType { get; set; }
+        [ForeignKey("UserType")]
+        [Column(TypeName = "char(1)")]
+        public string UserType { get; set; }
 
 
     }

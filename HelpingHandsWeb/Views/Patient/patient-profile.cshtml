@@ -1,8 +1,11 @@
+@model HelpingHandsWeb.Models.ViewModels.PatientViewModels.PatientProfileViewModel
+@{
+    Layout = null;
+}
+<!
 <!DOCTYPE html>
 <html lang="en">
 
-
-<!-- profile22:59-->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -13,156 +16,157 @@
     <link rel="stylesheet" type="text/css" href="~/assets/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="~/assets/css/style2.css">
     <!--[if lt IE 9]>
-		<script src="~/assets/js/.html5shiv.min.js"></script>
-		<script src="~/assets/js/respond.min.js"></script>
-	<![endif]-->
+        <script src="~/assets/js/.html5shiv.min.js"></script>
+        <script src="~/assets/js/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
-    
-     
-        <div class="page-wrapper">
-            <div class="content">
-                <div class="row">
-                    <div class="col-sm-7 col-6">
-                        <h4 class="page-title">My Profile</h4>
-                    </div>
+    @await Html.PartialAsync("_PatientPartial", ViewData)
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-sm-7 col-6">
+                    <h4 class="page-title">My Profile</h4>
+                </div>
 
-                    <div class="col-sm-5 col-6 text-right m-b-30">
-                        <a href="edit-patientprofile.cshtml" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Edit Profile</a>
-                    </div>
-                </div>
-                <div class="card-box profile-header">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="profile-view">
-                                <div class="profile-img-wrap">
-                                    <div class="profile-img">
-                                        <a href="#"><img class="avatar" src="~/assets/img/doctor-03.jpg" alt=""></a>
-                                    </div>
-                                </div>
-                                <div class="profile-basic">
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <div class="profile-info-left">
-                                                <h3 class="user-name m-t-0 mb-0">Cristina Groves</h3>
-                                                <small class="text-muted">Christina123</small>
-                                               
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <ul class="personal-info">
-                                                <li>
-                                                    <span class="title">Contact Number:</span>
-                                                    <span class="text"><a href="#">+278-889-6484</a></span>
-                                                </li>
-                                                <li>
-                                                    <span class="title">Email:</span>
-                                                    <span class="text"><a href="#">cristinagroves@example.com</a></span>
-                                                </li>
-                                                <li>
-                                                    <span class="title">Date Of Birth:</span>
-                                                    <span class="text">3rd March 1967</span>
-                                                </li>
-                                               
-                                                <li>
-                                                    <span class="title">Gender:</span>
-                                                    <span class="text">Female</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>                        
-                        </div>
-                    </div>
-                </div>
-				<div class="profile-tabs">
-					<ul class="nav nav-tabs nav-tabs-bottom">
-						<li class="nav-item"><a class="nav-link active" href="#about-cont" data-toggle="tab">My Chronic Conditions</a></li>
-						<li class="nav-item"><a class="nav-link" href="#bottom-tab2" data-toggle="tab">Emegercency Person Details</a></li>
-					</ul>
+                <div class="col-sm-5 col-6 text-right m-b-30">
+                    <form method="post" action="@Url.Action("EditProfile", "Patient")">
+                        <button type="submit" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Edit Profile</button>
+                    </form>
 
-					<div class="tab-content">
-						<div class="tab-pane show active" id="about-cont">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card-box">
-                            <h3 class="card-title">My Chronic Conditions</h3>
-                            <div class="experience-box">
-                                <ul class="experience-list">
-                                    <li>
-                                        <div class="experience-user">
-                                            <div class="before-circle"></div>
-                                        </div>
-                                        <div class="experience-content">
-                                            <div class="timeline-content">
-                                                <a href="#/" class="name">Diabetes</a>
-                                                
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="experience-user">
-                                            <div class="before-circle"></div>
-                                        </div>
-                                        <div class="experience-content">
-                                            <div class="timeline-content">
-                                                <a href="#/" class="name">Chronic Migraine</a>
-                                                
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        
-                    </div>
+
                 </div>
-						</div>
-						<div class="tab-pane" id="bottom-tab2">
-							<div class="row">
-                    <div class="col-md-12">
-                        <div class="card-box">
-                            <h3 class="card-title">My Emegercency Person Details</h3>
-                            <div class="experience-box">
-                                <ul class="experience-list">
-                                    <li>
-                                        <div class="experience-user">
-                                            <div class="before-circle"></div>
-                                        </div>
-                                        <div class="experience-content">
-                                            <div class="timeline-content">
-                                                <a href="#/" class="name">Joe Doe</a>
-                                                <div>0788 2543 67</div>
-                                                
-                                            </div>
-                                        </div>
-                                    </li>
-                                   
-                                </ul>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-						</div>
-						
-					</div>
-				</div>
             </div>
-           
+            <div class="card-box profile-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="profile-view">
+                            <div class="profile-img-wrap">
+                                <div class="profile-img">
+                                    @if (Model.ProfilePicture != null)
+                                    {
+                                        <a href="#"><img class="avatar" src="data:image;base64,@Convert.ToBase64String(Model.ProfilePicture)" alt=""></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#"><img class="avatar" src="~/assets/img/doctor-03.jpg" alt=""></a>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="profile-basic">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="profile-info-left">
+                                            <h3 class="user-name m-t-0 mb-0">@Model.FirstName @Model.Surname</h3>
+                                            <small class="text-muted">@Model.UserName</small>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <ul class="personal-info">
+                                            <li>
+                                                <span class="title">Contact Number:</span>
+                                                <span class="text"><a href="#">@Model.ContactNo</a></span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Email:</span>
+                                                <span class="text"><a href="#">@Model.Email</a></span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Date Of Birth:</span>
+                                                <span class="text">@Model.DateOfBirth.ToShortDateString()</span>
+                                            </li>
+
+                                            <li>
+                                                <span class="title">Gender:</span>
+                                                <span class="text">@Model.Gender</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-tabs">
+                <ul class="nav nav-tabs nav-tabs-bottom">
+                    <li class="nav-item"><a class="nav-link active" href="#about-cont" data-toggle="tab">My Chronic Conditions</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#bottom-tab2" data-toggle="tab">Emergency Person Details</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane show active" id="about-cont">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card-box">
+                                    <h3 class="card-title">My Chronic Conditions</h3>
+                                    <div class="experience-box">
+                                        <ul class="experience-list">
+                                            @foreach (var condition in Model.ChronicConditions)
+                                            {
+                                                <li>
+                                                    <div class="experience-user">
+                                                        <div class="before-circle"></div>
+                                                    </div>
+                                                    <div class="experience-content">
+                                                        <div class="timeline-content">
+                                                            <a href="#/" class="name">@condition.Name</a>
+
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="bottom-tab2">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card-box">
+                                    <h3 class="card-title">My Emergency Person Details</h3>
+                                    <div class="experience-box">
+                                        <ul class="experience-list">
+                                            <li>
+                                                <div class="experience-user">
+                                                    <div class="before-circle"></div>
+                                                </div>
+                                                <div class="experience-content">
+                                                    <div class="timeline-content">
+                                                        <a href="#/" class="name">@Model.EmergencyPerson</a>
+                                                        <div>@Model.EmergencyContactNo</div>
+
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
+
+    </div>
     </div>
     <div class="sidebar-overlay" data-reff=""></div>
     <script src="~/assets/js/jquery-3.2.1.min.js"></script>
-	<script src="~/assets/js/popper.min.js"></script>
+    <script src="~/assets/js/popper.min.js"></script>
     <script src="~/assets/js/bootstrap.min.js"></script>
     <script src="~/assets/js/jquery.slimscroll.js"></script>
     <script src="~/assets/js/app.js"></script>
 </body>
 
-
-<!-- profile23:03-->
 </html>
