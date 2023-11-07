@@ -22,7 +22,7 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
 
         public TimeSpan Time { get; set; }
 
-        public string MeetingType { get; set; }
+        
 
         public TimeSpan MeetingTime { get; set; }
 

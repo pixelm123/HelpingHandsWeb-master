@@ -33,33 +33,37 @@
         @await Html.PartialAsync("_PatientPartial", ViewData)
      <div class="page-wrapper">
                 <div class="content">
-                    <div class="row mb-3">
-                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                            <a href="@Url.Action("CareContracts", "Patient")" class="dashboard-link">
-                                <div class="dash-widget" style="margin-bottom: 15px; padding: 15px;">
-                                    <span class="dash-widget-bg1">
-                                        <i class="fa fa-file-contract" aria-hidden="true"></i>
-                                    </span>
-                                    <div class="dash-widget-info text-right">
-                                        <h3>@Model.TotalCareContracts</h3>
-                                        <span class="widget-title1">View Your Care Visits Here <i class="fa fa-check" aria-hidden="true"></i></span>
-                                    </div>
+                <div class="row mb-4">
+                    <div class="col-md-6 col-lg-6 col-xl-6 mb-4">
+                        <a href="@Url.Action("CareContracts", "Patient")" class="dashboard-link">
+                            <div class="dash-widget" style="padding: 30px; height: 200px;">
+                                <!-- Adjusted padding and height -->
+                                <span class="dash-widget-bg1">
+                                    <i class="fa fa-file-contract" aria-hidden="true"></i>
+                                </span>
+                                <div class="dash-widget-info text-right">
+                                    <h3 style="font-size: 24px;">@Model.TotalCareContracts</h3>
+                                    <span class="widget-title1" style="font-size: 20px;">View Your Care Visits Here <i class="fa fa-check" aria-hidden="true"></i></span>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                            <a href="@Url.Action("CareVisits", "Patient")" class="dashboard-link">
-                                <div class="dash-widget" style="margin-bottom: 15px; padding: 15px;">
-                                    <span class="dash-widget-bg2">
-                                        <i class="fa fa-hospital-user"></i>
-                                    </span>
-                                    <div class="dash-widget-info text-right">
-                                        <h3>@Model.TotalCareVisits</h3>
-                                        <span class="widget-title2">View Your Care Cintracts Here <i class="fa fa-check" aria-hidden="true"></i></span>
-                                    </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-6 mb-4">
+                        <a href="@Url.Action("CareVisits", "Patient")" class="dashboard-link">
+                            <div class="dash-widget" style="padding: 30px; height: 200px;">
+                                <!-- Adjusted padding and height -->
+                                <span class="dash-widget-bg2">
+                                    <i class="fa fa-hospital-user"></i>
+                                </span>
+                                <div class="dash-widget-info text-right">
+                                    <h3 style="font-size: 24px;">@Model.TotalCareVisits</h3>
+                                    <span class="widget-title2" style="font-size: 20px;">View Your Care Contracts Here <i class="fa fa-check" aria-hidden="true"></i></span>
                                 </div>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
                     </div>
 
                     <div class="row">
@@ -136,7 +140,7 @@
                                     </ul>
                                 </div>
                                 <div class="card-footer text-center bg-white">
-                                    <a asp-action="PatientsConditions" class="text-muted">View all Conditions</a>
+                                    <a asp-action="PatientsConditions" class="text-muted">Conditions</a>
                                 </div>
                             </div>
                         </div>
