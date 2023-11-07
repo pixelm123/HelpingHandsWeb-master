@@ -197,6 +197,24 @@ namespace HelpingHandsWeb.Controllers
                 return results;
             }
         }
+       
+        public void UpdatePassword(int userId, string newPassword)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var parameters = new DynamicParameters();
+                parameters.Add("userId", userId);
+                parameters.Add("newPassword", newPassword);
+
+                // Update the user's password in the USER table
+                connection.Execute(
+                    @"UPDATE [USER] SET Password = @newPassword WHERE UserID = @userId;",
+                    parameters
+                );
+            }
+        }
 
 
 

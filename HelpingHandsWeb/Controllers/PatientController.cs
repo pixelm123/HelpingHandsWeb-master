@@ -60,18 +60,107 @@ namespace HelpingHandsWeb.Controllers
         {
             return View("PatientDashboard", model);
         }
-        
+
+        // Inside PatientController
         [HttpPost("change-password")]
-        public IActionResult cc(PatientIndexViewModel model)
+        public IActionResult ChangePassword(PatientProfileViewModel model)
         {
-            return View("change-password", model);
+            var userName = GetUserDisplayName();
+            var userId = GetUserId(userName);
+
+            // Assuming you have fields in the model for old, new, and confirm passwords
+            // Replace these with your actual property names
+            var oldPassword = model.OldPassword;
+            var newPassword = model.NewPassword;
+            var confirmPassword = model.ConfirmPassword;
+
+            // Validate the old password (add your own logic here)
+            if (!ValidateOldPassword(userId, oldPassword))
+            {
+                // Handle invalid old password
+                ModelState.AddModelError("OldPassword", "Invalid old password");
+                return View("change-password", model);
+            }
+
+            // Validate new and confirm passwords
+            if (newPassword != confirmPassword)
+            {
+                // Handle password mismatch
+                ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
+                return View("change-password", model);
+            }
+
+            // Update the password
+            UpdatePassword(userId, newPassword);
+
+            // Redirect or show success message
+            return RedirectToAction("PatientProfile");
         }
 
+        // Inside PatientController
+        private bool ValidateOldPassword(int userId, string oldPassword)
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var parameters = new DynamicParameters();
+                parameters.Add("userId", userId);
+                parameters.Add("oldPassword", oldPassword);
+
+                // Fetch the user's stored password from the database
+                var storedPassword = connection.QueryFirstOrDefault<string>(
+                    @"SELECT Password FROM [USER] WHERE UserID = @userId;",
+                    parameters
+                );
+
+                // Compare the provided old password with the stored password
+                return storedPassword == oldPassword;
+            }
+        }
+
+
+
+
+
+        [HttpGet("profile")]
+        public IActionResult PatientProfile()
+        {
+            var userName = GetUserDisplayName();
+            var userId = GetUserId(userName);
+
+            // Fetch data from USER table
+            var user = GetUserById(userId);
+
+            // Fetch data from PATIENTS table
+            var patient = GetPatientById(userId);
+
+            // Fetch the patient's chronic conditions
+            var chronicConditions = GetPatientConditions(userId);
+
+            var profileViewModel = new PatientProfileViewModel
+            {
+                // Populate user and patient information
+                UserName = userName,
+                FirstName = patient.FirstName,
+                Surname = patient.Surname,
+                Gender = patient.Gender,
+                DateOfBirth = patient.DateOfBirth,
+                EmergencyPerson = patient.EmergencyPerson,
+                EmergencyContactNo = patient.EmergencyContactNo,
+                // Add other properties as needed
+                ChronicConditions = chronicConditions
+            };
+
+            return View("profile", profileViewModel);
+        }
+
+
         [HttpPost("profile")]
-        public IActionResult Profile(PatientProfileViewModel model)
+        public IActionResult EditProfile(PatientProfileViewModel model)
         {
             // Implementation
-            return View("profile", model);
+            return View("edit-profile", model);
         }
 
 

@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Office Manager\**" />
+    <Content Remove="Views\Office Manager\**" />
+    <EmbeddedResource Remove="Views\Office Manager\**" />
+    <None Remove="Views\Office Manager\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Views\Admin\nurses.cshtml~RF568a76f.TMP" />
   </ItemGroup>
 
@@ -40,10 +47,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.22" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.22" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Office Manager\" />
   </ItemGroup>
 
   <ItemGroup>
