@@ -123,7 +123,7 @@ namespace HelpingHandsWeb.Controllers
                 var result = connection.QueryFirstOrDefault<int>(
                     @"SELECT COUNT(ContractID)
                   FROM CARE_CONTRACT
-                  WHERE PatientID = (SELECT PatientID FROM PATIENTS WHERE UserID = @userId) AND IsDeleted = 0;"
+                  WHERE PatientId = (SELECT PatientId FROM PATIENTS WHERE UserID = @userId) AND IsDeleted = 0;"
                     , parameters
                 );
 
@@ -144,7 +144,7 @@ namespace HelpingHandsWeb.Controllers
                 var result = connection.QueryFirstOrDefault<int>(
                     @"SELECT COUNT(VisitID)
                   FROM CARE_VISIT
-                  WHERE PatientID = (SELECT PatientID FROM PATIENTS WHERE UserID = @userId) AND IsDeleted = 0;"
+                  WHERE PatientId = (SELECT PatientId FROM PATIENTS WHERE UserID = @userId) AND IsDeleted = 0;"
                     , parameters
                 );
 
@@ -171,7 +171,7 @@ namespace HelpingHandsWeb.Controllers
                  CC.EndCareDate,
                  CC.ContractStatus
                  FROM CARE_CONTRACT AS CC
-                 WHERE CC.PatientID = (SELECT PatientID FROM PATIENTS WHERE UserID = @userId) AND CC.IsDeleted = 0;"
+                 WHERE CC.PatientId = (SELECT PatientId FROM PATIENTS WHERE UserID = @userId) AND CC.IsDeleted = 0;"
                     , parameters
                 );
 
@@ -198,7 +198,7 @@ namespace HelpingHandsWeb.Controllers
                 
                  A.Duration
                  FROM APPOINTMENT AS A
-                 WHERE A.PatientID = (SELECT PatientID FROM PATIENTS WHERE UserID = @userId) AND A.IsDeleted = 0;"
+                 WHERE A.PatientId = (SELECT PatientId FROM PATIENTS WHERE UserID = @userId) AND A.IsDeleted = 0;"
                     , parameters
                 );
 
@@ -216,14 +216,14 @@ namespace HelpingHandsWeb.Controllers
                 parameters.Add("userId", userId);
 
                 var results = connection.Query<PatientConditionsViewModel>(
-                    @"SELECT PC.PatientID,
+                    @"SELECT PC.PatientId,
                  PC.ConditionID,
                  PC.IsDeleted,
                  CC.Name,
                  CC.Description
               FROM PATIENT_CONDITION AS PC
               INNER JOIN CHRONIC_CONDITION AS CC ON PC.ConditionID = CC.ConditionID
-              INNER JOIN PATIENTS AS P ON PC.PatientID = P.PatientID
+              INNER JOIN PATIENTS AS P ON PC.PatientId = P.PatientId
               WHERE P.UserID = @userId;"
                     , parameters
                 );
@@ -243,14 +243,14 @@ namespace HelpingHandsWeb.Controllers
         //        parameters.Add("userId", userId);
 
         //        var results = connection.Query<PatientConditionsViewModel>(
-        //            @"SELECT PC.PatientID,
+        //            @"SELECT PC.PatientId,
         //             PC.ConditionID,
         //             PC.IsDeleted,
         //             CC.Name,
         //             CC.Description
         //      FROM PATIENT_CONDITION AS PC
         //      INNER JOIN CHRONIC_CONDITION AS CC ON PC.ConditionID = CC.ConditionID
-        //      INNER JOIN PATIENTS AS P ON PC.PatientID = P.PatientID
+        //      INNER JOIN PATIENTS AS P ON PC.PatientId = P.PatientId
         //      WHERE P.UserID = @userId;"
         //            , parameters
         //        );
@@ -286,7 +286,7 @@ namespace HelpingHandsWeb.Controllers
                 var deleteParameters = new DynamicParameters();
                 deleteParameters.Add("userId", userId);
                 connection.Execute(
-                    @"DELETE FROM PATIENT_CONDITION WHERE PatientID = (SELECT PatientID FROM PATIENTS WHERE UserID = @userId);",
+                    @"DELETE FROM PATIENT_CONDITION WHERE PatientId = (SELECT PatientId FROM PATIENTS WHERE UserID = @userId);",
                     deleteParameters
                 );
 
@@ -297,8 +297,8 @@ namespace HelpingHandsWeb.Controllers
                     insertParameters.Add("userId", userId);
                     insertParameters.Add("conditionId", conditionId);
                     connection.Execute(
-                        @"INSERT INTO PATIENT_CONDITION (PatientID, ConditionID, IsDeleted) 
-                  VALUES ((SELECT PatientID FROM PATIENTS WHERE UserID = @userId), @conditionId, 0);",
+                        @"INSERT INTO PATIENT_CONDITION (PatientId, ConditionID, IsDeleted) 
+                  VALUES ((SELECT PatientId FROM PATIENTS WHERE UserID = @userId), @conditionId, 0);",
                         insertParameters
                     );
                 }

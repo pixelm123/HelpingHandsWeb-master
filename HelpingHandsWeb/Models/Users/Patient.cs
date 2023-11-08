@@ -8,7 +8,7 @@ namespace HelpingHandsWeb.Models.Users
     public class Patient
     {
         [Key]
-        public int PatientID { get; set; }
+        public int PatientId { get; set; }
 
         [Required(ErrorMessage = "First Name is required.")]
         public string FirstName { get; set; }

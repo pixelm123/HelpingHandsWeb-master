@@ -1,23 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using HelpingHandsWeb.Models.Users;
 
 namespace HelpingHandsWeb.Models
 {
-    public class PreferredSuburb
-{
-    public int NurseID { get; set; }
+    public partial class PreferredSuburb
+    {
+        public int PrefferredSuburb { get; set; }
+        public int? NurseId { get; set; }
+        public int? SuburbId { get; set; }
+        public bool IsDeleted { get; set; }
 
-    [ForeignKey("NurseID")]
-    public Nurse Nurse { get; set; }
-
-    public int SuburbId { get; set; }
-
-    [ForeignKey("SuburbID")]
-    public Suburb Suburb { get; set; }
-
-    public bool IsDeleted { get; set; }
-}
+        public virtual Nurse? Nurse { get; set; }
+        public virtual Suburb? Suburb { get; set; }
+    }
 }

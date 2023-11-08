@@ -1,30 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using HelpingHandsWeb.Models.Users;
 
 namespace HelpingHandsWeb.Models
 {
-    public class Suburb
+    public partial class Suburb
     {
-        [Key]
-        public int SuburbID { get; set; }
+        public Suburb()
+        {
+            CareContracts = new HashSet<CareContract>();
+            PreferredSuburbs = new HashSet<PreferredSuburb>();
+        }
 
-        [Required(ErrorMessage = "Suburb Name is required.")]
-        [StringLength(50)]
-        public string SuburbName { get; set; }
-
-        [Required(ErrorMessage = "Postal Code is required.")]
-        [StringLength(10)]
-        public string PostalCode { get; set; }
-
-        //public int CityId { get; set; }
-
-        [ForeignKey("CityID")]
+        public int SuburbId { get; set; }
+        public string Suburb1 { get; set; } = null!;
+        public string PostalCode { get; set; } = null!;
         public int CityId { get; set; }
-
-        public City City { get; set; }
         public bool IsDeleted { get; set; }
+
+        public virtual City City { get; set; } = null!;
+        public virtual ICollection<CareContract> CareContracts { get; set; }
+        public virtual ICollection<PreferredSuburb> PreferredSuburbs { get; set; }
     }
 }

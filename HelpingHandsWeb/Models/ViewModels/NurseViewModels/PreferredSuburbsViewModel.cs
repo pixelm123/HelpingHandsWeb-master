@@ -6,7 +6,7 @@ namespace HelpingHandsWeb.Models.ViewModels.NurseViewModels
 {
     public class ChooseSuburbsViewModel
     {
-        public int NurseID { get; set; }
+        public int NurseId { get; set; }
 
         public List<SuburbViewModel> Suburbs { get; set; }
     }

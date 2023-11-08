@@ -1,20 +1,21 @@
-﻿using HelpingHandsWeb.Models.Users;
-using HelpingHandsWeb.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace HelpingHandsWeb.Data
+namespace HelpingHandsWeb.Models
 {
-    public partial class ApplicationDbContext : DbContext 
+    public partial class GRP0434HelpingHandsDBContext : DbContext
     {
-            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-                : base(options)
-            {
-            }
-        public ApplicationDbContext()
+        public GRP0434HelpingHandsDBContext()
         {
         }
+
+        public GRP0434HelpingHandsDBContext(DbContextOptions<GRP0434HelpingHandsDBContext> options)
+            : base(options)
+        {
+        }
+
         public virtual DbSet<Appointment> Appointments { get; set; } = null!;
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; } = null!;
         public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; } = null!;
@@ -27,20 +28,20 @@ namespace HelpingHandsWeb.Data
         public virtual DbSet<CareVisit> CareVisits { get; set; } = null!;
         public virtual DbSet<ChronicCondition> ChronicConditions { get; set; } = null!;
         public virtual DbSet<City> Cities { get; set; } = null!;
-        public virtual DbSet<Models.Users.Nurse> Nurses { get; set; } = null!;
-        public virtual DbSet<Models.Users.Patient> Patients { get; set; } = null!;
+        public virtual DbSet<Nurse> Nurses { get; set; } = null!;
+        public virtual DbSet<Patient> Patients { get; set; } = null!;
         public virtual DbSet<PatientCondition> PatientConditions { get; set; } = null!;
         public virtual DbSet<PreferredSuburb> PreferredSuburbs { get; set; } = null!;
         public virtual DbSet<Suburb> Suburbs { get; set; } = null!;
-        public virtual DbSet<Models.Users.User> Users { get; set; } = null!;
+        public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<Usertype> Usertypes { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder modelBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!modelBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                modelBuilder.UseSqlServer("Server=SICT-SQL.MANDELA.AC.ZA;Database=GRP-04-34-HelpingHandsDB;User ID=GRP-04-34;Password=grp-04-34-2023#;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True");
+                optionsBuilder.UseSqlServer("Server=SICT-SQL.MANDELA.AC.ZA;Database=GRP-04-34-HelpingHandsDB;User ID=GRP-04-34;Password=grp-04-34-2023#;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True");
             }
         }
 
@@ -271,7 +272,7 @@ namespace HelpingHandsWeb.Data
                 entity.Property(e => e.Name).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Models.Nurse>(entity =>
+            modelBuilder.Entity<Nurse>(entity =>
             {
                 entity.ToTable("NURSE");
 
@@ -298,7 +299,7 @@ namespace HelpingHandsWeb.Data
                     .HasConstraintName("FK_NURSE_UserID");
             });
 
-            modelBuilder.Entity<Models.Patient>(entity =>
+            modelBuilder.Entity<Patient>(entity =>
             {
                 entity.ToTable("PATIENTS");
 
@@ -391,7 +392,7 @@ namespace HelpingHandsWeb.Data
                     .HasConstraintName("FK_SUBURBS_CITY");
             });
 
-            modelBuilder.Entity<Models.User>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("USER");
 

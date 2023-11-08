@@ -11,7 +11,7 @@ namespace HelpingHandsWeb.Models.ViewModels.AdminViewModels
     {
         public List<NurseViewModel> Nurses { get; set; }
         public int UserID { get; set; }
-        public int NurseID { get; set; }
+        public int NurseId { get; set; }
 
         [Required(ErrorMessage = "Username is required.")]
         public string UserName { get; set; }

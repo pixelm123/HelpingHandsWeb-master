@@ -1,23 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using HelpingHandsWeb.Models.Users;
 
 namespace HelpingHandsWeb.Models
 {
-    public class ChronicCondition
+    public partial class ChronicCondition
     {
-        [Key]
-        public int ConditionID { get; set; }
+        public ChronicCondition()
+        {
+            PatientConditions = new HashSet<PatientCondition>();
+        }
 
-        [Required(ErrorMessage = "Condition Name is required.")]
-        [StringLength(100)]
-        public string Name { get; set; }
-
-        [StringLength(maximumLength: int.MaxValue)]
-        public string Description { get; set; }
-
+        public int ConditionId { get; set; }
+        public string Name { get; set; } = null!;
+        public string? Description { get; set; }
         public bool IsDeleted { get; set; }
+
+        public virtual ICollection<PatientCondition> PatientConditions { get; set; }
     }
 }

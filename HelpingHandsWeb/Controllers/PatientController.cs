@@ -64,38 +64,6 @@ namespace HelpingHandsWeb.Controllers
         }
 
 
-        //[HttpPost("ChangePassword")]
-        //public IActionResult ChangePassword(PatientProfileViewModel model)
-        //{
-        //    var userName = GetUserDisplayName();
-        //    var userId = GetUserId(userName);
-
-        //    var oldPassword = model.OldPassword;
-        //    var newPassword = model.NewPassword;
-        //    var confirmPassword = model.ConfirmPassword;
-
-
-        //    if (!ValidateOldPassword(userId, oldPassword))
-        //    {
-
-        //        ModelState.AddModelError("OldPassword", "Invalid old password");
-        //        return View("change-password", model);
-        //    }
-
-
-        //    if (newPassword != confirmPassword)
-        //    {
-
-        //        ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
-        //        return View("change-password", model);
-        //    }
-
-
-        //    UpdatePassword(userId, newPassword);
-
-
-        //    return RedirectToAction("PatientProfile");
-        //}
 
 
         private bool ValidateOldPassword(int userId, string oldPassword)
@@ -270,14 +238,15 @@ namespace HelpingHandsWeb.Controllers
         [HttpGet("RequestCareContract")]
         public IActionResult RequestCareContract()
         {
-            var suburbs = SuburbHelper.GetSuburbsFromDatabase(null, null, 0, false);
-            var model = new CareContractViewModel
-            {
-                Suburbs = suburbs,
-                // Initialize other properties if needed
-            };
+            //var suburbs = SuburbHelper.GetSuburbsFromDatabase(null, null, 0, false);
+            List<Suburb> suburbs= new List<Suburb>();
+            //var model = new CareContract
+            //{
+            //    SuburbId = suburbs.
+                
+            //};
 
-            return View(model);
+            return View();
         }
 
         [HttpPost("RequestCareContract")]
@@ -291,17 +260,15 @@ namespace HelpingHandsWeb.Controllers
 
                 var careContract = new CareContract
                 {
-                    PatientID = userId,
+                    PatientId = userId,
                     ContractDate = DateTime.Now,
                     AddressLine1 = model.AddressLine1,
                     AddressLine2 = model.AddressLine2,
                     SuburbId = model.SuburbId,
-                    WoundDescription = model.WoundDescription,
-                    FirstName = patient.FirstName,
-                    Surname = patient.Surname,
+                    //WoundDescription = model.WoundDescription,
                     StartCareDate = null,
                     EndCareDate = null,
-                    NurseID = null,
+                    NurseId = null,
                     ContractStatus = "New",
                     IsDeleted = false
                 };
@@ -316,7 +283,71 @@ namespace HelpingHandsWeb.Controllers
             model.Suburbs = suburbs; // Assign the suburbs directly to the model
             return View(model);
         }
+        public IActionResult CareContracts()
+        {
+            int loggedInPatientId = HttpContext.Session.GetInt32("PatientId") ?? 0;
 
+            // Fetch the CareContracts for the logged in Patient
+            var careContracts = _context.CareContracts
+                .Where(c => c.PatientId == loggedInPatientId)
+                .ToList();
+
+            return View(careContracts);
+        }
+        [HttpGet]
+        public IActionResult CreateCareContract()
+        {
+            ViewBag.Suburbs = _context.Suburbs.ToList();
+            int loggedInPatientId = HttpContext.Session.GetInt32("PatientId") ?? 0;
+            ViewBag.ChronicConditions = _context.PatientConditions
+                                       .Where(c => c.PatientId == loggedInPatientId && c.ConditionId != null)
+                                       .ToList();
+            CareContract careContract = new CareContract
+            {
+                ContractDate = DateTime.Today
+            };
+            return View(careContract);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateCareContract(CareContract careContract)
+        {
+            ViewBag.Suburbs = _context.Suburbs.ToList();
+            int loggedInPatientId = HttpContext.Session.GetInt32("PatientId") ?? 0;
+
+            ViewBag.ChronicConditions = _context.PatientConditions
+                                              .Where(c => c.PatientId == loggedInPatientId && c.ConditionId != null)
+                                              .ToList();
+            if (ModelState.IsValid)
+            {
+                int patientId = HttpContext.Session.GetInt32("PatientId") ?? 0;
+                careContract.PatientId = patientId;
+                //careContract.Status = "A";
+
+                _context.Add(careContract);
+                _context.SaveChanges();
+
+                return RedirectToAction("CareContracts", "Patient");
+            }
+
+            return View("CareContracts", "Patient");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CancelCareContract(int careContractId)
+        {
+            var careContract = _context.CareContracts.Find(careContractId);
+
+            if (careContract != null)
+            {
+                careContract.ContractStatus = "Cancel";
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("CareContracts", "Patient");
+        }
 
 
 

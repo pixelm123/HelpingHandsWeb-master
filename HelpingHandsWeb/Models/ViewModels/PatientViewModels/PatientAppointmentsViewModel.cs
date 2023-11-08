@@ -12,7 +12,7 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
         [Key]
         public int AppointmentID { get; set; }
 
-        public int PatientID { get; set; }
+        public int PatientId { get; set; }
 
         public string PatientName { get; set; }
 

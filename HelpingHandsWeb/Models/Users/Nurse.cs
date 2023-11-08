@@ -8,7 +8,7 @@ namespace HelpingHandsWeb.Models.Users
     public class Nurse
     {
         [Key]
-        public int NurseID { get; set; }
+        public int NurseId { get; set; }
 
         [StringLength(50)]
         public string FirstName { get; set; }

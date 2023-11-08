@@ -4,7 +4,7 @@ namespace HelpingHandsWeb.Models.ViewModels.NurseViewModels
 {
     public class UpdateProfileViewModel
     {
-        public int NurseID { get; set; }
+        public int NurseId { get; set; }
 
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "Please enter your first name.")]

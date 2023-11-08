@@ -8,7 +8,7 @@ namespace HelpingHandsWeb.Models.ViewModels.NurseViewModels
     {
 
         public int ContractID { get; set; }
-        public int PatientID { get; set; }
+        public int PatientId { get; set; }
 
         [Required(ErrorMessage = "Please enter the visit date.")]
         [DataType(DataType.Date)]

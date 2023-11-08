@@ -14,7 +14,7 @@ namespace HelpingHandsWeb.Models.ViewModels.OfficeManagerViewModels
 
         [Required(ErrorMessage = "Please select a nurse.")]
         [Display(Name = "Nurse")]
-        public int NurseID { get; set; }
+        public int NurseId { get; set; }
 
         [Required(ErrorMessage = "Please specify the Start Care Date.")]
         [Display(Name = "Start Care Date")]
@@ -54,7 +54,7 @@ namespace HelpingHandsWeb.Models.ViewModels.OfficeManagerViewModels
             if (careContract != null)
             {
                 
-                careContract.NurseID = NurseID;
+                careContract.NurseId = NurseId;
                 careContract.ContractStatus = "Assigned";
                 careContract.StartCareDate = StartCareDate;
                 careContract.EndCareDate = EndCareDate;

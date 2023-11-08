@@ -12,7 +12,7 @@ namespace HelpingHandsWeb.Models.ViewModels.OfficeManagerViewModels
     public class NurseViewModel
     {
 
-        public int NurseID { get; set; }
+        public int NurseId { get; set; }
 
         [Required(ErrorMessage = "First Name is required.")]
         [StringLength(50, ErrorMessage = "First Name cannot exceed 50 characters.")]
@@ -78,7 +78,7 @@ namespace HelpingHandsWeb.Models.ViewModels.OfficeManagerViewModels
                     command.Parameters.AddWithValue("@IDNo", IDNo);
                     command.Parameters.AddWithValue("@IsDeleted", false);
 
-                    SqlParameter nurseIdParam = new SqlParameter("@NurseID", SqlDbType.Int);
+                    SqlParameter nurseIdParam = new SqlParameter("@NurseId", SqlDbType.Int);
                     nurseIdParam.Direction = ParameterDirection.Output;
                     command.Parameters.Add(nurseIdParam);
 
@@ -190,7 +190,7 @@ namespace HelpingHandsWeb.Models.ViewModels.OfficeManagerViewModels
                 using (SqlCommand command = new SqlCommand("UpdateNurse", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@NurseID", nurseId);
+                    command.Parameters.AddWithValue("@NurseId", nurseId);
                     command.Parameters.AddWithValue("@FirstName", FirstName);
                     command.Parameters.AddWithValue("@Surname", Surname);
                     command.Parameters.AddWithValue("@Gender", Gender);
@@ -251,7 +251,7 @@ namespace HelpingHandsWeb.Models.ViewModels.OfficeManagerViewModels
                 using (SqlCommand command = new SqlCommand("DeleteNurse", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@NurseID", nurseId);
+                    command.Parameters.AddWithValue("@NurseId", nurseId);
 
                     command.ExecuteNonQuery();
                 }

@@ -1,57 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using HelpingHandsWeb.Models.Users;
-
 
 namespace HelpingHandsWeb.Models
 {
-    public class CareContract
+    public partial class CareContract
     {
-        [Key]
-        public int ContractID { get; set; }
+        public CareContract()
+        {
+            CareVisits = new HashSet<CareVisit>();
+        }
 
-        public int? PatientID { get; set; }
-
-        [ForeignKey("PatientID")]
-        public Patient Patient { get; set; }
-
-        [Required(ErrorMessage = "Suburb is required")]
-        public int SuburbId { get; set; }
-
-       
-
+        public int ContractId { get; set; }
+        public int? PatientId { get; set; }
         public DateTime? ContractDate { get; set; }
-
-        [StringLength(100)]
-        public string AddressLine1 { get; set; }
-
-        [StringLength(100)]
-        public string AddressLine2 { get; set; }
-
-
-        [StringLength(maximumLength: int.MaxValue)]
-        public string WoundDescription { get; set; }
-
+        public string? AddressLine1 { get; set; }
+        public string? AddressLine2 { get; set; }
+        public string? WoundDescription { get; set; }
         public DateTime? StartCareDate { get; set; }
-
         public DateTime? EndCareDate { get; set; }
-
-
-
-        public int? NurseID { get; set; }
-
-        [ForeignKey("NurseID")]
-        public Nurse Nurse { get; set; }
-
-        [StringLength(50)]
-        public string ContractStatus { get; set; }
-
-
+        public int? NurseId { get; set; }
+        public string? ContractStatus { get; set; }
         public bool IsDeleted { get; set; }
+        public int? SuburbId { get; set; }
 
-        public string FirstName { get; set; }
-        public string Surname { get; set; }
+        public virtual Nurse? Nurse { get; set; }
+        public virtual Patient? Patient { get; set; }
+        public virtual Suburb? Suburb { get; set; }
+        public virtual ICollection<CareVisit> CareVisits { get; set; }
     }
 }

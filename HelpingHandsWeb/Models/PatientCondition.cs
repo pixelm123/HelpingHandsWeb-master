@@ -1,24 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using HelpingHandsWeb.Models.Users;
-
 
 namespace HelpingHandsWeb.Models
 {
-    public class PatientCondition
+    public partial class PatientCondition
     {
-        public int PatientID { get; set; }
+        public int PatientConditionId { get; set; }
+        public int? PatientId { get; set; }
+        public int? ConditionId { get; set; }
 
-        [ForeignKey("PatientID")]
-        public Patient Patient { get; set; }
-
-        public int ConditionID { get; set; }
-
-        [ForeignKey("ConditionID")]
-        public ChronicCondition Condition { get; set; }
-
-        public bool IsDeleted { get; set; }
+        public virtual ChronicCondition? Condition { get; set; }
+        public virtual Patient? Patient { get; set; }
     }
 }

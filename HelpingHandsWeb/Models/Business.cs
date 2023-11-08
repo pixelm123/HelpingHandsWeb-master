@@ -1,33 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HelpingHandsWeb.Models
 {
-    public class Business
+    public partial class Business
     {
-        [Key]
-        public int BusinessID { get; set; }
-
-        [Required(ErrorMessage = "Organization Name is required.")]
-        [StringLength(100)]
-        public string OrganizationName { get; set; }
-
-        [StringLength(100)]
-        public string Address { get; set; }
-
-        [StringLength(20)]
-        public string ContactNumber { get; set; }
-
-        [EmailAddress(ErrorMessage = "Invalid Email Address.")]
-        [StringLength(100)]
-        public string Email { get; set; }
-
-        [StringLength(100)]
-        public string OperatingHours { get; set; }
-
-
+        public int BusinessId { get; set; }
+        public string? OrganizationName { get; set; }
+        public string? Address { get; set; }
+        public string? ContactNumber { get; set; }
+        public string? Email { get; set; }
+        public string? OperatingHours { get; set; }
         public bool IsDeleted { get; set; }
+        public byte[]? Logo { get; set; }
     }
 }
