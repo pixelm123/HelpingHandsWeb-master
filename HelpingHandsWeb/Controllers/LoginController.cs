@@ -13,12 +13,6 @@ namespace HelpingHandsWeb.Controllers
     {
         public readonly string connectionString = "Server=SICT-SQL.MANDELA.AC.ZA;Database=GRP-04-34-HelpingHandsDB;User ID=GRP-04-34;Password=grp-04-34-2023#;MultipleActiveResultSets=True;";
 
-        [HttpGet]
-        public IActionResult Login()
-        {
-            var model = new LoginViewModel();
-            return View(model);
-        }
 
         private string GetUserType(string userName)
         {
@@ -66,8 +60,14 @@ namespace HelpingHandsWeb.Controllers
             }
         }
 
-        
-       
+
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            var model = new LoginViewModel();
+            return View(model);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

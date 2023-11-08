@@ -218,7 +218,7 @@ namespace HelpingHandsWeb.Controllers
                 var results = connection.Query<PatientConditionsViewModel>(
                     @"SELECT PC.PatientId,
                  PC.ConditionID,
-                 PC.IsDeleted,
+        
                  CC.Name,
                  CC.Description
               FROM PATIENT_CONDITION AS PC
