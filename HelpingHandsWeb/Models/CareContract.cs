@@ -38,6 +38,8 @@ namespace HelpingHandsWeb.Models
 
         public DateTime? EndCareDate { get; set; }
 
+
+
         public int? NurseID { get; set; }
 
         [ForeignKey("NurseID")]
@@ -48,5 +50,8 @@ namespace HelpingHandsWeb.Models
 
 
         public bool IsDeleted { get; set; }
+
+        public string FirstName { get; set; }
+        public string Surname { get; set; }
     }
 }

@@ -52,7 +52,7 @@ namespace HelpingHandsWeb.Controllers
             ContactNo = model.ContactNo,
             UserType = "P",
             Status = "A",
-            ProfilePicture = (object) DBNull.Value,
+            //ProfilePicture = (object) DBNull.Value,
             FirstName = model.FirstName,
             Surname = model.Surname,
             Gender = model.Gender,

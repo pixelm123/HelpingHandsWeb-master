@@ -107,26 +107,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-box">
-                    <h3 class="card-title">Select chronic condition from the checklist</h3>
-                    <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group form-focus select-focus">
-    <label class="focus-label">Chronic condition</label>
-    <select class="select form-control floating" name="ChronicConditions">
-        @foreach (var condition in Model.ChronicConditions)
-        {
-            <option value="@condition.ConditionID">@condition.Name</option>
-        }
-    </select>
-</div>
-
-                        </div>
-                    </div>
-                    <div class="add-more">
-                        <a href="#" class="btn btn-primary"><i class="fa fa-plus"></i> Add More Condition</a>
-                    </div>
-                </div>
+               c
 
                 <div class="text-center m-t-20">
                     <button class="btn btn-primary submit-btn" type="submit">Save</button>

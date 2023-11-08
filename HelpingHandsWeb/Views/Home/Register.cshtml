@@ -25,12 +25,12 @@
             <div class="container">
                 <div class="signup-content">
                     <div class="row">
-                        <div class="col-md-3 register-left">
+                       @*  <div class="col-md-3 register-left">
                             <img src="~/images/logo2.webp" alt="" />
                             <h3>Welcome</h3>
                             <p>Register with Helping Hands today to receive compassionate wound care at your doorstep!</p>
                             <a asp-action="Login" class="btn btn-primary">Login</a>
-                        </div>
+                        </div> *@
                         <div class="col-md-9 register-right">
                             <div class="signup-form">
                                 <h2 class="form-title">Patient Registration</h2>
@@ -119,6 +119,21 @@
                                                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                             </div>
 
+                                            <@* div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Profile Picture</label>
+                                                    <div class="profile-upload">
+                                                        <div class="upload-img">
+                                                            <img asp-if="Model.ProfilePicture != null" src="~/uploads/@Model.ProfilePicture" alt="Profile Picture" />
+                                                            <img asp-if="Model.ProfilePicture == null" src="~/assets/img/user.jpg" alt="Default Profile Picture" />
+                                                        </div>
+                                                        <div class="upload-input">
+                                                            <input asp-for="ProfilePicture" type="file" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+ *@
                                             <button type="submit" class="form-submit">Register</button>
                                         </div>
                                     </div>

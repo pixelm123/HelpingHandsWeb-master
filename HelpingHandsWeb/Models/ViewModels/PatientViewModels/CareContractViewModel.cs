@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using HelpingHandsWeb.Models.ViewModels.AdminViewModels;
 
 namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
 {
@@ -20,8 +21,6 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
         [Display(Name = "Address Line 2")]
         public string AddressLine2 { get; set; }
 
-        [Required(ErrorMessage = "Please enter your suburb.")]
-        public int SuburbId { get; set; }
 
         [Display(Name = "Chronic Conditions")]
         public string ChronicConditions { get; set; }
@@ -32,5 +31,9 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
 
         [Display(Name = "Contract Date")]
         public DateTime ContractDate { get; set; }
+
+        [Required(ErrorMessage = "Please select a suburb")]
+        public int SuburbId { get; set; }
+        public List<SuburbViewModel> Suburbs { get; set; }
     }
 }

@@ -24,8 +24,7 @@
 </head>
 
 <body>
-    @Html.Partial("_AdminPartial") <!-- Include the admin header and sidebar -->
-
+    @Html.Partial("_AdminPartial") 
     <div class="page-wrapper">
         <div class="content">
             <div class="row">
@@ -35,7 +34,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-8 offset-lg-2">
-                    <form asp-action="EditNurse" method="post" enctype="multipart/form-data">
+                    <form asp-action="AddNurse" method="post" enctype="multipart/form-data">
                         @foreach (var nurse in Model)
                         {
                             <div class="row">

@@ -64,38 +64,38 @@ namespace HelpingHandsWeb.Controllers
         }
 
 
-        [HttpPost("ChangePassword")]
-        public IActionResult ChangePassword(PatientProfileViewModel model)
-        {
-            var userName = GetUserDisplayName();
-            var userId = GetUserId(userName);
+        //[HttpPost("ChangePassword")]
+        //public IActionResult ChangePassword(PatientProfileViewModel model)
+        //{
+        //    var userName = GetUserDisplayName();
+        //    var userId = GetUserId(userName);
 
-            var oldPassword = model.OldPassword;
-            var newPassword = model.NewPassword;
-            var confirmPassword = model.ConfirmPassword;
-
-
-            if (!ValidateOldPassword(userId, oldPassword))
-            {
-
-                ModelState.AddModelError("OldPassword", "Invalid old password");
-                return View("change-password", model);
-            }
+        //    var oldPassword = model.OldPassword;
+        //    var newPassword = model.NewPassword;
+        //    var confirmPassword = model.ConfirmPassword;
 
 
-            if (newPassword != confirmPassword)
-            {
+        //    if (!ValidateOldPassword(userId, oldPassword))
+        //    {
 
-                ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
-                return View("change-password", model);
-            }
-
-
-            UpdatePassword(userId, newPassword);
+        //        ModelState.AddModelError("OldPassword", "Invalid old password");
+        //        return View("change-password", model);
+        //    }
 
 
-            return RedirectToAction("PatientProfile");
-        }
+        //    if (newPassword != confirmPassword)
+        //    {
+
+        //        ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
+        //        return View("change-password", model);
+        //    }
+
+
+        //    UpdatePassword(userId, newPassword);
+
+
+        //    return RedirectToAction("PatientProfile");
+        //}
 
 
         private bool ValidateOldPassword(int userId, string oldPassword)
@@ -117,8 +117,7 @@ namespace HelpingHandsWeb.Controllers
                 return storedPassword == oldPassword;
             }
         }
-
-        [HttpGet("Profile")]
+        [HttpGet("patient-profile")]
         public IActionResult PatientProfile()
         {
             var userName = GetUserDisplayName();
@@ -128,17 +127,7 @@ namespace HelpingHandsWeb.Controllers
             var user = GetUserById(userId);
 
           
-            var selectedConditions = GetPatientConditions(userId);
-        
-            var chronicConditions = selectedConditions.Select(pc => new PatientConditionsViewModel
-            {
-                ConditionID = pc.ConditionID,
-                Name = pc.Name,
-                Description = pc.Description,
-                IsDeleted = pc.IsDeleted
-              
-            }).ToList();
-
+            var chronicConditions = GetChronicConditions();
 
             var profileViewModel = new PatientProfileViewModel
             {
@@ -159,8 +148,57 @@ namespace HelpingHandsWeb.Controllers
             return View("patient-profile", profileViewModel);
         }
 
+       
+        private List<PatientConditionsViewModel> GetChronicConditions()
+        {
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
 
-        [HttpPost("EditProfile")]
+                var chronicConditions = connection.Query<PatientConditionsViewModel>("GetCondition", commandType: CommandType.StoredProcedure);
+                return chronicConditions.ToList();
+            }
+        }
+
+
+        [HttpGet("edit-profile")]
+        public IActionResult EditProfile()
+        {
+            var userName = GetUserDisplayName();
+            var userId = GetUserId(userName);
+            var patient = GetPatientById(userId);
+            var user = GetUserById(userId);
+
+            var selectedConditions = GetPatientConditions(userId);
+
+            var chronicConditions = selectedConditions.Select(pc => new PatientConditionsViewModel
+            {
+                ConditionID = pc.ConditionID,
+                Name = pc.Name,
+                Description = pc.Description,
+                IsDeleted = pc.IsDeleted
+            }).ToList();
+
+            var profileViewModel = new PatientProfileViewModel
+            {
+                UserName = userName,
+                FirstName = patient.FirstName,
+                Surname = patient.Surname,
+                Gender = patient.Gender.ToString(),
+                DateOfBirth = patient.DateOfBirth,
+                EmergencyPerson = patient.EmergencyPerson,
+                EmergencyContactNo = patient.EmergencyContactNo,
+                ContactNo = user.ContactNo,
+                Email = user.Email,
+                ProfilePicture = user.ProfilePicture,
+                Password = user.Password,
+                ChronicConditions = chronicConditions
+            };
+
+            return View("edit-profile", profileViewModel);
+        }
+
+        [HttpPost("edit-profile")]
         public IActionResult EditProfile(PatientProfileViewModel model)
         {
             if (ModelState.IsValid)
@@ -185,34 +223,72 @@ namespace HelpingHandsWeb.Controllers
 
                 UpdatePatientChronicConditions(userId, model.ChronicConditions.Select(cc => cc.ConditionID).ToList());
 
-
-
-                return RedirectToAction("Profile");
+                return RedirectToAction("PatientProfile");
             }
 
             return View("edit-profile", model);
+        }
+
+        [HttpGet("change-password")]
+        public IActionResult ChangePassword()
+        {
+            var userName = GetUserDisplayName();
+            var userId = GetUserId(userName);
+
+            var profileViewModel = new PatientProfileViewModel
+            {
+                UserName = userName,
+                Password = string.Empty, 
+            };
+
+            return View("change-password", profileViewModel);
+        }
+
+        [HttpPost("change-password")]
+        public IActionResult ChangePassword(PatientProfileViewModel model)
+        {
+            var userName = GetUserDisplayName();
+            var userId = GetUserId(userName);
+
+            if (!ValidateOldPassword(userId, model.OldPassword))
+            {
+                ModelState.AddModelError("OldPassword", "Invalid old password");
+                return View("change-password", model);
+            }
+
+            if (model.NewPassword != model.ConfirmPassword)
+            {
+                ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
+                return View("change-password", model);
+            }
+
+            UpdatePassword(userId, model.NewPassword);
+
+            return RedirectToAction("PatientProfile");
         }
 
         [HttpGet("RequestCareContract")]
         public IActionResult RequestCareContract()
         {
             var suburbs = SuburbHelper.GetSuburbsFromDatabase(null, null, 0, false);
-            ViewBag.Suburbs = new SelectList(suburbs, "SuburbId", "SuburbName");
-            return View();
+            var model = new CareContractViewModel
+            {
+                Suburbs = suburbs,
+                // Initialize other properties if needed
+            };
+
+            return View(model);
         }
-
-
 
         [HttpPost("RequestCareContract")]
         public IActionResult RequestCareContract(CareContractViewModel model)
         {
             if (ModelState.IsValid)
             {
-                
                 var userName = GetUserDisplayName();
                 var userId = GetUserId(userName);
+                var patient = GetPatientById(userId);
 
-            
                 var careContract = new CareContract
                 {
                     PatientID = userId,
@@ -221,25 +297,26 @@ namespace HelpingHandsWeb.Controllers
                     AddressLine2 = model.AddressLine2,
                     SuburbId = model.SuburbId,
                     WoundDescription = model.WoundDescription,
-                    StartCareDate = null, 
-                    EndCareDate = null,   
-                    NurseID = null,      
-                    ContractStatus = "New", 
+                    FirstName = patient.FirstName,
+                    Surname = patient.Surname,
+                    StartCareDate = null,
+                    EndCareDate = null,
+                    NurseID = null,
+                    ContractStatus = "New",
                     IsDeleted = false
                 };
 
-                
                 _context.CareContracts.Add(careContract);
                 _context.SaveChanges();
 
                 return RedirectToAction("PatientDashboard");
             }
 
-          
             var suburbs = SuburbHelper.GetSuburbsFromDatabase(null, null, 0, false);
-            ViewBag.Suburbs = new SelectList(suburbs, "SuburbId", "SuburbName");
+            model.Suburbs = suburbs; // Assign the suburbs directly to the model
             return View(model);
         }
+
 
 
 

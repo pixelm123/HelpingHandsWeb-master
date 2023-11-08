@@ -41,7 +41,10 @@ namespace HelpingHandsWeb.Models.ViewModels.PatientViewModels
     [Display(Name = "Contact Number")]
     public string ContactNo { get; set; }
 
-    [Required]
+      
+
+
+        [Required]
     [EmailAddress]
     [Display(Name = "Email")]
     public string Email { get; set; }

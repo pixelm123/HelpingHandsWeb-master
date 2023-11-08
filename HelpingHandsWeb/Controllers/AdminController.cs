@@ -80,6 +80,26 @@ namespace HelpingHandsWeb.Controllers
         }
 
         [HttpGet("cities")]
+        public IActionResult Cities()
+        {
+            var model = new List<CityViewModel>();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                var results = connection.Query<CityViewModel>("GetCities", commandType: CommandType.StoredProcedure);
+                model = results.ToList();
+            }
+            ViewData["UserName"] = GetUserDisplayName();
+            return View("cities", model);
+        }
+
+        [HttpGet("add-city")]
+        public IActionResult AddCity()
+        {
+            ViewData["UserName"] = GetUserDisplayName();
+            return View("add-city", new CityViewModel());
+        }
+
         [HttpPost("add-city")]
         public IActionResult AddCity(CityViewModel model)
         {
@@ -136,26 +156,6 @@ namespace HelpingHandsWeb.Controllers
             return RedirectToAction("Cities");
         }
 
-        [HttpGet("cities")]
-        public IActionResult Cities()
-        {
-            var model = new List<CityViewModel>();
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
-                var results = connection.Query<CityViewModel>("GetCity", commandType: CommandType.StoredProcedure);
-                model = results.ToList();
-            }
-            ViewData["UserName"] = GetUserDisplayName();
-            return View("cities", model);
-        }
-
-        [HttpGet("add-city")]
-        public IActionResult AddCity()
-        {
-            ViewData["UserName"] = GetUserDisplayName();
-            return View("add-city", new CityViewModel());
-        }
 
         [HttpPost("add-suburb")]
         public IActionResult AddSuburb(SuburbViewModel model)
@@ -266,7 +266,6 @@ namespace HelpingHandsWeb.Controllers
             ViewData["UserName"] = GetUserDisplayName();
             return View("add-condition", model);
         }
-
         [HttpGet("edit-condition/{id}")]
         public IActionResult EditCondition(int id)
         {
@@ -274,7 +273,11 @@ namespace HelpingHandsWeb.Controllers
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                var result = connection.QueryFirstOrDefault<ConditionViewModel>("GetChronicCondition", new { ConditionID = id }, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<ConditionViewModel>(
+                    "GetCondition",
+                    new { ConditionID = id },
+                    commandType: CommandType.StoredProcedure
+                );
                 if (result == null)
                 {
                     return RedirectToAction("Conditions");
@@ -318,6 +321,13 @@ namespace HelpingHandsWeb.Controllers
             return RedirectToAction("Conditions");
         }
 
+        [HttpGet("add-officemanager")]
+        public IActionResult AddOfficeManager()
+        {
+            ViewData["UserName"] = GetUserDisplayName();
+            return View("add-officemanager", new List<OfficeManagerViewModel> { new OfficeManagerViewModel() });
+        }
+
         [HttpPost("add-officemanager")]
         public IActionResult AddOfficeManager(OfficeManagerViewModel model)
         {
@@ -339,7 +349,25 @@ namespace HelpingHandsWeb.Controllers
                 return RedirectToAction("OfficeManagers");
             }
             ViewData["UserName"] = GetUserDisplayName();
-            return View("add-officemanager", model);
+            return View("add-officemanager", new List<OfficeManagerViewModel> { model });
+        }
+
+        [HttpGet("edit-officemanager/{id}")]
+        public IActionResult EditOfficeManager(int id)
+        {
+            var model = new OfficeManagerViewModel();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                var result = connection.QueryFirstOrDefault<OfficeManagerViewModel>("GetUser", new { UserID = id }, commandType: CommandType.StoredProcedure);
+                if (result == null)
+                {
+                    return RedirectToAction("OfficeManagers");
+                }
+                model = result;
+            }
+            ViewData["UserName"] = GetUserDisplayName();
+            return View("edit-officemanager", new List<OfficeManagerViewModel> { model });
         }
 
         [HttpPost("edit-officemanager")]
@@ -365,7 +393,7 @@ namespace HelpingHandsWeb.Controllers
                 return RedirectToAction("OfficeManagers");
             }
             ViewData["UserName"] = GetUserDisplayName();
-            return View("edit-officemanager", model);
+            return View("edit-officemanager", new List<OfficeManagerViewModel> { model });
         }
 
         [HttpGet("officemanagers")]
@@ -390,6 +418,12 @@ namespace HelpingHandsWeb.Controllers
             }
             ViewData["UserName"] = GetUserDisplayName();
             return View("officemanagers", model);
+        }
+        [HttpGet("add-nurse")]
+        public IActionResult AddNurse()
+        {
+            ViewData["UserName"] = GetUserDisplayName();
+            return View("add-nurse", new List<NurseViewModel> { new NurseViewModel() });
         }
 
         [HttpPost("add-nurse")]
@@ -418,8 +452,9 @@ namespace HelpingHandsWeb.Controllers
                 return RedirectToAction("Nurses");
             }
             ViewData["UserName"] = GetUserDisplayName();
-            return View("add-nurse", model);
+            return View("add-nurse", new List<NurseViewModel> { model });
         }
+
 
         [HttpPost("edit-nurse")]
         public IActionResult EditNurse(NurseViewModel model)
